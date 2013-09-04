@@ -1,0 +1,189 @@
+<!DOCTYPE  html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>doc</title>
+    <style>
+      /*github.com style (c) Vasily Polovnyov <vast@whiteants.net>*/
+      pre code {
+        display: block; padding: 0.5em;
+        color: #333;
+        background: #f8f8ff
+      }
+      pre .comment,
+      pre .template_comment,
+      pre .diff .header,
+      pre .javadoc {
+        color: #998;
+        font-style: italic
+      }
+      pre .keyword,
+      pre .css .rule .keyword,
+      pre .winutils,
+      pre .javascript .title,
+      pre .nginx .title,
+      pre .subst,
+      pre .request,
+      pre .status {
+        color: #333;
+        font-weight: bold
+      }
+      pre .number,
+      pre .hexcolor,
+      pre .ruby .constant {
+        color: #099;
+      }
+      pre .string,
+      pre .tag .value,
+      pre .phpdoc,
+      pre .tex .formula {
+        color: #d14
+      }
+      pre .title,
+      pre .id {
+        color: #900;
+        font-weight: bold
+      }
+      pre .javascript .title,
+      pre .lisp .title,
+      pre .clojure .title,
+      pre .subst {
+        font-weight: normal
+      }
+      pre .class .title,
+      pre .haskell .type,
+      pre .vhdl .literal,
+      pre .tex .command {
+        color: #458;
+        font-weight: bold
+      }
+      pre .tag,
+      pre .tag .title,
+      pre .rules .property,
+      pre .django .tag .keyword {
+        color: #000080;
+        font-weight: normal
+      }
+      pre .attribute,
+      pre .variable,
+      pre .lisp .body {
+        color: #008080
+      }
+      pre .regexp {
+        color: #009926
+      }
+      pre .class {
+        color: #458;
+        font-weight: bold
+      }
+      pre .symbol,
+      pre .ruby .symbol .string,
+      pre .lisp .keyword,
+      pre .tex .special,
+      pre .prompt {
+        color: #990073
+      }
+      pre .built_in,
+      pre .lisp .title,
+      pre .clojure .built_in {
+        color: #0086b3
+      }
+      pre .preprocessor,
+      pre .pi,
+      pre .doctype,
+      pre .shebang,
+      pre .cdata {
+        color: #999;
+        font-weight: bold
+      }
+      pre .deletion {
+        background: #fdd
+      }
+      pre .addition {
+        background: #dfd
+      }
+      pre .diff .change {
+        background: #0086b3
+      }
+      pre .chunk {
+        color: #aaa
+      }
+    </style>
+  </head>
+  <body>  
+    <h1>Grunt Recipes</h1>
+<h2>Getting started</h2>
+<h3> </h3>
+<h3>What is Grunt</h3>
+<h3>Get Grunt Up &amp; Running</h3>
+<p>Grunt is written in JavaScript, so you will need a Node.js environment and the Node Package Manager that comes with it. </p>
+<h4>Install Node</h4>
+<p>Go to <a href="http://nodejs.org/download/">http://nodejs.org/download/</a> and grab the installer for your operating system. It will install Node and NPM.</p>
+<p><em>Sidenote:</em> Working with Grunt means interacting with a shell, which Mac and Linux users are lucky enough to have readily available. As for Windows, let&#39;s just say I&#39;d eat a live snail before I use the Command Prompt. Instead, I suggest you install Git for Windows &mdash; available at <a href="http://git-scm.com/downloads">http://git-scm.com/downloads</a> &mdash; that comes with a real shell and, seriously, who doesn&#39;t need Git on their machine anyways?</p>
+<h4>Install Grunt</h4>
+<p>We&#39;ll use NPM to install Grunt CLI (Command-Line Interpreter) from the console:</p>
+<pre><code>npm install -g grunt-cli</code></pre>
+<p><strong>Note:</strong> The <code>-g</code> flag stands for <em>global</em>, which makes Grunt CLI available from any folder on your machine.</p>
+<p>That&#39;s it! You&#39;re ready to add Grunt magic to your projects.</p>
+<h4>Set up your first Grunt project</h4>
+<p>Let&#39;s create a new project:</p>
+<pre><code>mkdir my-project
+cd my-project</code></pre>
+<p>There are two main files you need to create in the root directory of your project:</p>
+<ul>
+<li><code>package.json</code>: this file is used to store NPM metadata such as the name and description of the project, and its dependencies;</li>
+<li><code>Gruntfile.js</code>: this file is used to load and configure your grunt tasks.</li>
+</ul>
+<h5>package.json</h5>
+<p>Let&#39;s create a very basic version of this file:</p>
+<pre><code>{
+  &quot;name&quot;: &quot;my-project&quot;,
+  &quot;version&quot;: &quot;0.0.0&quot;
+}</code></pre>
+<p>Now, let&#39;s install Grunt in our current project:</p>
+<pre><code>npm install grunt --save-dev</code></pre>
+<p>The <code>--save-dev</code> flag instructs NPM to update <code>package.json</code> and add <code>grunt</code> as a dependency to the project. Our file will now look like this:</p>
+<pre><code>{
+  &quot;name&quot;: &quot;my-project&quot;,
+  &quot;version&quot;: &quot;0.0.0&quot;,
+  &quot;devDependencies&quot;: {
+      &quot;grunt&quot;: &quot;~0.4.1&quot;
+  }
+}</code></pre>
+<p>In addition, you&#39;ll notice a <code>node_modules</code> directory added to your project. This is where all local NPM modules are installed -- like we just did with <code>grunt</code> -- and can be safely added to <code>.gitignore</code>.</p>
+<p><em>Did you know?</em> Running <code>npm install</code> in any project directory that has a <code>package.json</code> will install all its necessary dependencies with their appropriate versions, as listed in the <code>devDependencies</code> property.</p>
+<h5>Gruntfile.js</h5>
+<p>Let&#39;s create a Gruntfile next to our <code>package.json</code>. The basic format for the file is this:</p>
+<pre><code>module.exports = function(grunt) {
+  // We&#39;ll do grunt stuff here soon!
+};</code></pre>
+<p>For example, let&#39;s write a task that just prints out <code>Hello World!</code> into the console:</p>
+<pre><code>module.exports = function(grunt) {
+  grunt.registerTask(&#39;default&#39;, function() {
+      grunt.log.write(&#39;Hello World!&#39;);
+  });
+};</code></pre>
+<p>And now to run it:</p>
+<pre><code>grunt
+&gt; Running &quot;default&quot; task
+&gt; Hello World!</code></pre>
+<h4>Take five</h4>
+<p>OK, let&#39;s recap what we&#39;ve just done:</p>
+<ul>
+<li>We installed Node and Node Package Manager, which allows us to run Grunt and to quickly install all the necessary Grunt plugins;</li>
+<li>We installed Grunt CLI globally;</li>
+<li>We created a new, empty project;</li>
+<li>We added basic versions of <code>package.json</code> and <code>Gruntfile.js</code>;</li>
+<li>We ran <code>grunt</code> for the first time!</li>
+</ul>
+<h2>Recipes</h2>
+<h3>Build an app</h3>
+<h3>Lint your code</h3>
+<h3>Precompile your CoffeeScript, SASS, LESS</h3>
+<h3>Start a server</h3>
+<h3>Watch for changes</h3>
+<h2>Write your own Grunt plugin</h2>
+
+  </body>
+</html>
