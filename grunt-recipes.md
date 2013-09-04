@@ -19,7 +19,8 @@ Grunt is a task runner designed to automate the modern web development workflow.
 ### Resources
 
 * http://gruntjs.com, Grunt's official page, with the guides & API reference;
-* http://gruntjs.com/plugins, the list of all available Grunt plugins, with a handy search function.
+* http://gruntjs.com/plugins, the list of all available Grunt plugins, with a handy search function;
+* `#grunt` on `irc.freenode.net` to talk to the Grunt team.
 
 ### Get Grunt Up & Running
 
@@ -118,9 +119,121 @@ You can read more at: http://gruntjs.com/getting-started
 
 ## Recipes
 
-### Build an app
+It's time to make Grunt do some actual work for us. Through these recipes, we'll automate stuff like:
 
-### Lint your code
+* Minifying and concatenating our CSS and JS files;
+* Starting a local webserver;
+* Watching for changes on files and running tasks accordingly.
+
+In the process, we'll get familiar with some of the more popular Grunt plugins.
+
+### Lint your JavaScript code
+
+**Plugins used:** [`grunt-contrib-jshint`](https://npmjs.org/package/grunt-contrib-jshint).
+
+A JavaScript linter is a tool that looks for syntax errors, bad practices and style inconsistencies in your code.
+
+
+#### Install the JSHint plugin
+
+	npm install grunt-contrib-jshint --save-dev
+
+#### Load JSHint tasks into our Gruntfile
+
+	module.exports = function(grunt) {
+		grunt.loadNpmTasks('grunt-contrib-jshint');
+	};
+
+#### Confige the JSHint task
+
+	module.exports = function(grunt) {
+		grunt.initConfig({
+			jshint: {
+				all: ['scripts/*.js']
+			}
+		});
+		grunt.loadNpmTasks('grunt-contrib-jshint');
+	};
+	
+We added a call to `initConfig` for the `jshint` task. In it, we defined a single *target* called `all`. We told JSHint to look at all files with a `.js` extension within the `scripts` folder.
+
+**Note:** Grunt tasks can have multiple configurations, named _targets_. This allows us to use different sets of options for the same task, depending on what we need. A common scenario is having a target for _development_ and one for _distribution_.
+
+In defining the list of JavaScript files to lint, we've used a shorthand. This is the equivalent, more explicit version:
+
+	jshint: {
+		all: {
+			files: ['scripts/*.js']
+		}
+	}
+
+#### Run the JSHint task
+
+In your project directory, run:
+	
+	grunt jshint:all
+
+...to run the JSHint task with the `all` target. Or simply:
+
+	grunt jshint
+
+...which will runt jshint for all targets (of which we only have one anyways). In the output, you should see a list of all problems the tool found in the specified JavaScript files. This is great, albeit not so readable. Let's configure JSHint to output to a file rather than in the console:
+
+	module.exports = function(grunt) {
+		grunt.initConfig({
+			jshint: {
+				options: {
+					reporterOutput: 'jshint.log'
+				}
+				all: ['scripts/*.js']
+			}
+		});
+		grunt.loadNpmTasks('grunt-contrib-jshint');
+	};
+
+That's much better. Now we have the list of errors in a handy file in our project called `jshint.log`. Brilliant.
+
+Here we've set `options` globall for _all targets_, but each target can have its own `options` property, in which case you need to renounce the shorthand and use the `files` property explicitly.
+
+#### More JSHint options
+
+We've just configured an output file to serve as an error log. Next, let's look at how to customize the kind of rules JSHint enforces. Armed with the [full list of JSHint flags](http://www.jshint.com/docs/options/), we can create a JSON file which we'll name `.jshintrc` into our root directory. It looks something like this:
+
+	{
+	  "curly": true,
+	  "eqnull": true,
+	  "eqeqeq": true,
+	  "undef": true,
+	  "globals": {
+	    "jQuery": true
+	  }
+	}
+
+Now, let's tell JSHint to look at this file for the rules to enforce:
+
+	module.exports = function(grunt) {
+		grunt.initConfig({
+			jshint: {
+				options: {
+					jshintrc: '.jshintrc',
+					reporterOutput: 'jshint.log'
+				}
+				all: ['scripts/*.js']
+			}
+		});
+		grunt.loadNpmTasks('grunt-contrib-jshint');
+	};
+
+#### Take five
+
+In this recipe, we've:
+
+* installed and configured our first Grunt task;
+* learned about targets and multitasks;
+
+**Also check out:** [`grunt-contrib-csslint`](https://npmjs.org/package/grunt-contrib-csslint) for a similar lint tool for your CSS files.
+
+### Build an app
 
 ### Precompile your CoffeeScript, SASS, LESS
 
