@@ -1,15 +1,24 @@
 # Grunt Enlightenment
 
+A book by Dan Burzo ([@danburzo](http://twitter.com/danburzo))
+
+## About this book
+
+This is a book about using Grunt to automate your web development workflow. You should have some basic experience in JavaScript, the language that drives Grunt, but don't get too hung up on that part. 
+
+You can find the book on GitHub: https://github.com/danburzo/grunt-recipes. Contributions/corrections are always welcome. Always.
+
+
+
 ## Getting started
 
-### What is Grunt
+### Meet Grunt
 
-#### Resources
+Grunt is a task runner designed to automate the modern web development workflow. Repetitive tasks like unit testing, minifying your JavaScript and CSS, compiling your SASS stylesheets or CoffeeScripts, linting and many more can now be performed by running a single command. Grunt is open source (find it on GitHub: https://github.com/gruntjs/) and at the center of a wonderful ecosystem of thousands of plugins. Any tool you've used as part of your front-end workflow is likely to have a Grunt plugin. And if it doesn't, it's easy to roll out your own plugin and share it with the community.
 
-Some useful websites:
+### Resources
 
-* http://nodejs.org, the Node official page;
-* http://gruntjs.com, the Grunt official page;
+* http://gruntjs.com, Grunt's official page, with the guides & API reference;
 * http://gruntjs.com/plugins, the list of all available Grunt plugins, with a handy search function.
 
 ### Get Grunt Up & Running
