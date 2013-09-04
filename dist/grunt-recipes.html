@@ -112,10 +112,16 @@
     </style>
   </head>
   <body>  
-    <h1>Grunt Recipes</h1>
+    <h1>Grunt Enlightenment</h1>
 <h2>Getting started</h2>
-<h3> </h3>
 <h3>What is Grunt</h3>
+<h4>Resources</h4>
+<p>Some useful websites:</p>
+<ul>
+<li><a href="http://nodejs.org">http://nodejs.org</a>, the Node official page;</li>
+<li><a href="http://gruntjs.com">http://gruntjs.com</a>, the Grunt official page;</li>
+<li><a href="http://gruntjs.com/plugins">http://gruntjs.com/plugins</a>, the list of all available Grunt plugins, with a handy search function.</li>
+</ul>
 <h3>Get Grunt Up &amp; Running</h3>
 <p>Grunt is written in JavaScript, so you will need a Node.js environment and the Node Package Manager that comes with it. </p>
 <h4>Install Node</h4>
@@ -138,8 +144,8 @@ cd my-project</code></pre>
 <h5>package.json</h5>
 <p>Let&#39;s create a very basic version of this file:</p>
 <pre><code>{
-  &quot;name&quot;: &quot;my-project&quot;,
-  &quot;version&quot;: &quot;0.0.0&quot;
+  &quot;name&quot;: &quot;my-project&quot;, // the name of our project, hyphen-separated
+  &quot;version&quot;: &quot;0.0.0&quot; // project version (in semantic format)
 }</code></pre>
 <p>Now, let&#39;s install Grunt in our current project:</p>
 <pre><code>npm install grunt --save-dev</code></pre>
@@ -147,6 +153,8 @@ cd my-project</code></pre>
 <pre><code>{
   &quot;name&quot;: &quot;my-project&quot;,
   &quot;version&quot;: &quot;0.0.0&quot;,
+
+  // the list of project dependencies
   &quot;devDependencies&quot;: {
       &quot;grunt&quot;: &quot;~0.4.1&quot;
   }
@@ -177,6 +185,7 @@ cd my-project</code></pre>
 <li>We added basic versions of <code>package.json</code> and <code>Gruntfile.js</code>;</li>
 <li>We ran <code>grunt</code> for the first time!</li>
 </ul>
+<p>You can read more at: <a href="http://gruntjs.com/getting-started">http://gruntjs.com/getting-started</a></p>
 <h2>Recipes</h2>
 <h3>Build an app</h3>
 <h3>Lint your code</h3>

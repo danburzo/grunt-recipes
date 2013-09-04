@@ -1,10 +1,16 @@
-# Grunt Recipes
+# Grunt Enlightenment
 
 ## Getting started
 
-### 
-
 ### What is Grunt
+
+#### Resources
+
+Some useful websites:
+
+* http://nodejs.org, the Node official page;
+* http://gruntjs.com, the Grunt official page;
+* http://gruntjs.com/plugins, the list of all available Grunt plugins, with a handy search function.
 
 ### Get Grunt Up & Running
 
@@ -43,8 +49,8 @@ There are two main files you need to create in the root directory of your projec
 Let's create a very basic version of this file:
 
 	{
-	  "name": "my-project",
-	  "version": "0.0.0"
+	  "name": "my-project", // the name of our project, hyphen-separated
+	  "version": "0.0.0" // project version (in semantic format)
 	}
 
 Now, let's install Grunt in our current project:
@@ -56,6 +62,8 @@ The `--save-dev` flag instructs NPM to update `package.json` and add `grunt` as 
 	{
 	  "name": "my-project",
 	  "version": "0.0.0",
+
+	  // the list of project dependencies
 	  "devDependencies": {
 	  	"grunt": "~0.4.1"
 	  }
@@ -96,6 +104,8 @@ OK, let's recap what we've just done:
 * We created a new, empty project;
 * We added basic versions of `package.json` and `Gruntfile.js`;
 * We ran `grunt` for the first time!
+
+You can read more at: http://gruntjs.com/getting-started
 
 ## Recipes
 
