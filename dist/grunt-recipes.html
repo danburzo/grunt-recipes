@@ -375,7 +375,7 @@ cd my-project</code></pre>
 <h4>The advantages of precompiling your templates</h4>
 <p>Here&#39;s what&#39;s in it for you: </p>
 <ul>
-<li>You get to keep your templates in separate files;</li>
+<li>You get to keep your templates in separate files, without the performance penalty of separate HTTP requests for each one;</li>
 <li>You make your app faster by skipping the DOM queries and the compilation step;</li>
 <li>You reduce the payload by including only the Handlebars Runtime library, which is smaller and faster, instead of the whole shebang.</li>
 </ul>
@@ -393,8 +393,46 @@ cd my-project</code></pre>
         }
     }
 }</code></pre>
-<p>This will take all the files with a <code>.hbs</code> extension from the <code>templates</code> folder and all its subfolders and merge them into a single file called <code>templates.js</code>, which looks something like this:</p>
+<p>Let&#39;s run this to see what happens:</p>
+<pre><code>grunt handlebars</code></pre>
+<p>Grunt will take all files with a <code>.hbs</code> extension from the <code>templates</code> folder and all its subfolders and merge them into a single file called <code>templates.js</code>, which looks something like this:</p>
 <p>[[ INSERT CODE EXAMPLE ]] </p>
+<p>You can now include a single file in your HTML:</p>
+<pre><code>&lt;script type=&#39;text/javascript&#39; src=&#39;js/templates.js&#39;&gt;&lt;/script&gt;</code></pre>
+<p>and in your JavaScript code, you access the templates as follows:</p>
+<pre><code>var personTemplate = JST[&#39;person&#39;]; // presto!</code></pre>
+<h4>More customization</h4>
+<p>In real life, you&#39;ll probably want to add the templates under your application&#39;s namespace -- something like <code>MyApp.Templates</code> -- instead of <code>JST</code>. This is done using the <code>namespace</code> option:</p>
+<pre><code>handlebars: {
+    options: {
+        namespace: &#39;MyApp.Templates&#39;
+    },
+    all: {
+        files: {
+            &quot;js/templates.js&quot;: [&quot;templates/**/*.hbs&quot;]
+        }
+    }
+}</code></pre>
+<p>Let&#39;s also configure how template names are generated for each file, using the <code>processName</code> option. We define a function which takes one argument (the file path) and returns the string to use as the template name:</p>
+<pre><code>options: {
+    processName: function(filePath) {
+
+        // split path at slash, hyphen and space
+        var parts = filePath.split(/[\/\-\s]/); 
+
+        // capitalize each part, starting from the second
+        for (var i = 1; i &lt; parts.length; i++) {
+            parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].substr(1);
+        }
+
+        // restore the string and return it
+        return parts.join(&#39;&#39;);
+    }
+}</code></pre>
+<p>In the example above, we&#39;re transforming the template path into a camel-case name:</p>
+<pre><code>templates/product/detail.hbs -&gt; &#39;productDetail&#39;</code></pre>
+<h3>Take five</h3>
+<p>In this recipe, we made Handlebars templates better in terms of speed and maintainability. In fact, if you install Handlebars syntax highlighting in your favorite editor (I use Sublime Text), you&#39;ll get even more clarity by keeping your templates in separate <code>.hbs</code> files.</p>
 <h3>Files, in-depth</h3>
 <p><a href="http://gruntjs.com/configuring-tasks#files">http://gruntjs.com/configuring-tasks#files</a></p>
 <h3>Watch for changes</h3>

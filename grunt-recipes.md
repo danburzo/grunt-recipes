@@ -371,7 +371,7 @@ Let's see how `grunt-contrib-handlebars` can make this all better.
 
 Here's what's in it for you: 
 
-* You get to keep your templates in separate files;
+* You get to keep your templates in separate files, without the performance penalty of separate HTTP requests for each one;
 * You make your app faster by skipping the DOM queries and the compilation step;
 * You reduce the payload by including only the Handlebars Runtime library, which is smaller and faster, instead of the whole shebang.
 
@@ -397,9 +397,62 @@ In its most basic form, we only need to define the _source_ and _destination_ fi
 		}
 	}
 
-This will take all the files with a `.hbs` extension from the `templates` folder and all its subfolders and merge them into a single file called `templates.js`, which looks something like this:
+Let's run this to see what happens:
+	
+	grunt handlebars
+
+Grunt will take all files with a `.hbs` extension from the `templates` folder and all its subfolders and merge them into a single file called `templates.js`, which looks something like this:
 
 [[ INSERT CODE EXAMPLE ]] 
+
+You can now include a single file in your HTML:
+
+	<script type='text/javascript' src='js/templates.js'></script>
+
+and in your JavaScript code, you access the templates as follows:
+
+	var personTemplate = JST['person']; // presto!
+
+#### More customization
+
+In real life, you'll probably want to add the templates under your application's namespace -- something like `MyApp.Templates` -- instead of `JST`. This is done using the `namespace` option:
+
+	handlebars: {
+		options: {
+			namespace: 'MyApp.Templates'
+		},
+		all: {
+			files: {
+				"js/templates.js": ["templates/**/*.hbs"]
+			}
+		}
+	}
+
+Let's also configure how template names are generated for each file, using the `processName` option. We define a function which takes one argument (the file path) and returns the string to use as the template name:
+
+	options: {
+		processName: function(filePath) {
+
+			// split path at slash, hyphen and space
+			var parts = filePath.split(/[\/\-\s]/); 
+			
+			// capitalize each part, starting from the second
+			for (var i = 1; i < parts.length; i++) {
+				parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].substr(1);
+			}
+
+			// restore the string and return it
+			return parts.join('');
+		}
+	}
+
+In the example above, we're transforming the template path into a camel-case name:
+
+	templates/product/detail.hbs -> 'productDetail'
+
+### Take five
+
+In this recipe, we made Handlebars templates better in terms of speed and maintainability. In fact, if you install Handlebars syntax highlighting in your favorite editor (I use Sublime Text), you'll get even more clarity by keeping your templates in separate `.hbs` files.
 
 
 ### Files, in-depth
