@@ -4,17 +4,14 @@ module.exports = function(grunt) {
 		concat: {
 			all: {
 				files: {
-					'.tmp/grunt-recipes.md': ['chapters/*.md']
+					'dist/grunt-recipes.md': ['chapters/*.md']
 				}
 			}
-		},
-		clean: {
-			all: ['.tmp']
 		},
 		markdown: {
 			all: {
 				files: {
-					'dist/grunt-recipes.html': '.tmp/grunt-recipes.md'
+					'dist/grunt-recipes.html': 'dist/grunt-recipes.md'
 				},
 				options: {
 					markdownOptions: {
@@ -27,7 +24,7 @@ module.exports = function(grunt) {
 		watch: {
 			all: {
 				files: ['chapters/*.md', '*.tmpl'],
-				tasks: ['concat', 'markdown', 'clean'],
+				tasks: ['concat', 'markdown'],
 				options: {
 					atBegin: true
 				}
