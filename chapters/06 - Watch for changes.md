@@ -1,0 +1,125 @@
+### Watch for changes
+
+**Plugins used:** [`grunt-contrib-watch`](https://npmjs.org/package/grunt-contrib-watch).
+
+In the previous recipes, we saw how we can compile our Sass files into CSS files and merge your Handlebars templates into a single JST file. It is somewhat magical, but to run `grunt sass` after every change is far from being productive. Let's take this up a notch and make our files recompile automatically every time they change. For this, we will use the `watch` task provided by `grunt-contrib-watch`. 
+
+As usual, let's install it in our project:
+
+	npm install grunt-contrib-watch
+
+and load the tasks in our Gruntfile, next to our Sass task:
+
+	module.exports = function(grunt) {
+		grunt.initConfig({
+			sass: {
+				all: {
+					files: {
+						'main.css': 'main.scss',
+						'homepage.css': 'homepage.scss'
+					}
+				}
+			}
+		});
+		grunt.loadNpmTasks('grunt-contrib-sass');
+		grunt.loadNpmTasks('grunt-contrib-watch');
+	};
+
+#### Configuring the `watch` task
+
+There are really only two things to define:
+
+* which files we need to watch;
+* what task(s) to run when the files change.
+
+So let's go ahead and do that:
+
+	module.exports = function(grunt) {
+		grunt.initConfig({
+			sass: {
+				all: {
+					files: {
+						'css/main.css': 'scss/main.scss',
+						'css/homepage.css': 'scss/homepage.scss'
+					}
+				}
+			},
+
+			watch: {
+				sass: {
+					files: ['scss/**/*.scss'],
+					tasks: ['sass']
+				},
+				handlebars: {
+					files: ['templates/**/*.hbs'],
+					tasks: ['handlebars']
+				}
+			}
+		});
+		grunt.loadNpmTasks('grunt-contrib-sass');
+		grunt.loadNpmTasks('grunt-contrib-watch');
+	};
+
+We've created two targets for our `watch` task, one for watching the Sass files and one for watching the Handlebars templates. In both instances, we've used _wildcards_ to define patterns to match the desired files. In effect, the `scss/**/*.scss` pattern is similar to `scss/*.scss` (i.e. match all files with the `.scss` extension within the `scss` folder) with the exception that the former looks into subfolders as well. When any of the files change, the associated task is executed. 
+
+Let's check it out in action:
+	
+	grunt watch
+
+Because `watch` is a _multitask_, what we're actually saying with the above command is:
+
+	grunt watch:sass watch:handlebars
+
+
+Now go ahead and change one of your Sass files, and notice that the `sass` task is run. At the same time, if a Handlebars template changes, the `handlebars` task is run.
+
+
+#### Tweaking the watch behavior
+
+By default, `watch` looks for three kinds of changes: 
+
+* files that were _added_ to the project and match the pattern;
+* matching files files that were _deleted_;
+* matching files that were _changed_. 
+
+This behavior is controlled by the `events` option, which can have one or many of the values: `all` (the default), `changed`, `added` and `deleted`. Let's assume we want to run the `handlebars` task only when a template is added or deleted &mdash; an no, it doesn't make sense in a real-world scenario, but go with me:
+
+	watch: {
+		handlebars: {
+			files: ['templates/**/*.hbs'],
+			tasks: ['handlebars'],
+			options: {
+				events: ['added', 'deleted']
+			}
+		}
+	}
+
+This will make the watch ignore changes in existing Handlebars templates and only react when we add or remove Handlebars templates.
+
+Alrighty then.
+
+There's one little quirk we need to address: the `watch` task will only pick up on changes that happen _after_ we call `grunt task`. We'd like to make sure our generated CSS and compiled templates are up-to-date when the watch starts. For this, we will use `atBegin: true` to run _all tasks_ associated with the watch before the actual watching begins. Because we want this behavior for both Sass and Handlebars files, we will add this option on the task directly rather than on each target:
+
+	watch: {
+		options: {
+			atBegin: true
+		},
+		sass: {
+			files: ['scss/**/*.scss'],
+			tasks: ['sass']
+		},
+		handlebars: {
+			files: ['templates/**/*.hbs'],
+			tasks: ['handlebars']
+		}
+	}
+
+
+#### Take five
+
+In this recipe, we've:
+
+* learned how to use `watch` to trigger other tasks automatically when you make changes to your files;
+* configured the types of events the watch responds to;
+* run the associated tasks at the beginning of the watch process to make sure everything is up to date.
+

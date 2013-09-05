@@ -1,14 +1,21 @@
 module.exports = function(grunt) {
 
 	grunt.initConfig({
+		concat: {
+			all: {
+				files: {
+					'.tmp/grunt-recipes.md': ['chapters/*.md']
+				}
+			}
+		},
+		clean: {
+			all: ['.tmp']
+		},
 		markdown: {
 			all: {
-				files: [{
-					expand: true,
-					src: '*.md',
-					dest: 'dist/',
-					ext: '.html'
-				}],
+				files: {
+					'dist/grunt-recipes.html': '.tmp/grunt-recipes.md'
+				},
 				options: {
 					markdownOptions: {
 						gfm: true
@@ -19,8 +26,8 @@ module.exports = function(grunt) {
 		},
 		watch: {
 			all: {
-				files: ['*.md', '*.tmpl'],
-				tasks: ['markdown'],
+				files: ['chapters/*.md', '*.tmpl'],
+				tasks: ['concat', 'markdown', 'clean'],
 				options: {
 					atBegin: true
 				}

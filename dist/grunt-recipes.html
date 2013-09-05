@@ -5,14 +5,23 @@
 		<style type='text/css'>
 
 		body {
-			font-family: Helvetica, Arial, sans-serif;
+			font-family: Georgia, "Times New Roman", serif;
 			color: #222;
 			background: #f0f0f0;
-			line-height: 1.3;
+			line-height: 1.4;
+		}
+
+		h1, h2, h3, h4, h5, h6 {
+			font-family: Helvetica, Arial, sans-serif;
+		}
+
+		a {
+			color: #1F3C99;
+			text-decoration: none;
 		}
 
 		article {
-			width: 50em;
+			max-width: 44em;
 			margin: 0 auto;
 			padding: 5em;
 			background: #fff;
@@ -22,22 +31,12 @@
 			font-family: Consolas, Monaco, monospace;
 		}
 
-		code {
-			background: #eee;
-			color: #777;
-			padding: 0 0.25em;
-		}
-
 		pre {
-			padding: 1em;
-			background: #222;
+			padding: 1em 5em;
+			background: #ddd;
 			overflow: auto;
-		}
-
-		pre > code {
-			color: #eee;
-			background: #222;
-			display:block;
+			color: #555;
+			margin: 1em -5em;
 		}
 
 		</style>
@@ -64,7 +63,7 @@
 <p>Grunt is written in JavaScript, so you will need a Node.js environment and the Node Package Manager that comes with it. </p>
 <h4>Install Node</h4>
 <p>Go to <a href="http://nodejs.org/download/">http://nodejs.org/download/</a> and grab the installer for your operating system. It will install Node and NPM.</p>
-<p><em>Sidenote:</em> Working with Grunt means interacting with a shell, which Mac and Linux users are lucky enough to have readily available. As for Windows, let&#39;s just say I&#39;d eat a live snail before I use the Command Prompt. Instead, I suggest you install Git for Windows &mdash; available at <a href="http://git-scm.com/downloads">http://git-scm.com/downloads</a> &mdash; that comes with a real shell and, seriously, who doesn&#39;t need Git on their machine anyways?</p>
+<p><em>Note:</em> Working with Grunt means interacting with a shell, which Mac and Linux users are lucky enough to have readily available. As for Windows, let&#39;s just say I&#39;d eat a live snail before I use the Command Prompt. Instead, I suggest you install Git for Windows &mdash; available at <a href="http://git-scm.com/downloads">http://git-scm.com/downloads</a> &mdash; that comes with a real shell and, seriously, who doesn&#39;t need Git on their machine anyways?</p>
 <h4>Install Grunt</h4>
 <p>We&#39;ll use NPM to install Grunt CLI (Command-Line Interpreter) from the console:</p>
 <pre><code>npm install -g grunt-cli</code></pre>
@@ -97,7 +96,7 @@ cd my-project</code></pre>
       &quot;grunt&quot;: &quot;~0.4.1&quot;
   }
 }</code></pre>
-<p>In addition, you&#39;ll notice a <code>node_modules</code> directory added to your project. This is where all local NPM modules are installed -- like we just did with <code>grunt</code> -- and can be safely added to <code>.gitignore</code>.</p>
+<p>In addition, you&#39;ll notice a <code>node_modules</code> directory added to your project. This is where all local NPM modules are installed &mdash; like we just did with <code>grunt</code> &mdash; and can be safely added to <code>.gitignore</code>.</p>
 <p><em>Did you know?</em> Running <code>npm install</code> in any project directory that has a <code>package.json</code> will install all its necessary dependencies with their appropriate versions, as listed in the <code>devDependencies</code> property.</p>
 <h5>Gruntfile.js</h5>
 <p>Let&#39;s create a Gruntfile next to our <code>package.json</code>. The basic format for the file is this:</p>
@@ -128,7 +127,7 @@ cd my-project</code></pre>
 <p>It&#39;s time to make Grunt do some actual work for us. Through these recipes, we&#39;ll automate stuff like:</p>
 <ul>
 <li>Minifying and concatenating our CSS and JS files;</li>
-<li>Starting a local webserver;</li>
+<li>Starting a local web server;</li>
 <li>Watching for changes on files and running tasks accordingly.</li>
 </ul>
 <p>In the process, we&#39;ll get familiar with some of the more popular Grunt plugins.</p>
@@ -214,7 +213,7 @@ cd my-project</code></pre>
 <li>learned about targets and multitasks, both of which are wonderful things.</li>
 </ul>
 <p><strong>Extra credits:</strong> You can grab a very similar task <a href="https://npmjs.org/package/grunt-contrib-csslint"><code>grunt-contrib-csslint</code></a>, and make it lint the CSS files in your project.</p>
-<h3>Sassy CSS</h3>
+<h3>Sassy Sass</h3>
 <p><strong>Plugins used:</strong> <a href="https://npmjs.org/package/grunt-contrib-sass"><code>grunt-contrib-sass</code></a>.</p>
 <p><strong>Note:</strong> To make <code>grunt-contrib-sass</code> work, you also need to have Ruby and Sass installed. To check if you have ruby installed, type <code>ruby -v</code> in the console. When you&#39;ve confirmed you have Ruby installed, run <code>gem install sass</code> to install Sass.</p>
 <h4>Install the Sass plugin</h4>
@@ -272,16 +271,16 @@ cd my-project</code></pre>
 <p>In this recipe, we&#39;ve learned:</p>
 <ul>
 <li>to write multiple source/destination pairs for the files used by our task;</li>
-<li>to define these pairs dynamically so we don&#39;t have to maintain them, one by one, for all eternity.</li>
+<li>to define these pairs dynamically so we don&#39;t have to maintain them, one by one, for all eternity.<h3>Pre-compile your Handlebars templates</h3>
+</li>
 </ul>
-<h3>Precompile your Handlebars templates</h3>
 <p><strong>Plugins used:</strong> <a href="https://npmjs.org/package/grunt-contrib-handlebars"><code>grunt-contrib-handlebars</code></a>.</p>
 <p><a href="http://handlebarsjs.com/">Handlebars</a> is a popular template library which helps you build HTML fragments populated with data from an object. A template looks something like:</p>
 <pre><code>&lt;div class=&quot;person&quot;&gt;
   &lt;h1&gt;{{name}}&lt;/h1&gt;
   &lt;p&gt;{{description}}&lt;/p&gt;
 &lt;/div&gt;</code></pre>
-<p>The portions between <code>{{</code> and <code>}}</code> are dynamic and are populated from the object you feed to the template. If you are not familiar with it, its homepage describes the libary in more depth.</p>
+<p>The portions between <code>{{</code> and <code>}}</code> are dynamic and are populated from the object you feed to the template. If you are not familiar with it, its homepage describes the library in more depth.</p>
 <p>There are two basic ways to include Handlebars templates in your web application:</p>
 <ol>
 <li><p>Inline them as strings in JavaScript: </p>
@@ -304,7 +303,7 @@ cd my-project</code></pre>
 <li>Call the template function with a data object to get the HTML fragment.</li>
 </ol>
 <p>Let&#39;s see how <code>grunt-contrib-handlebars</code> can make this all better.</p>
-<h4>The advantages of precompiling your templates</h4>
+<h4>The advantages of pre-compiling your templates</h4>
 <p>Here&#39;s what&#39;s in it for you: </p>
 <ul>
 <li>You get to keep your templates in separate files, without the performance penalty of separate HTTP requests for each one;</li>
@@ -327,14 +326,14 @@ cd my-project</code></pre>
 }</code></pre>
 <p>Let&#39;s run this to see what happens:</p>
 <pre><code>grunt handlebars</code></pre>
-<p>Grunt will take all files with a <code>.hbs</code> extension from the <code>templates</code> folder and all its subfolders and merge them into a single file called <code>templates.js</code>, which looks something like this:</p>
+<p>Grunt will take all files with a <code>.hbs</code> extension from the <code>templates</code> folder and all its sub-folders and merge them into a single file called <code>templates.js</code>, which looks something like this:</p>
 <p>[[ INSERT CODE EXAMPLE ]] </p>
 <p>You can now include a single file in your HTML:</p>
 <pre><code>&lt;script type=&#39;text/javascript&#39; src=&#39;js/templates.js&#39;&gt;&lt;/script&gt;</code></pre>
 <p>and in your JavaScript code, you access the templates as follows:</p>
 <pre><code>var personTemplate = JST[&#39;person&#39;]; // presto!</code></pre>
 <h4>More customization</h4>
-<p>In real life, you&#39;ll probably want to add the templates under your application&#39;s namespace -- something like <code>MyApp.Templates</code> -- instead of <code>JST</code>. This is done using the <code>namespace</code> option:</p>
+<p>In real life, you&#39;ll probably want to add the templates under your application&#39;s namespace &mdash; something like <code>MyApp.Templates</code> &mdash; instead of <code>JST</code>. This is done using the <code>namespace</code> option:</p>
 <pre><code>handlebars: {
     options: {
         namespace: &#39;MyApp.Templates&#39;
@@ -363,7 +362,7 @@ cd my-project</code></pre>
 }</code></pre>
 <p>In the example above, we&#39;re transforming the template path into a camel-case name:</p>
 <pre><code>templates/product/detail.hbs -&gt; &#39;productDetail&#39;</code></pre>
-<h3>Take five</h3>
+<h4>Take five</h4>
 <p>In this recipe, we made Handlebars templates better in terms of speed and maintainability. In fact, if you install Handlebars syntax highlighting in your favorite editor (I use Sublime Text), you&#39;ll get even more clarity by keeping your templates in separate <code>.hbs</code> files.</p>
 <h3>Watch for changes</h3>
 <p><strong>Plugins used:</strong> <a href="https://npmjs.org/package/grunt-contrib-watch"><code>grunt-contrib-watch</code></a>.</p>
@@ -483,7 +482,7 @@ cd my-project</code></pre>
 <pre><code>grunt connect:server</code></pre>
 <p>Now go to <a href="http://localhost:8000">http://localhost:8000</a> and you should be able to browse your app, and see your <code>index.html</code> if you have one.</p>
 <h4>More server configuration</h4>
-<p>You can customize the hostname, port and protocol for your server:</p>
+<p>You can customize the host name, port and protocol for your server:</p>
 <pre><code>connect: {
     server: {
         options: {
@@ -494,7 +493,7 @@ cd my-project</code></pre>
         }
     }
 }</code></pre>
-<p>The code above makes the server available at <a href="https://myapp:8080">https://myapp:8080</a>. This is useful in the case you want to start several servers at once, with different base directiories, as in the example below:</p>
+<p>The code above makes the server available at <a href="https://myapp:8080">https://myapp:8080</a>. This is useful in the case you want to start several servers at once, with different base directories, as in the example below:</p>
 <pre><code>connect: {
     first: {
         options: {
@@ -528,7 +527,7 @@ cd my-project</code></pre>
 <li><a href="https://npmjs.org/package/grunt-contrib-copy"><code>grunt-contrib-copy</code></a> to copy files and folders;</li>
 <li><a href="https://github.com/yeoman/grunt-usemin"><code>grunt-usemin</code></a> to replaces references to scripts and stylesheets in HTML files with their optimized versions.</li>
 </ul>
-<p>Now, don&#39;t get too intimidated! If you think about it each task has a very specific purpose in the workflow, and you&#39;ll see how easy is to coreograph them into one fluent, beautiful task.</p>
+<p>Now, don&#39;t get too intimidated! If you think about it each task has a very specific purpose in the workflow, and you&#39;ll see how easy is to choreograph them into one fluent, beautiful task.</p>
 <h4>Let&#39;s install everything</h4>
 <pre><code>npm install grunt-contrib-uglify grunt-contrib-concat grunt-contrib-cssmin grunt-contrib-htmlmin grunt-contrib-copy grunt-usemin --save-dev</code></pre>
 <p>... in one fell swoop, even. Now let&#39;s add all of it to our Gruntfile:</p>
@@ -630,35 +629,23 @@ We do the same for HTML, except we&#39;re using a dynamic declaration of the fil
 
 });</code></pre>
 <p>We&#39;ve defined an <code>appConfig</code> property to hold our commonly-used paths. Now we can refer to the two paths as <code>&lt;%= appConfig.appRoot %&gt;</code> and <code>&lt;%= appConfig.distRoot %&gt;</code> in all our tasks.</p>
-<h3>Loading external data in our tasks</h3>
-<p>Grunt provides two methods for loading external data into the Gruntfile:</p>
-<ul>
-<li><code>grunt.file.readJSON()</code> to load an external JSON file;</li>
-<li><code>grunt.file.readYAML()</code> to load an external YAML file;</li>
-</ul>
-<p>Let&#39;s use <code>readJSON()</code> for something fun like automatically loading all the tasks defined in <code>package.json</code>:</p>
-<pre><code>module.exports = function(grunt) {
-
-    // load `package.json`
-    var package = grunt.file.readJSON(&#39;package.json&#39;);
-
-    // check if we have any dependencies
-    if (package.devDependencies) {
-
-        // filter out the ones that don&#39;t start with `grunt-`
-        var gruntTasks = Object.keys(package.devDependencies).filter(function(task) {
-            return task.indexOf(&#39;grunt-&#39;) === 0;    
-        });
-
-        // load each task
-        gruntTasks.forEach(grunt.loadNpmTasks);
+<p><strong>Note:</strong> You can define any number of custom properties in your Grunt configuration (like we did above with <code>appConfig</code>), but make sure the names don&#39;t conflict with any task names and stay away from the <code>grunt</code> keyword, which is reserved to access the Grunt object in the templates.</p>
+<p>Another cool thing we can do is to get a timestamp for the current Grunt run and add that to the generated CSS/JS files to ensure they are unique.</p>
+<pre><code>{
+    appConfig: {
+        appRoot: &#39;app&#39;,
+        distRoot: &#39;dist&#39;,
+        timestamp: Date.now()
     }
-};</code></pre>
-<p><strong>Attention!</strong> <code>readJSON()</code> only accepts <em>valid</em> JSON-files, while <code>package.json</code> can be JSON-like and still work with <code>npm install</code>. The most common JSON-like-but-not-quite-JSON thing it might contain are comments, which work perfectly fine with the NPM installer but will break the above script.</p>
-<h3>Files, in-depth</h3>
-<p><a href="http://gruntjs.com/configuring-tasks#files">http://gruntjs.com/configuring-tasks#files</a></p>
-<h3>Using variables/templates</h3>
-<h2>Write your own Grunt plugin</h2>
+}</code></pre>
+<p>And here&#39;s how we might use this to append the timestamp to our generated CSS file in <code>cssmin</code>:</p>
+<pre><code>cssmin: {
+    all: {
+        files: {
+            &#39;&lt;%= appConfig.distRoot %&gt;/css/app.&lt;%= appConfig.timestamp %&gt;.css&#39;: &#39;&lt;%= appConfig.appRoot %&gt;/css/**/*.css&#39;
+        }
+    }
+}</code></pre>
 
 		</article>
 	</body>
