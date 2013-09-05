@@ -8,7 +8,12 @@ module.exports = function(grunt) {
 					src: '*.md',
 					dest: 'dist/',
 					ext: '.html'
-				}]
+				}],
+				options: {
+					markdownOptions: {
+						gfm: true
+					}
+				}
 			}
 		},
 		watch: {
