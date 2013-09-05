@@ -12,21 +12,20 @@ You can find the book on GitHub: https://github.com/danburzo/grunt-recipes. Cont
 
 ### Meet Grunt
 
-Grunt is a task runner designed to automate the modern web development workflow. Repetitive tasks like unit testing, minifying your JavaScript and CSS, compiling your SASS stylesheets or CoffeeScripts, linting and many more can now be performed by running a single command. Grunt is open source (find it on GitHub: https://github.com/gruntjs/) and at the center of a wonderful ecosystem of thousands of plugins. Any tool you've used as part of your front-end workflow is likely to have a Grunt plugin. And if it doesn't, it's easy to roll out your own plugin and share it with the community.
-
-Grunt was developed by Ben Alman a.k.a. [@cowboy](http://twitter.com/cowboy) and is used in projects like jQuery, Modernizr and [many others](http://gruntjs.com/who-uses-grunt). Here's him introducing it on the Bocoup blog: http://weblog.bocoup.com/introducing-grunt/
-
+Grunt was created by Ben Alman a.k.a. [@cowboy](http://twitter.com/cowboy) to automate his front-end development workflow. You know, all the little repetitive tasks like unit testing, minifying your JavaScript and CSS, compiling your Sass stylesheets or CoffeeScripts, linting and what-not. With Grunt, they become a breeze: configure them once and let Grunt run them for you; in this sense, Grunt is a _task runner_ for the boring but oh-so-necessary parts of the web developer's life. It's [open source](https://github.com/gruntjs/) and at the heart of a wonderful ecosystem of thousands of plugins. As such, any tool you've ever used in your workflow is likely to have a Grunt counterpart. And if it doesn't, it's easy to roll out your own plugin and share it with the community. Organizations like Twitter, Adobe, jQuery (and [many others](http://gruntjs.com/who-uses-grunt)) use it and so should you, because it's A Great Thing&trade;.
 
 ### Resources
 
-* http://gruntjs.com, Grunt's official page, with the guides & API reference;
-* http://gruntjs.com/plugins, the list of all available Grunt plugins, with a handy search function;
-* [@gruntjs](https://twitter.com/gruntjs) on Twitter for updates;
-* `#grunt` on `irc.freenode.net` to talk to the Grunt team.
+Here are a few places we're going to visit quite often, so make sure you have them handy:
+
+* http://gruntjs.com, Grunt's official page, with guides and the API reference;
+* http://gruntjs.com/plugins, the list of all available Grunt plugins &mdash; the ones that start with `grunt-contrib-` are maintained by the Grunt team, while the others are created by people like you and me;
+* [@gruntjs](https://twitter.com/gruntjs) for updates on the topic;
+* the IRC channel `#grunt` on `irc.freenode.net` is where the team members hang out.
 
 ### Get Grunt Up & Running
 
-Grunt is written in JavaScript, so you will need a Node.js environment and the Node Package Manager that comes with it. 
+Grunt is written in JavaScript, so you'll need a Node.js environment and the Node Package Manager that comes with it. 
 
 #### Install Node
 
@@ -56,6 +55,12 @@ There are two main files you need to create in the root directory of your projec
 * `package.json`: this file is used to store NPM metadata such as the name and description of the project, and its dependencies;
 * `Gruntfile.js`: this file is used to load and configure your grunt tasks.
 
+Your project's file structure should look like this:
+
+	my-project/
+		Gruntfile.js
+		package.json
+
 ##### package.json
 
 Let's create a very basic version of this file:
@@ -65,11 +70,11 @@ Let's create a very basic version of this file:
 	  "version": "0.0.0" // project version (in semantic format)
 	}
 
-Now, let's install Grunt in our current project:
+Now, let's install Grunt in our current project. But wait, didn't we do that already? Well, what we did install in the first part of the chapter was Grunt CLI, which is just a small utility that runs the local version of `grunt` for you. So, we still need to add Grunt locally (hence the lack of the `-g` flag):
 
 	npm install grunt --save-dev
 
-The `--save-dev` flag instructs NPM to update `package.json` and add `grunt` as a dependency to the project. Our file will now look like this:
+The `--save-dev` flag instructs NPM to update `package.json` to include `grunt` as a dependency for the project. Our file will now look like this:
 
 	{
 	  "name": "my-project",
@@ -83,11 +88,19 @@ The `--save-dev` flag instructs NPM to update `package.json` and add `grunt` as 
 
 In addition, you'll notice a `node_modules` directory added to your project. This is where all local NPM modules are installed &mdash; like we just did with `grunt` &mdash; and can be safely added to `.gitignore`.
 
+Your project's file structure now looks like this:
+
+	my-project/
+		node_modules/
+		Gruntfile.js
+		package.json
+
 *Did you know?* Running `npm install` in any project directory that has a `package.json` will install all its necessary dependencies with their appropriate versions, as listed in the `devDependencies` property.
+
 
 ##### Gruntfile.js
 
-Let's create a Gruntfile next to our `package.json`. The basic format for the file is this:
+Next, let's create a Gruntfile next to our `package.json`. The basic format for the file is this:
 	
 	module.exports = function(grunt) {
 	  // We'll do grunt stuff here soon!

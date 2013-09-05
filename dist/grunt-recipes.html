@@ -50,17 +50,17 @@
 <p>You can find the book on GitHub: <a href="https://github.com/danburzo/grunt-recipes">https://github.com/danburzo/grunt-recipes</a>. Contributions/corrections are always welcome.</p>
 <h2>Getting started</h2>
 <h3>Meet Grunt</h3>
-<p>Grunt is a task runner designed to automate the modern web development workflow. Repetitive tasks like unit testing, minifying your JavaScript and CSS, compiling your SASS stylesheets or CoffeeScripts, linting and many more can now be performed by running a single command. Grunt is open source (find it on GitHub: <a href="https://github.com/gruntjs/">https://github.com/gruntjs/</a>) and at the center of a wonderful ecosystem of thousands of plugins. Any tool you&#39;ve used as part of your front-end workflow is likely to have a Grunt plugin. And if it doesn&#39;t, it&#39;s easy to roll out your own plugin and share it with the community.</p>
-<p>Grunt was developed by Ben Alman a.k.a. <a href="http://twitter.com/cowboy">@cowboy</a> and is used in projects like jQuery, Modernizr and <a href="http://gruntjs.com/who-uses-grunt">many others</a>. Here&#39;s him introducing it on the Bocoup blog: <a href="http://weblog.bocoup.com/introducing-grunt/">http://weblog.bocoup.com/introducing-grunt/</a></p>
+<p>Grunt was created by Ben Alman a.k.a. <a href="http://twitter.com/cowboy">@cowboy</a> to automate his front-end development workflow. You know, all the little repetitive tasks like unit testing, minifying your JavaScript and CSS, compiling your Sass stylesheets or CoffeeScripts, linting and what-not. With Grunt, they become a breeze: configure them once and let Grunt run them for you; in this sense, Grunt is a <em>task runner</em> for the boring but oh-so-necessary parts of the web developer&#39;s life. It&#39;s <a href="https://github.com/gruntjs/">open source</a> and at the heart of a wonderful ecosystem of thousands of plugins. As such, any tool you&#39;ve ever used in your workflow is likely to have a Grunt counterpart. And if it doesn&#39;t, it&#39;s easy to roll out your own plugin and share it with the community. Organizations like Twitter, Adobe, jQuery (and <a href="http://gruntjs.com/who-uses-grunt">many others</a>) use it and so should you, because it&#39;s A Great Thing&trade;.</p>
 <h3>Resources</h3>
+<p>Here are a few places we&#39;re going to visit quite often, so make sure you have them handy:</p>
 <ul>
-<li><a href="http://gruntjs.com">http://gruntjs.com</a>, Grunt&#39;s official page, with the guides &amp; API reference;</li>
-<li><a href="http://gruntjs.com/plugins">http://gruntjs.com/plugins</a>, the list of all available Grunt plugins, with a handy search function;</li>
-<li><a href="https://twitter.com/gruntjs">@gruntjs</a> on Twitter for updates;</li>
-<li><code>#grunt</code> on <code>irc.freenode.net</code> to talk to the Grunt team.</li>
+<li><a href="http://gruntjs.com">http://gruntjs.com</a>, Grunt&#39;s official page, with guides and the API reference;</li>
+<li><a href="http://gruntjs.com/plugins">http://gruntjs.com/plugins</a>, the list of all available Grunt plugins &mdash; the ones that start with <code>grunt-contrib-</code> are maintained by the Grunt team, while the others are created by people like you and me;</li>
+<li><a href="https://twitter.com/gruntjs">@gruntjs</a> for updates on the topic;</li>
+<li>the IRC channel <code>#grunt</code> on <code>irc.freenode.net</code> is where the team members hang out.</li>
 </ul>
 <h3>Get Grunt Up &amp; Running</h3>
-<p>Grunt is written in JavaScript, so you will need a Node.js environment and the Node Package Manager that comes with it. </p>
+<p>Grunt is written in JavaScript, so you&#39;ll need a Node.js environment and the Node Package Manager that comes with it. </p>
 <h4>Install Node</h4>
 <p>Go to <a href="http://nodejs.org/download/">http://nodejs.org/download/</a> and grab the installer for your operating system. It will install Node and NPM.</p>
 <p><em>Note:</em> Working with Grunt means interacting with a shell, which Mac and Linux users are lucky enough to have readily available. As for Windows, let&#39;s just say I&#39;d eat a live snail before I use the Command Prompt. Instead, I suggest you install Git for Windows &mdash; available at <a href="http://git-scm.com/downloads">http://git-scm.com/downloads</a> &mdash; that comes with a real shell and, seriously, who doesn&#39;t need Git on their machine anyways?</p>
@@ -78,15 +78,19 @@ cd my-project</code></pre>
 <li><code>package.json</code>: this file is used to store NPM metadata such as the name and description of the project, and its dependencies;</li>
 <li><code>Gruntfile.js</code>: this file is used to load and configure your grunt tasks.</li>
 </ul>
+<p>Your project&#39;s file structure should look like this:</p>
+<pre><code>my-project/
+    Gruntfile.js
+    package.json</code></pre>
 <h5>package.json</h5>
 <p>Let&#39;s create a very basic version of this file:</p>
 <pre><code>{
   &quot;name&quot;: &quot;my-project&quot;, // the name of our project, hyphen-separated
   &quot;version&quot;: &quot;0.0.0&quot; // project version (in semantic format)
 }</code></pre>
-<p>Now, let&#39;s install Grunt in our current project:</p>
+<p>Now, let&#39;s install Grunt in our current project. But wait, didn&#39;t we do that already? Well, what we did install in the first part of the chapter was Grunt CLI, which is just a small utility that runs the local version of <code>grunt</code> for you. So, we still need to add Grunt locally (hence the lack of the <code>-g</code> flag):</p>
 <pre><code>npm install grunt --save-dev</code></pre>
-<p>The <code>--save-dev</code> flag instructs NPM to update <code>package.json</code> and add <code>grunt</code> as a dependency to the project. Our file will now look like this:</p>
+<p>The <code>--save-dev</code> flag instructs NPM to update <code>package.json</code> to include <code>grunt</code> as a dependency for the project. Our file will now look like this:</p>
 <pre><code>{
   &quot;name&quot;: &quot;my-project&quot;,
   &quot;version&quot;: &quot;0.0.0&quot;,
@@ -97,9 +101,14 @@ cd my-project</code></pre>
   }
 }</code></pre>
 <p>In addition, you&#39;ll notice a <code>node_modules</code> directory added to your project. This is where all local NPM modules are installed &mdash; like we just did with <code>grunt</code> &mdash; and can be safely added to <code>.gitignore</code>.</p>
+<p>Your project&#39;s file structure now looks like this:</p>
+<pre><code>my-project/
+    node_modules/
+    Gruntfile.js
+    package.json</code></pre>
 <p><em>Did you know?</em> Running <code>npm install</code> in any project directory that has a <code>package.json</code> will install all its necessary dependencies with their appropriate versions, as listed in the <code>devDependencies</code> property.</p>
 <h5>Gruntfile.js</h5>
-<p>Let&#39;s create a Gruntfile next to our <code>package.json</code>. The basic format for the file is this:</p>
+<p>Next, let&#39;s create a Gruntfile next to our <code>package.json</code>. The basic format for the file is this:</p>
 <pre><code>module.exports = function(grunt) {
   // We&#39;ll do grunt stuff here soon!
 };</code></pre>
