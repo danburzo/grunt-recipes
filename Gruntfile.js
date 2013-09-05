@@ -20,7 +20,9 @@ module.exports = function(grunt) {
 			all: {
 				files: ['*.md'],
 				tasks: ['markdown'],
-				options: { spawn: false }
+				options: {
+					atBegin: true
+				}
 			}
 		}
 	});

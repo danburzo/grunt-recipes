@@ -16,7 +16,7 @@ You can find the book on GitHub: https://github.com/danburzo/grunt-recipes. Cont
 
 Grunt is a task runner designed to automate the modern web development workflow. Repetitive tasks like unit testing, minifying your JavaScript and CSS, compiling your SASS stylesheets or CoffeeScripts, linting and many more can now be performed by running a single command. Grunt is open source (find it on GitHub: https://github.com/gruntjs/) and at the center of a wonderful ecosystem of thousands of plugins. Any tool you've used as part of your front-end workflow is likely to have a Grunt plugin. And if it doesn't, it's easy to roll out your own plugin and share it with the community.
 
-Grunt was developed by Ben Altman a.k.a. [@cowboy](http://twitter.com/cowboy) and is used in projects like jQuery, Modernizr and [many others](http://gruntjs.com/who-uses-grunt). Here's him introducing it on the Bocoup blog: http://weblog.bocoup.com/introducing-grunt/
+Grunt was developed by Ben Alman a.k.a. [@cowboy](http://twitter.com/cowboy) and is used in projects like jQuery, Modernizr and [many others](http://gruntjs.com/who-uses-grunt). Here's him introducing it on the Bocoup blog: http://weblog.bocoup.com/introducing-grunt/
 
 
 ### Resources
@@ -410,11 +410,14 @@ Because `watch` is a _multitask_, what we're actually saying with the above comm
 
 Now go ahead and change one of your Sass files, and notice that the `sass` task is run. At the same time, if a Handlebars template changes, the `handlebars` task is run.
 
+
+#### Tweaking the watch behavior
+
 By default, `watch` looks for three kinds of changes: 
 
-* files that were _added_ and match the pattern;
-* files that were _deleted_ and match the pattern;
-* files that were _changed_. 
+* files that were _added_ to the project and match the pattern;
+* matching files files that were _deleted_;
+* matching files that were _changed_. 
 
 This behavior is controlled by the `events` option, which can have one or many of the values: `all` (the default), `changed`, `added` and `deleted`. Let's assume we want to run the `handlebars` task only when a template is added or deleted &mdash; an no, it doesn't make sense in a real-world scenario, but go with me:
 
@@ -428,9 +431,34 @@ This behavior is controlled by the `events` option, which can have one or many o
 		}
 	}
 
+This will make the watch ignore changes in existing Handlebars templates and only react when we add or remove Handlebars templates.
+
+Alrighty then.
+
+There's one little quirk we need to address: the `watch` task will only pick up on changes that happen _after_ we call `grunt task`. We'd like to make sure our generated CSS and compiled templates are up-to-date when the watch starts. For this, we will use `atBegin: true` to run _all tasks_ associated with the watch before the actual watching begins. Because we want this behavior for both Sass and Handlebars files, we will add this option on the task directly rather than on each target:
+
+	watch: {
+		options: {
+			atBegin: true
+		},
+		sass: {
+			files: ['scss/**/*.scss'],
+			tasks: ['sass']
+		},
+		handlebars: {
+			files: ['templates/**/*.hbs'],
+			tasks: ['handlebars']
+		}
+	}
+
+
 #### Take five
 
-In this recipe, we've learned how to use `watch` task to trigger other tasks automatically when you make changes to your files.
+In this recipe, we've:
+
+* learned how to use `watch` task to trigger other tasks automatically when you make changes to your files;
+* configured the types of events the watch responds to;
+* run the associated tasks at the beginning of the watch process to make sure everything is up to date.
 
 ### Using variables/templates
 

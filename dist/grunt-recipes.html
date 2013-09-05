@@ -120,7 +120,7 @@
 <h2>Getting started</h2>
 <h3>Meet Grunt</h3>
 <p>Grunt is a task runner designed to automate the modern web development workflow. Repetitive tasks like unit testing, minifying your JavaScript and CSS, compiling your SASS stylesheets or CoffeeScripts, linting and many more can now be performed by running a single command. Grunt is open source (find it on GitHub: <a href="https://github.com/gruntjs/">https://github.com/gruntjs/</a>) and at the center of a wonderful ecosystem of thousands of plugins. Any tool you&#39;ve used as part of your front-end workflow is likely to have a Grunt plugin. And if it doesn&#39;t, it&#39;s easy to roll out your own plugin and share it with the community.</p>
-<p>Grunt was developed by Ben Altman a.k.a. <a href="http://twitter.com/cowboy">@cowboy</a> and is used in projects like jQuery, Modernizr and <a href="http://gruntjs.com/who-uses-grunt">many others</a>. Here&#39;s him introducing it on the Bocoup blog: <a href="http://weblog.bocoup.com/introducing-grunt/">http://weblog.bocoup.com/introducing-grunt/</a></p>
+<p>Grunt was developed by Ben Alman a.k.a. <a href="http://twitter.com/cowboy">@cowboy</a> and is used in projects like jQuery, Modernizr and <a href="http://gruntjs.com/who-uses-grunt">many others</a>. Here&#39;s him introducing it on the Bocoup blog: <a href="http://weblog.bocoup.com/introducing-grunt/">http://weblog.bocoup.com/introducing-grunt/</a></p>
 <h3>Resources</h3>
 <ul>
 <li><a href="http://gruntjs.com">http://gruntjs.com</a>, Grunt&#39;s official page, with the guides &amp; API reference;</li>
@@ -404,11 +404,12 @@ cd my-project</code></pre>
 <p>Because <code>watch</code> is a <em>multitask</em>, what we&#39;re actually saying with the above command is:</p>
 <pre><code>grunt watch:sass watch:handlebars</code></pre>
 <p>Now go ahead and change one of your Sass files, and notice that the <code>sass</code> task is run. At the same time, if a Handlebars template changes, the <code>handlebars</code> task is run.</p>
+<h4>Tweaking the watch behavior</h4>
 <p>By default, <code>watch</code> looks for three kinds of changes: </p>
 <ul>
-<li>files that were <em>added</em> and match the pattern;</li>
-<li>files that were <em>deleted</em> and match the pattern;</li>
-<li>files that were <em>changed</em>. </li>
+<li>files that were <em>added</em> to the project and match the pattern;</li>
+<li>matching files files that were <em>deleted</em>;</li>
+<li>matching files that were <em>changed</em>. </li>
 </ul>
 <p>This behavior is controlled by the <code>events</code> option, which can have one or many of the values: <code>all</code> (the default), <code>changed</code>, <code>added</code> and <code>deleted</code>. Let&#39;s assume we want to run the <code>handlebars</code> task only when a template is added or deleted &mdash; an no, it doesn&#39;t make sense in a real-world scenario, but go with me:</p>
 <pre><code>watch: {
@@ -420,8 +421,29 @@ cd my-project</code></pre>
         }
     }
 }</code></pre>
+<p>This will make the watch ignore changes in existing Handlebars templates and only react when we add or remove Handlebars templates.</p>
+<p>Alrighty then.</p>
+<p>There&#39;s one little quirk we need to address: the <code>watch</code> task will only pick up on changes that happen <em>after</em> we call <code>grunt task</code>. We&#39;d like to make sure our generated CSS and compiled templates are up-to-date when the watch starts. For this, we will use <code>atBegin: true</code> to run <em>all tasks</em> associated with the watch before the actual watching begins. Because we want this behavior for both Sass and Handlebars files, we will add this option on the task directly rather than on each target:</p>
+<pre><code>watch: {
+    options: {
+        atBegin: true
+    },
+    sass: {
+        files: [&#39;scss/**/*.scss&#39;],
+        tasks: [&#39;sass&#39;]
+    },
+    handlebars: {
+        files: [&#39;templates/**/*.hbs&#39;],
+        tasks: [&#39;handlebars&#39;]
+    }
+}</code></pre>
 <h4>Take five</h4>
-<p>In this recipe, we&#39;ve learned how to use <code>watch</code> task to trigger other tasks automatically when you make changes to your files.</p>
+<p>In this recipe, we&#39;ve:</p>
+<ul>
+<li>learned how to use <code>watch</code> task to trigger other tasks automatically when you make changes to your files;</li>
+<li>configured the types of events the watch responds to;</li>
+<li>run the associated tasks at the beginning of the watch process to make sure everything is up to date.</li>
+</ul>
 <h3>Using variables/templates</h3>
 <h3>Start a server</h3>
 <h3>Build an app</h3>
