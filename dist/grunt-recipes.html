@@ -1,118 +1,48 @@
-<!DOCTYPE  html>
+<!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    
-    <title>doc</title>
-    <style>
-      /*github.com style (c) Vasily Polovnyov <vast@whiteants.net>*/
-      pre code {
-        display: block; padding: 0.5em;
-        color: #333;
-        background: #f8f8ff
-      }
-      pre .comment,
-      pre .template_comment,
-      pre .diff .header,
-      pre .javadoc {
-        color: #998;
-        font-style: italic
-      }
-      pre .keyword,
-      pre .css .rule .keyword,
-      pre .winutils,
-      pre .javascript .title,
-      pre .nginx .title,
-      pre .subst,
-      pre .request,
-      pre .status {
-        color: #333;
-        font-weight: bold
-      }
-      pre .number,
-      pre .hexcolor,
-      pre .ruby .constant {
-        color: #099;
-      }
-      pre .string,
-      pre .tag .value,
-      pre .phpdoc,
-      pre .tex .formula {
-        color: #d14
-      }
-      pre .title,
-      pre .id {
-        color: #900;
-        font-weight: bold
-      }
-      pre .javascript .title,
-      pre .lisp .title,
-      pre .clojure .title,
-      pre .subst {
-        font-weight: normal
-      }
-      pre .class .title,
-      pre .haskell .type,
-      pre .vhdl .literal,
-      pre .tex .command {
-        color: #458;
-        font-weight: bold
-      }
-      pre .tag,
-      pre .tag .title,
-      pre .rules .property,
-      pre .django .tag .keyword {
-        color: #000080;
-        font-weight: normal
-      }
-      pre .attribute,
-      pre .variable,
-      pre .lisp .body {
-        color: #008080
-      }
-      pre .regexp {
-        color: #009926
-      }
-      pre .class {
-        color: #458;
-        font-weight: bold
-      }
-      pre .symbol,
-      pre .ruby .symbol .string,
-      pre .lisp .keyword,
-      pre .tex .special,
-      pre .prompt {
-        color: #990073
-      }
-      pre .built_in,
-      pre .lisp .title,
-      pre .clojure .built_in {
-        color: #0086b3
-      }
-      pre .preprocessor,
-      pre .pi,
-      pre .doctype,
-      pre .shebang,
-      pre .cdata {
-        color: #999;
-        font-weight: bold
-      }
-      pre .deletion {
-        background: #fdd
-      }
-      pre .addition {
-        background: #dfd
-      }
-      pre .diff .change {
-        background: #0086b3
-      }
-      pre .chunk {
-        color: #aaa
-      }
-    </style>
-  </head>
-  <body>  
-    <h1>Grunt Up &amp; Running</h1>
+	<head>
+		<title>Grunt Up & Running</title>
+		<style type='text/css'>
+
+		body {
+			font-family: Helvetica, Arial, sans-serif;
+			color: #222;
+			background: #f0f0f0;
+		}
+
+		article {
+			width: 50em;
+			margin: 0 auto;
+			padding: 3em;
+			background: #fff;
+		}
+
+		pre, code {
+			font-family: Consolas, Monaco, monospace;
+		}
+
+		code {
+			background: #eee;
+			color: #777;
+			padding: 0 0.25em;
+		}
+
+		pre {
+			padding: 1em;
+			background: #222;
+		}
+
+		pre > code {
+			color: #eee;
+			background: #222;
+			display:block;
+		}
+
+		</style>
+	</head>
+	<body>
+		<article>
+			<h1>Grunt Up &amp; Running</h1>
 <p>A book by Dan Burzo (<a href="http://twitter.com/danburzo">@danburzo</a>)</p>
 <h2>About this book</h2>
 <p>This is a book about using Grunt to automate your web development workflow. You should have some basic experience in JavaScript, the language that drives Grunt, but don&#39;t get too hung up on that part. </p>
@@ -433,8 +363,6 @@ cd my-project</code></pre>
 <pre><code>templates/product/detail.hbs -&gt; &#39;productDetail&#39;</code></pre>
 <h3>Take five</h3>
 <p>In this recipe, we made Handlebars templates better in terms of speed and maintainability. In fact, if you install Handlebars syntax highlighting in your favorite editor (I use Sublime Text), you&#39;ll get even more clarity by keeping your templates in separate <code>.hbs</code> files.</p>
-<h3>Files, in-depth</h3>
-<p><a href="http://gruntjs.com/configuring-tasks#files">http://gruntjs.com/configuring-tasks#files</a></p>
 <h3>Watch for changes</h3>
 <p><strong>Plugins used:</strong> <a href="https://npmjs.org/package/grunt-contrib-watch"><code>grunt-contrib-watch</code></a>.</p>
 <p>In the previous recipes, we saw how we can compile our Sass files into CSS files and merge your Handlebars templates into a single JST file. It is somewhat magical, but to run <code>grunt sass</code> after every change is far from being productive. Let&#39;s take this up a notch and make our files recompile automatically every time they change. For this, we will use the <code>watch</code> task provided by <code>grunt-contrib-watch</code>. </p>
@@ -533,10 +461,63 @@ cd my-project</code></pre>
 <li>configured the types of events the watch responds to;</li>
 <li>run the associated tasks at the beginning of the watch process to make sure everything is up to date.</li>
 </ul>
-<h3>Using variables/templates</h3>
 <h3>Start a server</h3>
+<p><strong>Using:</strong> <a href="https://npmjs.org/package/grunt-contrib-connect"><code>grunt-contrib-connect</code></a></p>
+<h4>Install the <code>connect</code> task</h4>
+<pre><code>npm install grunt-contrib-connect --save-dev</code></pre>
+<p>and then load it into  your Gruntfile:</p>
+<pre><code>grunt.loadNpmTasks(&#39;grunt-contrib-connect&#39;);</code></pre>
+<h4>Configure a persistent server</h4>
+<p>To create a persistent server (one which does not stop after Grunt tasks have completed), we will use <code>keepalive: true</code>:</p>
+<pre><code>connect: {
+    server: {
+        options: {
+            keepalive: true
+        }
+    }
+}</code></pre>
+<p>We&#39;ve created a single target called <code>server</code> for our <code>connect</code> task.</p>
+<h4>Run your server</h4>
+<pre><code>grunt connect:server</code></pre>
+<p>Now go to <a href="http://localhost:8000">http://localhost:8000</a> and you should be able to browse your app, and see your <code>index.html</code> if you have one.</p>
+<h4>More server configuration</h4>
+<p>You can customize the hostname, port and protocol for your server:</p>
+<pre><code>connect: {
+    server: {
+        options: {
+            keepalive: true,
+            protocol: &#39;https&#39;,
+            hostname: &#39;myapp&#39;,
+            port: &#39;8080&#39;
+        }
+    }
+}</code></pre>
+<p>The code above makes the server available at <a href="https://myapp:8080">https://myapp:8080</a>. This is useful in the case you want to start several servers at once, with different base directiories, as in the example below:</p>
+<pre><code>connect: {
+    first: {
+        options: {
+            keepalive: true,
+            hostname: &#39;firstsite&#39;,
+            base: &#39;first-site&#39;
+        }
+    },
+    second: {
+        options: {
+            keepalive: true,
+            hostname: &#39;secondsite&#39;,
+            base: &#39;second-site&#39;
+        }
+    }
+}</code></pre>
+<p>This makes the directories <code>first-site</code> and <code>second-site</code> from your project available at <a href="http://firstite:8000">http://firstite:8000</a> and <a href="http://secondsite:8000">http://secondsite:8000</a>, respectively.</p>
+<h4>Take five</h4>
+<p>In this recipe, we&#39;ve learned how to use the <code>connect</code> task to start a local server.</p>
+<h3>Files, in-depth</h3>
+<p><a href="http://gruntjs.com/configuring-tasks#files">http://gruntjs.com/configuring-tasks#files</a></p>
+<h3>Using variables/templates</h3>
 <h3>Build an app</h3>
 <h2>Write your own Grunt plugin</h2>
 
-  </body>
+		</article>
+	</body>
 </html>

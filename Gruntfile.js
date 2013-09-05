@@ -12,13 +12,14 @@ module.exports = function(grunt) {
 				options: {
 					markdownOptions: {
 						gfm: true
-					}
+					},
+					template: 'grunt-recipes.tmpl'
 				}
 			}
 		},
 		watch: {
 			all: {
-				files: ['*.md'],
+				files: ['*.md', '*.tmpl'],
 				tasks: ['markdown'],
 				options: {
 					atBegin: true
