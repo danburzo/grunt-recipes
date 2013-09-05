@@ -47,7 +47,7 @@
 <p>A book by Dan Burzo (<a href="http://twitter.com/danburzo">@danburzo</a>)</p>
 <h2>About this book</h2>
 <p>This is a book about using Grunt to automate your web development workflow. You should have some basic experience in JavaScript, the language that drives Grunt, but don&#39;t get too hung up on that part. </p>
-<p>You can find the book on GitHub: <a href="https://github.com/danburzo/grunt-recipes">https://github.com/danburzo/grunt-recipes</a>. Contributions/corrections are always welcome. Always.</p>
+<p>You can find the book on GitHub: <a href="https://github.com/danburzo/grunt-recipes">https://github.com/danburzo/grunt-recipes</a>. Contributions/corrections are always welcome.</p>
 <h2>Getting started</h2>
 <h3>Meet Grunt</h3>
 <p>Grunt is a task runner designed to automate the modern web development workflow. Repetitive tasks like unit testing, minifying your JavaScript and CSS, compiling your SASS stylesheets or CoffeeScripts, linting and many more can now be performed by running a single command. Grunt is open source (find it on GitHub: <a href="https://github.com/gruntjs/">https://github.com/gruntjs/</a>) and at the center of a wonderful ecosystem of thousands of plugins. Any tool you&#39;ve used as part of your front-end workflow is likely to have a Grunt plugin. And if it doesn&#39;t, it&#39;s easy to roll out your own plugin and share it with the community.</p>
@@ -646,6 +646,35 @@ We do the same for HTML, except we&#39;re using a dynamic declaration of the fil
         }
     }
 }</code></pre>
+<h3>Loading external data in our tasks</h3>
+<p>Grunt provides two methods for loading external data into the Gruntfile:</p>
+<ul>
+<li><code>grunt.file.readJSON()</code> to load an external JSON file;</li>
+<li><code>grunt.file.readYAML()</code> to load an external YAML file;</li>
+</ul>
+<p>Let&#39;s use <code>readJSON()</code> for something fun like automatically loading all the tasks defined in <code>package.json</code>:</p>
+<pre><code>module.exports = function(grunt) {
+
+    // load `package.json`
+    var package = grunt.file.readJSON(&#39;package.json&#39;);
+
+    // check if we have any dependencies
+    if (package.devDependencies) {
+
+        // filter out the ones that don&#39;t start with `grunt-`
+        var gruntTasks = Object.keys(package.devDependencies).filter(function(task) {
+            return task.indexOf(&#39;grunt-&#39;) === 0;    
+        });
+
+        // load each task
+        gruntTasks.forEach(grunt.loadNpmTasks);
+    }
+};</code></pre>
+<p><strong>Note:</strong> <code>readJSON()</code> only accepts <em>valid</em> JSON-files, while <code>package.json</code> can be JSON-like and still work with <code>npm install</code>. The most common JSON-like-but-not-quite-JSON thing it might contain are comments, which work perfectly fine with the NPM installer but will break the above script.</p>
+<h3>Files, in-depth</h3>
+<p><a href="http://gruntjs.com/configuring-tasks#files">http://gruntjs.com/configuring-tasks#files</a></p>
+<h3>Using variables/templates</h3>
+<h2>Write your own Grunt plugin</h2>
 
 		</article>
 	</body>
