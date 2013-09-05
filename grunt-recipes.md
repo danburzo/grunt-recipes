@@ -240,10 +240,11 @@ Now, let's tell JSHint to look at this file for the rules to enforce:
 
 In this recipe, we've:
 
-* installed and configured our first Grunt task;
-* learned about targets and multitasks;
+* installed, configured and ran our first _real_ Grunt task;
+* learned about targets and multitasks, both of which are wonderful things.
 
-**Also check out:** [`grunt-contrib-csslint`](https://npmjs.org/package/grunt-contrib-csslint) for a similar lint tool for your CSS files.
+**Extra credits:** You can grab a very similar task [`grunt-contrib-csslint`](https://npmjs.org/package/grunt-contrib-csslint), and make it lint the CSS files in your project.
+
 
 ### Sassy CSS
 
@@ -330,6 +331,75 @@ In this recipe, we've learned:
 ### Precompile your Handlebars templates
 
 **Plugins used:** [`grunt-contrib-handlebars`](https://npmjs.org/package/grunt-contrib-handlebars).
+
+[Handlebars](http://handlebarsjs.com/) is a popular template library which helps you build HTML fragments populated with data from an object. A template looks something like:
+	
+	<div class="person">
+	  <h1>{{name}}</h1>
+	  <p>{{description}}</p>
+	</div>
+
+The portions between `{{` and `}}` are dynamic and are populated from the object you feed to the template. If you are not familiar with it, its homepage describes the libary in more depth.
+
+There are two basic ways to include Handlebars templates in your web application:
+
+1. Inline them as strings in JavaScript: 
+
+		var template = "<div class="person"><h1>{{name}}</h1><p>{{description}}</p></div>";
+
+	This is bad because we're mixing JavaScript and HTML, and it's not too readable either.
+
+2. Include them in the HTML inside `<script>` tags:
+
+		<script type='text/x-handlebars' id='person-template'>
+			<div class="person">
+			  <h1>{{name}}</h1>
+			  <p>{{description}}</p>
+			</div>
+		</script>
+
+	This is somewhat better, but includes the extra step of querying the DOM for the script element and reading its content as a string (`element.innerHTML`). In addition, the HTML file containing all these templates can get quite large and unmaintainable.
+
+Both techniques, as described, only get you to the point where you have the content of the template as a string. From hereon, you need to perform two additional steps:
+
+1. First, compile the string into a template function;
+2. Call the template function with a data object to get the HTML fragment.
+
+Let's see how `grunt-contrib-handlebars` can make this all better.
+
+#### The advantages of precompiling your templates
+
+Here's what's in it for you: 
+
+* You get to keep your templates in separate files;
+* You make your app faster by skipping the DOM queries and the compilation step;
+* You reduce the payload by including only the Handlebars Runtime library, which is smaller and faster, instead of the whole shebang.
+
+Sold? Right, let's get on with it.
+
+#### Install the `handlebars` task
+
+	npm install grunt-contrib-handlebars --save-dev
+
+and then add it to your Gruntfile:
+	
+	grunt.loadNpmTasks('grunt-contrib-handlebars');
+
+#### Configuring the `handlebars` task
+
+In its most basic form, we only need to define the _source_ and _destination_ files:
+
+	handlebars: {
+		all: {
+			files: {
+				"js/templates.js": ["templates/**/*.hbs"]
+			}
+		}
+	}
+
+This will take all the files with a `.hbs` extension from the `templates` folder and all its subfolders and merge them into a single file called `templates.js`, which looks something like this:
+
+[[ INSERT CODE EXAMPLE ]] 
 
 
 ### Files, in-depth
@@ -456,7 +526,7 @@ There's one little quirk we need to address: the `watch` task will only pick up 
 
 In this recipe, we've:
 
-* learned how to use `watch` task to trigger other tasks automatically when you make changes to your files;
+* learned how to use `watch` to trigger other tasks automatically when you make changes to your files;
 * configured the types of events the watch responds to;
 * run the associated tasks at the beginning of the watch process to make sure everything is up to date.
 

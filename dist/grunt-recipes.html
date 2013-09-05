@@ -278,10 +278,10 @@ cd my-project</code></pre>
 <h4>Take five</h4>
 <p>In this recipe, we&#39;ve:</p>
 <ul>
-<li>installed and configured our first Grunt task;</li>
-<li>learned about targets and multitasks;</li>
+<li>installed, configured and ran our first <em>real</em> Grunt task;</li>
+<li>learned about targets and multitasks, both of which are wonderful things.</li>
 </ul>
-<p><strong>Also check out:</strong> <a href="https://npmjs.org/package/grunt-contrib-csslint"><code>grunt-contrib-csslint</code></a> for a similar lint tool for your CSS files.</p>
+<p><strong>Extra credits:</strong> You can grab a very similar task <a href="https://npmjs.org/package/grunt-contrib-csslint"><code>grunt-contrib-csslint</code></a>, and make it lint the CSS files in your project.</p>
 <h3>Sassy CSS</h3>
 <p><strong>Plugins used:</strong> <a href="https://npmjs.org/package/grunt-contrib-sass"><code>grunt-contrib-sass</code></a>.</p>
 <p><strong>Note:</strong> To make <code>grunt-contrib-sass</code> work, you also need to have Ruby and Sass installed. To check if you have ruby installed, type <code>ruby -v</code> in the console. When you&#39;ve confirmed you have Ruby installed, run <code>gem install sass</code> to install Sass.</p>
@@ -344,6 +344,57 @@ cd my-project</code></pre>
 </ul>
 <h3>Precompile your Handlebars templates</h3>
 <p><strong>Plugins used:</strong> <a href="https://npmjs.org/package/grunt-contrib-handlebars"><code>grunt-contrib-handlebars</code></a>.</p>
+<p><a href="http://handlebarsjs.com/">Handlebars</a> is a popular template library which helps you build HTML fragments populated with data from an object. A template looks something like:</p>
+<pre><code>&lt;div class=&quot;person&quot;&gt;
+  &lt;h1&gt;{{name}}&lt;/h1&gt;
+  &lt;p&gt;{{description}}&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+<p>The portions between <code>{{</code> and <code>}}</code> are dynamic and are populated from the object you feed to the template. If you are not familiar with it, its homepage describes the libary in more depth.</p>
+<p>There are two basic ways to include Handlebars templates in your web application:</p>
+<ol>
+<li><p>Inline them as strings in JavaScript: </p>
+<pre><code> var template = &quot;&lt;div class=&quot;person&quot;&gt;&lt;h1&gt;{{name}}&lt;/h1&gt;&lt;p&gt;{{description}}&lt;/p&gt;&lt;/div&gt;&quot;;</code></pre>
+<p> This is bad because we&#39;re mixing JavaScript and HTML, and it&#39;s not too readable either.</p>
+</li>
+<li><p>Include them in the HTML inside <code>&lt;script&gt;</code> tags:</p>
+<pre><code> &lt;script type=&#39;text/x-handlebars&#39; id=&#39;person-template&#39;&gt;
+     &lt;div class=&quot;person&quot;&gt;
+       &lt;h1&gt;{{name}}&lt;/h1&gt;
+       &lt;p&gt;{{description}}&lt;/p&gt;
+     &lt;/div&gt;
+ &lt;/script&gt;</code></pre>
+<p> This is somewhat better, but includes the extra step of querying the DOM for the script element and reading its content as a string (<code>element.innerHTML</code>). In addition, the HTML file containing all these templates can get quite large and unmaintainable.</p>
+</li>
+</ol>
+<p>Both techniques, as described, only get you to the point where you have the content of the template as a string. From hereon, you need to perform two additional steps:</p>
+<ol>
+<li>First, compile the string into a template function;</li>
+<li>Call the template function with a data object to get the HTML fragment.</li>
+</ol>
+<p>Let&#39;s see how <code>grunt-contrib-handlebars</code> can make this all better.</p>
+<h4>The advantages of precompiling your templates</h4>
+<p>Here&#39;s what&#39;s in it for you: </p>
+<ul>
+<li>You get to keep your templates in separate files;</li>
+<li>You make your app faster by skipping the DOM queries and the compilation step;</li>
+<li>You reduce the payload by including only the Handlebars Runtime library, which is smaller and faster, instead of the whole shebang.</li>
+</ul>
+<p>Sold? Right, let&#39;s get on with it.</p>
+<h4>Install the <code>handlebars</code> task</h4>
+<pre><code>npm install grunt-contrib-handlebars --save-dev</code></pre>
+<p>and then add it to your Gruntfile:</p>
+<pre><code>grunt.loadNpmTasks(&#39;grunt-contrib-handlebars&#39;);</code></pre>
+<h4>Configuring the <code>handlebars</code> task</h4>
+<p>In its most basic form, we only need to define the <em>source</em> and <em>destination</em> files:</p>
+<pre><code>handlebars: {
+    all: {
+        files: {
+            &quot;js/templates.js&quot;: [&quot;templates/**/*.hbs&quot;]
+        }
+    }
+}</code></pre>
+<p>This will take all the files with a <code>.hbs</code> extension from the <code>templates</code> folder and all its subfolders and merge them into a single file called <code>templates.js</code>, which looks something like this:</p>
+<p>[[ INSERT CODE EXAMPLE ]] </p>
 <h3>Files, in-depth</h3>
 <p><a href="http://gruntjs.com/configuring-tasks#files">http://gruntjs.com/configuring-tasks#files</a></p>
 <h3>Watch for changes</h3>
@@ -440,7 +491,7 @@ cd my-project</code></pre>
 <h4>Take five</h4>
 <p>In this recipe, we&#39;ve:</p>
 <ul>
-<li>learned how to use <code>watch</code> task to trigger other tasks automatically when you make changes to your files;</li>
+<li>learned how to use <code>watch</code> to trigger other tasks automatically when you make changes to your files;</li>
 <li>configured the types of events the watch responds to;</li>
 <li>run the associated tasks at the beginning of the watch process to make sure everything is up to date.</li>
 </ul>
