@@ -651,12 +651,173 @@ This makes the directories `first-site` and `second-site` from your project avai
 
 In this recipe, we've learned how to use the `connect` task to start a local server.
 
+### Build an app for deployment
+
+By now, you should be comfortable with working with one task at a time. It's time to really make Grunt shine by integrating the variety of tasks involved in preparing a web application for deployment, such as precompiling, minifying, concatenating and moving files around.
+
+#### What we're trying to accomplish
+
+We want to take our main HTML file, identify all the stylesheets and scripts it references, optimize those (e.g. minification, concatenation) and then update the references from the HTML with the optimized version.
+
+At the end of the task, we want to have a `dist` folder that contains the optimized version of our project, readily deployable to a production environment.
+
+#### Tasks we'll use in this recipe
+
+* [`grunt-contrib-uglify`](https://npmjs.org/package/grunt-contrib-uglify) to minify JavaScript;
+* [`grunt-contrib-cssmin`](https://npmjs.org/package/grunt-contrib-cssmin) to minify CSS;
+* [`grunt-contrib-htmlmin`](https://npmjs.org/package/grunt-contrib-htmlmin) to minify gruntde;
+* [`HTML-contrib-concat`](https://npmjs.org/package/grunt-contrib-concat) to concatenate files;
+* [`grunt-contrib-copy`](https://npmjs.org/package/grunt-contrib-copy) to copy files and folders;
+* [`grunt-usemin`](https://github.com/yeoman/grunt-usemin) to replaces references to scripts and stylesheets in HTML files with their optimized versions.
+
+Now, don't get too intimidated! If you think about it each task has a very specific purpose in the workflow, and you'll see how easy is to coreograph them into one fluent, beautiful task.
+
+#### Let's install everything
+
+	npm install grunt-contrib-uglify grunt-contrib-concat grunt-contrib-cssmin grunt-contrib-htmlmin grunt-contrib-copy grunt-usemin --save-dev
+
+... in one fell swoop, even. Now let's add all of it to our Gruntfile:
+
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-concat');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-contrib-htmlmin');
+	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-usemin');
+
+#### Basic configuration
+
+	grunt.initConfig({
+
+		// Minimize tasks
+		cssmin: {
+			all: {
+				files: {
+					'dist/css/app.css': 'app/css/**/*.css'
+				}
+			}
+		},
+
+		htmlmin: {
+			all: {
+				files: [{
+					expand: true,
+					cwd: 'app/',
+					src: '**/*.html',
+					dest: 'dist/'
+				}]
+			}
+		},
+
+		// Move other things around
+		copy: {
+			all: {
+				files: [{
+					expand: true,
+					cwd: 'app/',
+					dest: 'dist/',
+					src: [
+						'.htaccess',
+						'*.ico',
+						'images/**/*.{jpg,png,gif}',
+						'css/fonts/*'
+					]		
+				}]
+			}
+		}
+
+	});
+
+Let's take the code above apart, piece by piece.
+
+First, we configure the `cssmin` task to take all stylesheets from `app/css` and minimize and concatenate them in a single file in `dist/css` called `app.css`.
+We do the same for HTML, except we're using a dynamic declaration of the files object since we want to have a separate HTML file in the `dist` folder for each HTML in our `app` folder.
+
+Then we configure the `copy` task to copy into the `dist` folder one by one any files not already covered by the other tasks &mdash; stuff like icons, images, fonts, etc.  
+
+We already notice we've been using `app` and `dist` a lot, so let me take this moment to introduce a handy way to Not Repeat Yourself: enter **Grunt templates**. They are tiny dynamic snippets delimited by `<%` and `%>` that you can add to your strings. We're interested in templates of the form `<%= object.property.path %>` which expands to the corresponding value from Grunt's configuration object. Let's see it in action:
+
+	grunt.initConfig({
+
+		appConfig: {
+			appRoot: 'app',
+			distRoot: 'dist'
+		},
+
+		// Minimize tasks
+		cssmin: {
+			all: {
+				files: {
+					'<%= appConfig.distRoot %>/css/app.css': '<%= appConfig.appRoot %>/css/**/*.css'
+				}
+			}
+		},
+
+		htmlmin: {
+			all: {
+				files: [{
+					expand: true,
+					cwd: '<%= appConfig.appRoot %>/',
+					src: '**/*.html',
+					dest: '<%= appConfig.distRoot %>'
+				}]
+			}
+		},
+
+		// Move other things around
+		copy: {
+			all: {
+				files: [{
+					expand: true,
+					cwd: '<%= appConfig.appRoot %>/',
+					dest: '<%= appConfig.distRoot %>',
+					src: [
+						'.htaccess',
+						'*.ico',
+						'images/**/*.{jpg,png,gif}',
+						'css/fonts/*'
+					]		
+				}]
+			}
+		}
+
+	});
+
+We've defined an `appConfig` property to hold our commonly-used paths. Now we can refer to the two paths as `<%= appConfig.appRoot %>` and `<%= appConfig.distRoot %>` in all our tasks.
+
+### Loading external data in our tasks
+
+Grunt provides two methods for loading external data into the Gruntfile:
+
+* `grunt.file.readJSON()` to load an external JSON file;
+* `grunt.file.readYAML()` to load an external YAML file;
+
+Let's use `readJSON()` for something fun like automatically loading all the tasks defined in `package.json`:
+
+	module.exports = function(grunt) {
+
+		// load `package.json`
+		var package = grunt.file.readJSON('package.json');
+		
+		// check if we have any dependencies
+		if (package.devDependencies) {
+
+			// filter out the ones that don't start with `grunt-`
+			var gruntTasks = Object.keys(package.devDependencies).filter(function(task) {
+				return task.indexOf('grunt-') === 0;	
+			});
+
+			// load each task
+			gruntTasks.forEach(grunt.loadNpmTasks);
+		}
+	};
+
+**Attention!** `readJSON()` only accepts _valid_ JSON-files, while `package.json` can be JSON-like and still work with `npm install`. The most common JSON-like-but-not-quite-JSON thing it might contain are comments, which work perfectly fine with the NPM installer but will break the above script.
+
 ### Files, in-depth
 http://gruntjs.com/configuring-tasks#files
 
 ### Using variables/templates
-
-### Build an app
 
 ## Write your own Grunt plugin
 

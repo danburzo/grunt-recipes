@@ -28,8 +28,13 @@ module.exports = function(grunt) {
 		}
 	});
 
-	grunt.loadNpmTasks('grunt-markdown');
-	grunt.loadNpmTasks('grunt-contrib-watch');
+	var package = grunt.file.readJSON('package.json');
+	if (package.devDependencies) {
+		var gruntTasks = Object.keys(package.devDependencies).filter(function(task) {
+			return task.indexOf('grunt-') === 0;	
+		});
+		gruntTasks.forEach(grunt.loadNpmTasks);
+	}
 
 	grunt.registerTask('default', ['watch']);
 };
