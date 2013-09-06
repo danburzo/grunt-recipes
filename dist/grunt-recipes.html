@@ -21,7 +21,7 @@
 		}
 
 		article {
-			max-width: 44em;
+			max-width: 50em;
 			margin: 0 auto;
 			padding: 5em;
 			background: #fff;
@@ -39,10 +39,18 @@
 			margin: 1em -5em;
 		}
 
+		#cover {
+			margin-bottom: 3em;
+		}
+
 		</style>
 	</head>
 	<body>
 		<article>
+			<div id='cover'>
+				<img src='assets/grunt-logo.svg'/>
+			</div>
+
 			<h1>Grunt Up &amp; Running</h1>
 <p>A book by Dan Burzo (<a href="http://twitter.com/danburzo">@danburzo</a>)</p>
 <h2>About this book</h2>
@@ -708,8 +716,7 @@ We do the same for HTML, except we&#39;re using a dynamic declaration of the fil
 <p><strong>Note:</strong> <code>readJSON()</code> only accepts <em>valid</em> JSON-files, while <code>package.json</code> can be JSON-like and still work with <code>npm install</code>. The most common JSON-like-but-not-quite-JSON thing it might contain are comments, which work perfectly fine with the NPM installer but will break the above script.</p>
 <h3>Files, in-depth</h3>
 <p><a href="http://gruntjs.com/configuring-tasks#files">http://gruntjs.com/configuring-tasks#files</a></p>
-<h3>Using variables/templates</h3>
-<h2>Write your own Grunt plugin</h2>
+<h2>Write your own Grunt tasks</h2>
 
 		</article>
 	</body>

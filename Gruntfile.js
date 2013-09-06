@@ -8,6 +8,15 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		copy: {
+			all: {
+				files: [{
+					expand: true,
+					src: ['assets/**'],
+					dest: 'dist/'
+				}]
+			}
+		},
 		markdown: {
 			all: {
 				files: {
@@ -24,7 +33,7 @@ module.exports = function(grunt) {
 		watch: {
 			all: {
 				files: ['chapters/*.md', '*.tmpl'],
-				tasks: ['concat', 'markdown'],
+				tasks: ['concat', 'copy', 'markdown'],
 				options: {
 					atBegin: true
 				}
