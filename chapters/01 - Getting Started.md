@@ -4,6 +4,51 @@
 
 Grunt was created by Ben Alman a.k.a. [@cowboy](http://twitter.com/cowboy) to automate his front-end development workflow. You know, all the little repetitive tasks like unit testing, minifying your JavaScript and CSS, compiling your Sass stylesheets or CoffeeScripts, linting and what-not. With Grunt, they become a breeze: configure them once and let Grunt run them for you; in this sense, Grunt is a _task runner_ for the boring but oh-so-necessary parts of the web developer's life. It's [open source](https://github.com/gruntjs/) and at the heart of a wonderful ecosystem of thousands of plugins. As such, any tool you've ever used in your workflow is likely to have a Grunt counterpart. And if it doesn't, it's easy to roll out your own plugin and share it with the community. Organizations like Twitter, Adobe, jQuery (and [many others](http://gruntjs.com/who-uses-grunt)) use it and so should you, because it's A Great Thing&trade;.
 
+### Front-end workflow?
+
+Here are some things we talk about when we talk about front-end workflow:
+
+#### Optimizing for speed: concatenation & minification
+
+One of the tenets of optimizing web applications is to do everything in our power to reduce (1) the amount of HTTP requests and (2) the payload for each HTTP request. In real life, this means bundling your scripts, stylesheets &mdash; and even images! &mdash; into as few files as possible, using whatever tools one can cobble together.
+
+We'll use Grunt to make our web application production-ready.
+
+#### Keeping things modular
+
+HTML lacks a way to compose your pages from modules. To have a website with multiple pages that share a common header and footer, which is to say any website ever, you're stuck with:
+
+* repeating the same markup in each page of your site, making sure to update all pages when you want to make even the smallest change (highly impractical);
+* using frames to load multiple HTML files on a single page &mdash; one for the header, one for the footer, one for the main content (usability nightmare); 
+* using PHP or equivalent language to include bits of HTML dynamically (needs a web server with PHP support);
+* loading the modules through AJAX calls (needs JavaScript to work, poor search engine ranking);
+
+We'll learn how to use Grunt to write and compose HTML modules in a straightforward way.
+
+#### Making CSS & JavaScript fun again
+
+CSS and JavaScript are wonderful things with less-than-wonderful parts. CSS is crippled by repetition since it lacks variables and inheritance. JavaScript uses prototype inheritance, which seems un unnerve people used to classical inheritance.
+
+Sass, LESS and a host of other languages superset CSS with features like variables, mixins, nesting and functions, which makes the code more concise, readable and maintainable. Through dedicated tools, these can be compiled into normal CSS and used in web pages.
+
+Similarly, CoffeeScript and TypeScript aim to soothe the pains of JavaScript developers by providing traditional classes and inheritance along other features and syntactic goodies.
+
+We'll see how Grunt can pre-process these files automatically, so you don't even have to think about it.
+
+#### Keeping bugs at bay
+
+Lint is the fluff that accumulates on your clothes or in your bellybutton, but it's also the name of a class of tools that look at your code and flag potentially flawed constructs. They're formally known as _static code analysis tools_.
+
+We have lint checkers for JavaScript that remind you that `==` is not the same thing as `===` or that declaring functions inside a for-loop is generally a bad idea. They also point out style inconsistencies, such as using tabs _and_ spaces for indentation (make up your mind, will you?).
+
+And then there's unit testing, that thing you should be doing &mdash; in fact, I'm going to assume you are &mdash; that keeps us safe from breaking things when we refactor code.
+
+We'll find that Grunt is the perfect tool to automate code checking & testing.
+
+#### Better documentation
+
+They say every person has a book in them. Grunt can help your meticulously crafted comments really shine by making them into clean, readable documentation.
+
 ### Resources
 
 Here are a few places we're going to visit quite often, so make sure you have them handy:

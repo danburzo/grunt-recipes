@@ -46,11 +46,37 @@
 			<h1>Grunt Up &amp; Running</h1>
 <p>A book by Dan Burzo (<a href="http://twitter.com/danburzo">@danburzo</a>)</p>
 <h2>About this book</h2>
-<p>This is a book about using Grunt to automate your web development workflow. You should have some basic experience in JavaScript, the language that drives Grunt, but don&#39;t get too hung up on that part. </p>
-<p>You can find the book on GitHub: <a href="https://github.com/danburzo/grunt-recipes">https://github.com/danburzo/grunt-recipes</a>. Contributions/corrections are always welcome.</p>
+<p>This is a book about using Grunt to automate your web development workflow. </p>
+<p>You can find it on GitHub: <a href="https://github.com/danburzo/grunt-recipes">https://github.com/danburzo/grunt-recipes</a>. Contributions/corrections are always welcome.</p>
 <h2>Getting started</h2>
 <h3>Meet Grunt</h3>
 <p>Grunt was created by Ben Alman a.k.a. <a href="http://twitter.com/cowboy">@cowboy</a> to automate his front-end development workflow. You know, all the little repetitive tasks like unit testing, minifying your JavaScript and CSS, compiling your Sass stylesheets or CoffeeScripts, linting and what-not. With Grunt, they become a breeze: configure them once and let Grunt run them for you; in this sense, Grunt is a <em>task runner</em> for the boring but oh-so-necessary parts of the web developer&#39;s life. It&#39;s <a href="https://github.com/gruntjs/">open source</a> and at the heart of a wonderful ecosystem of thousands of plugins. As such, any tool you&#39;ve ever used in your workflow is likely to have a Grunt counterpart. And if it doesn&#39;t, it&#39;s easy to roll out your own plugin and share it with the community. Organizations like Twitter, Adobe, jQuery (and <a href="http://gruntjs.com/who-uses-grunt">many others</a>) use it and so should you, because it&#39;s A Great Thing&trade;.</p>
+<h3>Front-end workflow?</h3>
+<p>Here are some things we talk about when we talk about front-end workflow:</p>
+<h4>Optimizing for speed: concatenation &amp; minification</h4>
+<p>One of the tenets of optimizing web applications is to do everything in our power to reduce (1) the amount of HTTP requests and (2) the payload for each HTTP request. In real life, this means bundling your scripts, stylesheets &mdash; and even images! &mdash; into as few files as possible, using whatever tools one can cobble together.</p>
+<p>We&#39;ll use Grunt to make our web application production-ready.</p>
+<h4>Keeping things modular</h4>
+<p>HTML lacks a way to compose your pages from modules. To have a website with multiple pages that share a common header and footer, which is to say any website ever, you&#39;re stuck with:</p>
+<ul>
+<li>repeating the same markup in each page of your site, making sure to update all pages when you want to make even the smallest change (highly impractical);</li>
+<li>using frames to load multiple HTML files on a single page &mdash; one for the header, one for the footer, one for the main content (usability nightmare); </li>
+<li>using PHP or equivalent language to include bits of HTML dynamically (needs a web server with PHP support);</li>
+<li>loading the modules through AJAX calls (needs JavaScript to work, poor search engine ranking);</li>
+</ul>
+<p>We&#39;ll learn how to use Grunt to write and compose HTML modules in a straightforward way.</p>
+<h4>Making CSS &amp; JavaScript fun again</h4>
+<p>CSS and JavaScript are wonderful things with less-than-wonderful parts. CSS is crippled by repetition since it lacks variables and inheritance. JavaScript uses prototype inheritance, which seems un unnerve people used to classical inheritance.</p>
+<p>Sass, LESS and a host of other languages superset CSS with features like variables, mixins, nesting and functions, which makes the code more concise, readable and maintainable. Through dedicated tools, these can be compiled into normal CSS and used in web pages.</p>
+<p>Similarly, CoffeeScript and TypeScript aim to soothe the pains of JavaScript developers by providing traditional classes and inheritance along other features and syntactic goodies.</p>
+<p>We&#39;ll see how Grunt can pre-process these files automatically, so you don&#39;t even have to think about it.</p>
+<h4>Keeping bugs at bay</h4>
+<p>Lint is the fluff that accumulates on your clothes or in your bellybutton, but it&#39;s also the name of a class of tools that look at your code and flag potentially flawed constructs. They&#39;re formally known as <em>static code analysis tools</em>.</p>
+<p>We have lint checkers for JavaScript that remind you that <code>==</code> is not the same thing as <code>===</code> or that declaring functions inside a for-loop is generally a bad idea. They also point out style inconsistencies, such as using tabs <em>and</em> spaces for indentation (make up your mind, will you?).</p>
+<p>And then there&#39;s unit testing, that thing you should be doing &mdash; in fact, I&#39;m going to assume you are &mdash; that keeps us safe from breaking things when we refactor code.</p>
+<p>We&#39;ll find that Grunt is the perfect tool to automate code checking &amp; testing.</p>
+<h4>Better documentation</h4>
+<p>They say every person has a book in them. Grunt can help your meticulously crafted comments really shine by making them into clean, readable documentation.</p>
 <h3>Resources</h3>
 <p>Here are a few places we&#39;re going to visit quite often, so make sure you have them handy:</p>
 <ul>
@@ -280,9 +306,9 @@ cd my-project</code></pre>
 <p>In this recipe, we&#39;ve learned:</p>
 <ul>
 <li>to write multiple source/destination pairs for the files used by our task;</li>
-<li>to define these pairs dynamically so we don&#39;t have to maintain them, one by one, for all eternity.<h3>Pre-compile your Handlebars templates</h3>
-</li>
+<li>to define these pairs dynamically so we don&#39;t have to maintain them, one by one, for all eternity.</li>
 </ul>
+<h3>Pre-compile your Handlebars templates</h3>
 <p><strong>Plugins used:</strong> <a href="https://npmjs.org/package/grunt-contrib-handlebars"><code>grunt-contrib-handlebars</code></a>.</p>
 <p><a href="http://handlebarsjs.com/">Handlebars</a> is a popular template library which helps you build HTML fragments populated with data from an object. A template looks something like:</p>
 <pre><code>&lt;div class=&quot;person&quot;&gt;
