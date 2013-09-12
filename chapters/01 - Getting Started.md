@@ -54,7 +54,7 @@ They say every person has a book in them. Grunt can help your meticulously craft
 Here are a few places we're going to visit quite often, so make sure you have them handy:
 
 * http://gruntjs.com, Grunt's official page, with guides and the API reference;
-* http://gruntjs.com/plugins, the list of all available Grunt plugins &mdash; the ones that start with `grunt-contrib-` are maintained by the Grunt team, while the others are created by people like you and me;
+* http://gruntjs.com/plugins, the list of all available Grunt plugins &mdash; the ones that start with `grunt-contrib-` are maintained by the Grunt team, while the others are created by people like you and me. You can find a list of good plugins in this book's _Appendix_;
 * [@gruntjs](https://twitter.com/gruntjs) for updates on the topic;
 * the IRC channel `#grunt` on `irc.freenode.net` is where the team members hang out.
 

@@ -89,7 +89,7 @@
 <p>Here are a few places we&#39;re going to visit quite often, so make sure you have them handy:</p>
 <ul>
 <li><a href="http://gruntjs.com">http://gruntjs.com</a>, Grunt&#39;s official page, with guides and the API reference;</li>
-<li><a href="http://gruntjs.com/plugins">http://gruntjs.com/plugins</a>, the list of all available Grunt plugins &mdash; the ones that start with <code>grunt-contrib-</code> are maintained by the Grunt team, while the others are created by people like you and me;</li>
+<li><a href="http://gruntjs.com/plugins">http://gruntjs.com/plugins</a>, the list of all available Grunt plugins &mdash; the ones that start with <code>grunt-contrib-</code> are maintained by the Grunt team, while the others are created by people like you and me. You can find a list of good plugins in this book&#39;s <em>Appendix</em>;</li>
 <li><a href="https://twitter.com/gruntjs">@gruntjs</a> for updates on the topic;</li>
 <li>the IRC channel <code>#grunt</code> on <code>irc.freenode.net</code> is where the team members hang out.</li>
 </ul>
@@ -689,67 +689,83 @@ We do the same for HTML, except we&#39;re using a dynamic declaration of the fil
         }
     }
 }</code></pre>
-<h3>A list of useful Grunt plugins</h3>
+<h3>Some useful Grunt plugins</h3>
+<p>Here are some handpicked plugins for your enjoyment. Most of the &#39;official&#39; plugins (starting with <code>grunt-contrib</code>) are included.</p>
 <h4>General purpose</h4>
-<p>These plugins operate on files, regardless of their format.</p>
-<ul>
-<li><code>grunt-contrib-copy</code>, copy projects from one location to another;</li>
-<li><code>grunt-contrib-concat</code>, concatenate files;</li>
-<li><code>grunt-contrib-clean</code>, delete files and directories from your project;</li>
-<li><code>grunt-contrib-watch</code>, watch for changes on files;</li>
-<li><code>grunt-contrib-compress</code>, compress files to ZIP;</li>
-<li><code>grunt-contrib-symlink</code>, create symbolic links.</li>
-</ul>
+<p>These general purpose plugins operate on any text-based files.</p>
+<h6>grunt-contrib-copy</h6>
+<p>Copy projects from one location to another.</p>
+<h6>grunt-contrib-concat</h6>
+<p>Concatenate files.</p>
+<h6>grunt-contrib-clean</h6>
+<p>Delete files and directories from your project. You can use this to clean up if other tasks create temporary files.</p>
+<h6>grunt-contrib-watch</h6>
+<p>Watch for changes on files in your projects and trigger other tasks. We discussed about this in <em>Chapter 6</em>.</p>
+<h6>grunt-contrib-compress</h6>
+<p>Create ZIP archives from your files.</p>
+<h6>grunt-contrib-symlink</h6>
+<p>Create symbolic links, for when you don&#39;t need to physically copy files.</p>
 <h4>Server</h4>
-<ul>
-<li><code>grunt-contrib-connect</code>, start a server;</li>
-<li><code>grunt-contrib-livereload</code>, reload based on changes.</li>
-</ul>
+<h6>grunt-contrib-connect</h6>
+<p>Start a server to preview your changes or to facilitate other tasks, such as automated testing.</p>
+<h6>grunt-contrib-livereload</h6>
+<p>Reload your pages after each change you make. Works in conjunction with <code>grunt-contrib-connect</code> and <code>grunt-contrib-watch</code>.</p>
 <h4>CSS-specific</h4>
 <h5>Preprocessing</h5>
-<ul>
-<li><code>grunt-contrib-less</code>, LESS to CSS;</li>
-<li><code>grunt-contrib-sass</code>, Sass to CSS;</li>
-<li><code>grunt-contrib-stylus</code>, Stylus to CSS;</li>
-<li><code>grunt-contrib-compass</code>, Compass for Sass.</li>
-</ul>
+<h6>grunt-contrib-less</h6>
+<p><a href="http://lesscss.org/">LESS</a> &rarr; CSS.</p>
+<h6>grunt-contrib-sass</h6>
+<p><a href="http://sass-lang.com/">Sass</a> &rarr; CSS.</p>
+<h6>grunt-contrib-stylus</h6>
+<p><a href="http://learnboost.github.io/stylus/">Stylus</a> &rarr; CSS.</p>
+<h6>grunt-contrib-compass</h6>
+<p>Allows you to use the <a href="http://compass-style.org/">Compass</a> framework for Sass.</p>
 <h5>Others</h5>
-<ul>
-<li><code>grunt-contrib-csslint</code>, lint tool for CSS;</li>
-<li><code>grunt-contrib-cssmin</code>, minify CSS;</li>
-<li><code>grunt-contrib-mincss</code>, ditto.</li>
-</ul>
+<h6>grunt-contrib-csslint</h6>
+<p>Lint tool for CSS.</p>
+<h6>grunt-contrib-cssmin</h6>
+<p>Minify your CSS files.</p>
+<h6>grunt-contrib-mincss</h6>
+<p>Another plugin for CSS minification.</p>
 <h4>JavaScript-specific</h4>
-<ul>
-<li><code>grunt-contrib-coffee</code> CoffeeScript to JavaScript;</li>
-<li><code>grunt-contrib-jshint</code> lint tool for JavaScript;</li>
-</ul>
+<h6>grunt-contrib-coffee</h6>
+<p>CoffeeScript to JavaScript.</p>
+<h6>grunt-contrib-jshint</h6>
+<p>Lint tool for JavaScript. We talked about it in <em>Chapter 3</em>.</p>
+<h6>grunt-complexity</h6>
+<p>Analyze the complexity of your code.</p>
+<h6>grunt-plato</h6>
+<p>Analyze your code with Plato.</p>
 <h4>HTML-specific</h4>
 <h5>Precompilation</h5>
-<ul>
-<li><code>grunt-contrib-handlebars</code>, Handlebars to JST;</li>
-<li><code>grunt-contrib-jst</code>, Underscore templates to JST;</li>
-<li><code>grunt-contrib-jade</code>, Jade templates to JST.</li>
-</ul>
+<h6>grunt-contrib-handlebars</h6>
+<p>Handlebars templates &rarr; JST.</p>
+<h6>grunt-contrib-jst</h6>
+<p>Underscore templates &rarr; JST.</p>
+<h6>grunt-contrib-jade</h6>
+<p>Jade templates &rarr; JST.</p>
 <h5>Others</h5>
-<ul>
-<li><code>grunt-contrib-htmlmin</code>, minify HTML.</li>
-</ul>
+<h6>grunt-contrib-htmlmin</h6>
+<p>Minify your HTML files by removing comments and irrelevant white space.</p>
+<h6>grunt-manifest</h6>
+<p>Generate HTML5 cache manifest files for web sites that can run even when the device is not connected to the Internet.</p>
 <h4>Image-specific</h4>
-<ul>
-<li><code>grunt-contrib-imagemin</code>, minify images.</li>
-</ul>
-<h4>Unit testing</h4>
-<ul>
-<li><code>grunt-contrib-jasmine</code></li>
-<li><code>grunt-contrib-nodeunit</code></li>
-<li><code>grunt-contrib-qunit</code></li>
-</ul>
+<h6>grunt-contrib-imagemin</h6>
+<p>Minify images.</p>
+<h6>grunt-grunticon</h6>
+<p>GruntIcon was created by Filament Group.</p>
+<h4>Automated testing</h4>
+<h6>grunt-contrib-jasmine</h6>
+<p>Automatically builds and maintains your spec runner and runs your tests headlessly through phantomjs.</p>
+<h6>grunt-contrib-nodeunit</h6>
+<p>Unit testing for Node.</p>
+<h6>grunt-contrib-qunit</h6>
+<p>Run QUnit tests.</p>
 <h4>Miscellaneous</h4>
-<ul>
-<li><code>grunt-contrib-requirejs</code></li>
-<li><code>grunt-contrib-yuidoc</code></li>
-</ul>
+<h6>grunt-contrib-requirejs</h6>
+<p>Build your RequireJS-powered app.</p>
+<h6>grunt-contrib-yuidoc</h6>
+<p>Generate documentation from YUIDoc.</p>
 <h3>Loading external data in our tasks</h3>
 <p>Grunt provides two methods for loading external data into the Gruntfile:</p>
 <ul>
@@ -777,6 +793,7 @@ We do the same for HTML, except we&#39;re using a dynamic declaration of the fil
 <p><strong>Note:</strong> <code>readJSON()</code> only accepts <em>valid</em> JSON-files, while <code>package.json</code> can be JSON-like and still work with <code>npm install</code>. The most common JSON-like-but-not-quite-JSON thing it might contain are comments, which work perfectly fine with the NPM installer but will break the above script.</p>
 <h3>Files, in-depth</h3>
 <p><a href="http://gruntjs.com/configuring-tasks#files">http://gruntjs.com/configuring-tasks#files</a></p>
+<h3>What is JST?</h3>
 <h2>Write your own Grunt tasks</h2>
 
 		</article>

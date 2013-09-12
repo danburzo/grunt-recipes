@@ -30,4 +30,6 @@ Let's use `readJSON()` for something fun like automatically loading all the task
 ### Files, in-depth
 http://gruntjs.com/configuring-tasks#files
 
+### What is JST?
+
 ## Write your own Grunt tasks
