@@ -956,29 +956,65 @@ grunt logfiles:filesArray
 <p>Now the <code>sources</code> variable contains only the subset of files that are valid.</p>
 <h2>Our Big Project &mdash; creating a static website plugin</h2>
 <p>Let&#39;s put everything we know together to create a static website generator that takes pages in markdown format and assembles them into a fully-functional blog.</p>
+<h3>What we&#39;re trying to do</h3>
 <p>Let&#39;s look at the structure we want for the project:</p>
 <pre><code>my-blog
-    posts/
+    content/
         hello_world.post
         second_post.post
     templates/
         partials/
             header.tmpl
             footer.tmpl
+        archive.tmpl
+        category.tmpl
         index.tmpl
         post.tmpl
-        archive.tmpl
     styles/
         blog.css
+    scripts/
+        blog.js
     blog/
         &lt;our blog gets generated here&gt;
     Gruntfile.js
     package.json</code></pre>
 <p>We will need to take the information for each post from the <code>.post</code> file and build a corresponding <code>.html</code> file by assembling it from templates:</p>
 <ul>
-<li><code>index.tmpl</code>, <code>post.tmpl</code> and <code>archive.tmpl</code> correspond to the different types of pages we will have: a home page, a list of all the posts and pages for the individual posts;</li>
-<li><code>partials</code> contains the parts common to all page types, such as the header and the footer.</li>
+<li>templates that correspond to the different types of pages we will have: a home page, a list of all the posts, a list of posts in a specific category and pages for the individual posts;</li>
+<li><code>partials</code> which are the parts common to all page types, such as the header and the footer.</li>
 </ul>
+<h4>The structure of posts</h4>
+<p>We want to be able to include some meta-data along with the content of our posts, so a post should look like:</p>
+<pre><code>[METADATA]
+
+title: My Post
+slug: my-post
+date: September 13, 2013
+category: General
+
+[CONTENT]
+
+&lt;markdown content goes here&gt;</code></pre>
+<p>Let&#39;s think about the kind of metadata is useful:</p>
+<ul>
+<li><code>title</code> for the title of the post;</li>
+<li><code>slug</code> for the URL part leading to the post; in the example above, it would be <code>http://myawesomeblog.com/my-post</code>; in the absence of an explicit slug, we should generate it based on the post title based on some rules;</li>
+<li><code>date</code> when the post was written; if ommited, we can look at the timestamp on the file itself.</li>
+<li><code>category</code> of the post.</li>
+</ul>
+<h3>Let&#39;s gather our tools</h3>
+<p>Off the top of our heads, we will most definitely need:</p>
+<ul>
+<li><code>grunt-contrib-copy</code> to copy everything to the <code>blog</code> folder;</li>
+<li><code>grunt-contrib-clean</code> to clean up after generating temporary files;</li>
+<li><code>grunt-markdown</code> to convert the Markdown content of our posts to HTML.</li>
+</ul>
+<h3>Building the Gruntfile</h3>
+<pre><code>grunt.initConfig({
+
+});
+
+grunt.registerTask(&#39;default&#39;, &#39;Build the blog&#39;, []);</code></pre>
 <h2>Some useful Grunt plugins</h2>
 <p>Here are some handpicked plugins for your enjoyment. Most of the &#39;official&#39; plugins (starting with <code>grunt-contrib</code>) are included.</p>
 <h3>General purpose</h3>
