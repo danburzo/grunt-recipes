@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
 	<head>
+		<meta charset='utf-8'>
 		<title>Grunt Up & Running</title>
 		<style type='text/css'>
 
@@ -43,6 +44,22 @@
 			margin-bottom: 3em;
 		}
 
+		table {
+			border-collapse: collapse;
+			table-layout: fixed;
+			width: 100%;
+		}
+
+		th, td {
+			text-align: left;
+			vertical-align: top;
+			padding: 0.5em 0;
+		}
+
+		tr {
+			border-bottom: 1px solid #ddd;
+		}
+
 		</style>
 	</head>
 	<body>
@@ -55,7 +72,9 @@
 <p>A book by Dan Burzo (<a href="http://twitter.com/danburzo">@danburzo</a>)</p>
 <h2>About this book</h2>
 <p>This is a book about using Grunt to automate your web development workflow. </p>
-<p>You can find it on GitHub: <a href="https://github.com/danburzo/grunt-recipes">https://github.com/danburzo/grunt-recipes</a>. Contributions/corrections are always welcome.</p>
+<p>It&#39;s based on the <a href="http://gruntjs.com/getting-started">Grunt Documentation</a> and <a href="http://gruntjs.com/api/grunt">API Reference</a> and takes cues from Belén Albeza&#39;s excellent primer <a href="https://leanpub.com/grunt"><em>Power-up Your Front-End Development with Grunt</em></a>, which I encourage you to take a look at.</p>
+<p>You can find the book on GitHub: <a href="https://github.com/danburzo/grunt-recipes">https://github.com/danburzo/grunt-recipes</a>. </p>
+<p>Contributions &amp; corrections are always welcome.</p>
 <h2>Getting started</h2>
 <h3>Meet Grunt</h3>
 <p>Grunt was created by Ben Alman a.k.a. <a href="http://twitter.com/cowboy">@cowboy</a> to automate his front-end development workflow. You know, all the little repetitive tasks like unit testing, minifying your JavaScript and CSS, compiling your Sass stylesheets or CoffeeScripts, linting and what-not. With Grunt, they become a breeze: configure them once and let Grunt run them for you; in this sense, Grunt is a <em>task runner</em> for the boring but oh-so-necessary parts of the web developer&#39;s life. It&#39;s <a href="https://github.com/gruntjs/">open source</a> and at the heart of a wonderful ecosystem of thousands of plugins. As such, any tool you&#39;ve ever used in your workflow is likely to have a Grunt counterpart. And if it doesn&#39;t, it&#39;s easy to roll out your own plugin and share it with the community. Organizations like Twitter, Adobe, jQuery (and <a href="http://gruntjs.com/who-uses-grunt">many others</a>) use it and so should you, because it&#39;s A Great Thing&trade;.</p>
@@ -689,83 +708,377 @@ We do the same for HTML, except we&#39;re using a dynamic declaration of the fil
         }
     }
 }</code></pre>
+<h3>Files, in-depth</h3>
+<p><a href="http://gruntjs.com/configuring-tasks#files">http://gruntjs.com/configuring-tasks#files</a></p>
+<p>Tasks can be:</p>
+<ul>
+<li>single tasks or multitasks;</li>
+<li>read-only tasks or read-write tasks.</li>
+<li>one-to-one tasks or many-to-one tasks.</li>
+</ul>
+<p>Multi-tasks work by taking source files and mapping them to destination files. For each destination, you can define one or more source files. Let&#39;s look at the ways to define files:</p>
+<h4>Compact mode</h4>
+<p>todo.</p>
+<h4>Files object format</h4>
+<p>In the Files Object Format, you specify a <code>files</code> object that has:</p>
+<ul>
+<li>the destination file as key</li>
+<li>a string or array of strings to define the source file(s) for the destination</li>
+</ul>
+<p>It looks something like this:</p>
+<pre><code>files: {
+    &#39;dist/file1.js&#39;: &#39;app/file1.js&#39;,
+    &#39;dist/combined.js&#39;: [&#39;app/file1.js&#39;, &#39;app/file2.js&#39;, &#39;app/file3.js&#39;]
+}</code></pre>
+<p>The first line defines one source for the destination file, while the second defines multiple source files for the destination.</p>
+<h4>Files Array Format</h4>
+<p>The Files Array Format is the canonical form of defining source/destination pairs. Grunt converts all the other formats to the Files Array Format before sending them to the task. It&#39;s very similar to the Files Object format, except we explicitly define the <code>src</code> and <code>dest</code> properties:</p>
+<pre><code>files: [{
+    src: &#39;app/file1.js&#39;,
+    dest: &#39;dist/file1.js&#39;
+}, {
+    src: [&#39;app/file1.js&#39;, &#39;app/file2.js&#39;, &#39;app/file3.js&#39;],
+    dest: &#39;dist/combined.js&#39;
+}]</code></pre>
+<p>It has the advantage of allowing us to specify additional properties, such as:</p>
+<ul>
+<li><code>dot</code>, allows patterns to match file names that start with a period (e.g. <code>.gitignore</code>), even if the pattern does not explicitly have a period there;</li>
+<li><code>filter</code>, which allows us to match files or folders specifically (e.g. filter: &#39;isFile&#39; will filter out folders)/</li>
+</ul>
+<p>... and a couple of others.</p>
+<h4>Defining the files object dynamically</h4>
+<h4>Patterns</h4>
+<ul>
+<li><code>?</code> matches a single character, excluding <code>/</code>;</li>
+<li><code>*</code> matches any number of characters, <em>excluding</em> <code>/</code>;</li>
+<li><code>**</code> matches any number of characters, <em>including</em> <code>/</code>;</li>
+<li>Use <code>{}</code> to define a comma-separated list of alternatives, such as <code>{backbone,jquery}.min.js</code>, which will match <code>backbone.min.js</code> and <code>jquery.min.js</code>;</li>
+<li>Use <code>!</code> to exclude a match.</li>
+</ul>
+<h5>A few common patterns</h5>
+<p>Let&#39;s assume the following structure:</p>
+<pre><code>app/
+    app.js
+    data.js
+    lib/
+        jquery.js
+        backbone.js
+        underscore.js
+    modules/
+        api.js
+        auth.js</code></pre>
+<p>The star pattern <code>*</code> is generally used to match all files in the folder:</p>
+<pre><code>src: &#39;app/*.js&#39;
+// matches app.js, data.js</code></pre>
+<p>The double star pattern <code>**/*</code> is used to match all files in the folder and its subfolders:</p>
+<pre><code>src: &#39;app/**/*.js&#39;
+// matches app.js, data.js, jquery.js, backbone.js, underscore.js, api.js, auth.js</code></pre>
+<p>You don&#39;t need to define complicated, all-encompassing patterns, because you can define the sources as arrays. They will all be processed and will result in <em>a set of files</em> (meaning each file will appear only once even if it&#39;s matched by multiple patterns).</p>
+<p>For example, let&#39;s say you want to select all JavaScript files in the <code>app</code> folder and its subfolders, <em>but not</em> the <code>lib</code> subfolder:</p>
+<pre><code>src: [&#39;app/**/*.js&#39;, &#39;!app/lib/*.js&#39;]
+// matches app.js, data.js, api.js, auth.js</code></pre>
+<p>This array of patterns will initially match all JavaScript files in <code>app</code> but then will exclude those from the <code>lib</code> subfolder. Easy! </p>
+<h5>Practice your patterns</h5>
+<p>Todo.</p>
+<h2>Write your own Grunt tasks</h2>
+<h3>Working with files</h3>
+<p>Chances are your app will want to operate on files. You can learn about the different ways users can define files in the <em>Files In-Depth</em> chapter, and there certainly are a bunch of them! Fortunately, Grunt does the heavy-lifting for us and normalizes all formats into the <em>Files Array</em> format, expanding all the patterns it finds along the way. </p>
+<p>So really all we have to do is grab the array from <code>this.files</code> containing objects which have two main properties:</p>
+<ul>
+<li>the <code>dest</code> property holds the path to the destination;</li>
+<li>the <code>src</code> property is an array of one or more source files for the destination.</li>
+</ul>
+<p>Let&#39;s try this out!</p>
+<p>Assume we have a project structure like this one:</p>
+<pre><code>app/
+    src1.js
+    src2.js
+Gruntfile.js
+package.json</code></pre>
+<p>We write the following Grunt code:</p>
+<pre><code>grunt.initConfig({
+    logfiles: {
+        filesObject: {
+            files: {
+                &#39;dist/file1.js&#39;: [&#39;app/src*.js&#39;]
+            }
+        },
+        filesArray: {
+            files: [{
+                src: [&#39;app/src*.js&#39;],
+                dest: &#39;dist/file1.js&#39;
+            }]
+        }
+    }
+});
+
+grunt.registerMultiTask(
+    &#39;logfiles&#39;, 
+    &#39;Log the source-destination mappings in a Grunt multitask&#39;, 
+    function() {
+        this.files.forEach(function(file) {
+            grunt.log.writeln(&#39;File &#39; + file.dest + &#39; has the sources &#39; + file.src);
+        });    
+    }
+);</code></pre>
+<p>Firstly, we created two targets corresponding to two different ways of defining files for our tasks. Secondly, we defined our multitask as a simple loop through the <code>this.files</code> array.</p>
+<p>Now let&#39;s check what each of them outputs:</p>
+<pre><code>grunt logfiles:filesObject
+&gt; Running &quot;logfiles:filesObject&quot; (logfiles) task
+&gt; File dist/file1.js has the sources app/src1.js, app/src2.js
+
+grunt logfiles:filesArray
+&gt; Running &quot;logfiles:filesArray&quot; (logfiles) task
+&gt; File dist/file1.js has the sources app/src1.js, app/src2.js</code></pre>
+<p>Identical &mdash; one less thing for us to worry about!</p>
+<h4>Excluding sources that don&#39;t exist</h4>
+<p>A good practice in all tasks is to filter out the source files that don&#39;t actually exist in the project:</p>
+<pre><code>this.files.forEach(function(file) {
+    var sources = file.src.filter(function(path) {
+        if (!grunt.file.exists(path)) {
+            grunt.log.warn(&#39;Source file &#39; + path + &#39; not found.&#39;);
+            return false;
+        } else {
+            return true;
+        }
+    });
+});    </code></pre>
+<p>Now the <code>sources</code> variable contains only the subset of files that are valid.</p>
 <h3>Some useful Grunt plugins</h3>
 <p>Here are some handpicked plugins for your enjoyment. Most of the &#39;official&#39; plugins (starting with <code>grunt-contrib</code>) are included.</p>
 <h4>General purpose</h4>
 <p>These general purpose plugins operate on any text-based files.</p>
-<h6>grunt-contrib-copy</h6>
-<p>Copy projects from one location to another.</p>
-<h6>grunt-contrib-concat</h6>
-<p>Concatenate files.</p>
-<h6>grunt-contrib-clean</h6>
-<p>Delete files and directories from your project. You can use this to clean up if other tasks create temporary files.</p>
-<h6>grunt-contrib-watch</h6>
-<p>Watch for changes on files in your projects and trigger other tasks. We discussed about this in <em>Chapter 6</em>.</p>
-<h6>grunt-contrib-compress</h6>
-<p>Create ZIP archives from your files.</p>
-<h6>grunt-contrib-symlink</h6>
-<p>Create symbolic links, for when you don&#39;t need to physically copy files.</p>
-<h4>Server</h4>
-<h6>grunt-contrib-connect</h6>
-<p>Start a server to preview your changes or to facilitate other tasks, such as automated testing.</p>
-<h6>grunt-contrib-livereload</h6>
-<p>Reload your pages after each change you make. Works in conjunction with <code>grunt-contrib-connect</code> and <code>grunt-contrib-watch</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>grunt-contrib-copy</td>
+<td>Copy files and folders from one location to another.</td>
+</tr>
+<tr>
+<td>grunt-contrib-concat</td>
+<td>Concatenate files.</td>
+</tr>
+<tr>
+<td>grunt-contrib-clean</td>
+<td>Delete files and folders from your project. You can use this to clean up if other tasks create temporary files.</td>
+</tr>
+<tr>
+<td>grunt-contrib-watch</td>
+<td>Watch for changes on files in your project and trigger other tasks. We discussed about this in <em>Chapter 6</em>.</td>
+</tr>
+<tr>
+<td>grunt-contrib-compress</td>
+<td>Create archives from your files.</td>
+</tr>
+<tr>
+<td>grunt-contrib-symlink</td>
+<td>Create symbolic links, for when you don&#39;t need to physically copy files.</td>
+</tr>
+<tr>
+<td>grunt-rev</td>
+<td>Prefix your files with a number representing their content, so each time you change the file, the output will have a different file name to bust the browser cache when you deploy it in production.</td>
+</tr>
+</tbody>
+</table>
+<h4>Server-oriented</h4>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>grunt-contrib-connect</td>
+<td>Start a server to preview your changes or to facilitate other tasks, such as automated testing.</td>
+</tr>
+<tr>
+<td>grunt-contrib-livereload</td>
+<td>Reload your pages after each change you make. Works in conjunction with <code>grunt-contrib-connect</code> and <code>grunt-contrib-watch</code>.</td>
+</tr>
+</tbody>
+</table>
 <h4>CSS-specific</h4>
-<h5>Preprocessing</h5>
-<h6>grunt-contrib-less</h6>
-<p><a href="http://lesscss.org/">LESS</a> &rarr; CSS.</p>
-<h6>grunt-contrib-sass</h6>
-<p><a href="http://sass-lang.com/">Sass</a> &rarr; CSS.</p>
-<h6>grunt-contrib-stylus</h6>
-<p><a href="http://learnboost.github.io/stylus/">Stylus</a> &rarr; CSS.</p>
-<h6>grunt-contrib-compass</h6>
-<p>Allows you to use the <a href="http://compass-style.org/">Compass</a> framework for Sass.</p>
-<h5>Others</h5>
-<h6>grunt-contrib-csslint</h6>
-<p>Lint tool for CSS.</p>
-<h6>grunt-contrib-cssmin</h6>
-<p>Minify your CSS files.</p>
-<h6>grunt-contrib-mincss</h6>
-<p>Another plugin for CSS minification.</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>grunt-contrib-less</td>
+<td>Convert <a href="http://lesscss.org/">LESS</a> to CSS.</td>
+</tr>
+<tr>
+<td>grunt-contrib-sass</td>
+<td>Convert <a href="http://sass-lang.com/">Sass</a> to CSS.</td>
+</tr>
+<tr>
+<td>grunt-contrib-stylus</td>
+<td>Convert <a href="http://learnboost.github.io/stylus/">Stylus</a> to CSS.</td>
+</tr>
+<tr>
+<td>grunt-contrib-compass</td>
+<td>Allows you to use the <a href="http://compass-style.org/">Compass</a> framework for Sass.</td>
+</tr>
+<tr>
+<td>grunt-recess</td>
+<td>Use Twitter&#39;s RECESS module on top of LESS.</td>
+</tr>
+<tr>
+<td>grunt-contrib-csslint</td>
+<td>Lint tool for CSS.</td>
+</tr>
+<tr>
+<td>grunt-contrib-cssmin</td>
+<td>Minify your CSS files.</td>
+</tr>
+<tr>
+<td>grunt-contrib-mincss</td>
+<td>Another plugin for CSS minification.</td>
+</tr>
+</tbody>
+</table>
 <h4>JavaScript-specific</h4>
-<h6>grunt-contrib-coffee</h6>
-<p>CoffeeScript to JavaScript.</p>
-<h6>grunt-contrib-jshint</h6>
-<p>Lint tool for JavaScript. We talked about it in <em>Chapter 3</em>.</p>
-<h6>grunt-complexity</h6>
-<p>Analyze the complexity of your code.</p>
-<h6>grunt-plato</h6>
-<p>Analyze your code with Plato.</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>grunt-contrib-coffee</td>
+<td>CoffeeScript to JavaScript.</td>
+</tr>
+<tr>
+<td>grunt-contrib-jshint</td>
+<td>Lint tool for JavaScript. We talked about it in <em>Chapter 3</em>.</td>
+</tr>
+<tr>
+<td>grunt-complexity</td>
+<td>Analyze the complexity of your code.</td>
+</tr>
+<tr>
+<td>grunt-plato</td>
+<td>Analyze your code with Plato.</td>
+</tr>
+</tbody>
+</table>
 <h4>HTML-specific</h4>
-<h5>Precompilation</h5>
-<h6>grunt-contrib-handlebars</h6>
-<p>Handlebars templates &rarr; JST.</p>
-<h6>grunt-contrib-jst</h6>
-<p>Underscore templates &rarr; JST.</p>
-<h6>grunt-contrib-jade</h6>
-<p>Jade templates &rarr; JST.</p>
-<h5>Others</h5>
-<h6>grunt-contrib-htmlmin</h6>
-<p>Minify your HTML files by removing comments and irrelevant white space.</p>
-<h6>grunt-manifest</h6>
-<p>Generate HTML5 cache manifest files for web sites that can run even when the device is not connected to the Internet.</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>grunt-contrib-handlebars</td>
+<td>Handlebars templates &rarr; JST.</td>
+</tr>
+<tr>
+<td>grunt-contrib-jst</td>
+<td>Underscore templates &rarr; JST.</td>
+</tr>
+<tr>
+<td>grunt-contrib-jade</td>
+<td>Jade templates &rarr; JST.</td>
+</tr>
+<tr>
+<td>grunt-contrib-htmlmin</td>
+<td>Minify your HTML files by removing comments and irrelevant white space.</td>
+</tr>
+<tr>
+<td>grunt-manifest</td>
+<td>Generate HTML5 cache manifest files for web sites that can run even when the device is not connected to the Internet.</td>
+</tr>
+<tr>
+<td>grunt-usemin</td>
+<td>This plugin is composed of two tasks <code>useminPrepare</code> and <code>usemin</code>.</td>
+</tr>
+</tbody>
+</table>
 <h4>Image-specific</h4>
-<h6>grunt-contrib-imagemin</h6>
-<p>Minify images.</p>
-<h6>grunt-grunticon</h6>
-<p>GruntIcon was created by Filament Group.</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>grunt-contrib-imagemin</td>
+<td>Minify images.</td>
+</tr>
+<tr>
+<td>grunt-grunticon</td>
+<td>GruntIcon was created by Filament Group.</td>
+</tr>
+<tr>
+<td>grunt-spritesmith</td>
+<td>Generate sprites from your image files.</td>
+</tr>
+</tbody>
+</table>
 <h4>Automated testing</h4>
-<h6>grunt-contrib-jasmine</h6>
-<p>Automatically builds and maintains your spec runner and runs your tests headlessly through phantomjs.</p>
-<h6>grunt-contrib-nodeunit</h6>
-<p>Unit testing for Node.</p>
-<h6>grunt-contrib-qunit</h6>
-<p>Run QUnit tests.</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>grunt-contrib-jasmine</td>
+<td>Automatically builds and maintains your spec runner and runs your tests headlessly through phantomjs.</td>
+</tr>
+<tr>
+<td>grunt-contrib-nodeunit</td>
+<td>Unit testing for Node.</td>
+</tr>
+<tr>
+<td>grunt-contrib-qunit</td>
+<td>Run QUnit tests.</td>
+</tr>
+<tr>
+<td>grunt-karma</td>
+<td>A Grunt plugin for the Karma test runner.</td>
+</tr>
+</tbody>
+</table>
 <h4>Miscellaneous</h4>
-<h6>grunt-contrib-requirejs</h6>
-<p>Build your RequireJS-powered app.</p>
-<h6>grunt-contrib-yuidoc</h6>
-<p>Generate documentation from YUIDoc.</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>grunt-contrib-requirejs</td>
+<td>Build your RequireJS-powered app.</td>
+</tr>
+<tr>
+<td>grunt-contrib-yuidoc</td>
+<td>Generate documentation from YUIDoc.</td>
+</tr>
+</tbody>
+</table>
 <h3>Loading external data in our tasks</h3>
 <p>Grunt provides two methods for loading external data into the Gruntfile:</p>
 <ul>
@@ -791,10 +1104,9 @@ We do the same for HTML, except we&#39;re using a dynamic declaration of the fil
     }
 };</code></pre>
 <p><strong>Note:</strong> <code>readJSON()</code> only accepts <em>valid</em> JSON-files, while <code>package.json</code> can be JSON-like and still work with <code>npm install</code>. The most common JSON-like-but-not-quite-JSON thing it might contain are comments, which work perfectly fine with the NPM installer but will break the above script.</p>
-<h3>Files, in-depth</h3>
-<p><a href="http://gruntjs.com/configuring-tasks#files">http://gruntjs.com/configuring-tasks#files</a></p>
 <h3>What is JST?</h3>
-<h2>Write your own Grunt tasks</h2>
+<h2>Using Grunt with other tools</h2>
+<p>Grunt in Sublime Text: <a href="https://github.com/tvooo/sublime-grunt">https://github.com/tvooo/sublime-grunt</a></p>
 
 		</article>
 	</body>

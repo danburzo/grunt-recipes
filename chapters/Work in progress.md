@@ -27,9 +27,8 @@ Let's use `readJSON()` for something fun like automatically loading all the task
 
 **Note:** `readJSON()` only accepts _valid_ JSON-files, while `package.json` can be JSON-like and still work with `npm install`. The most common JSON-like-but-not-quite-JSON thing it might contain are comments, which work perfectly fine with the NPM installer but will break the above script.
 
-### Files, in-depth
-http://gruntjs.com/configuring-tasks#files
-
 ### What is JST?
 
-## Write your own Grunt tasks
+## Using Grunt with other tools
+
+Grunt in Sublime Text: https://github.com/tvooo/sublime-grunt

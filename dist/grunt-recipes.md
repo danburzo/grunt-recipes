@@ -6,7 +6,11 @@ A book by Dan Burzo ([@danburzo](http://twitter.com/danburzo))
 
 This is a book about using Grunt to automate your web development workflow. 
 
-You can find it on GitHub: https://github.com/danburzo/grunt-recipes. Contributions/corrections are always welcome.
+It's based on the [Grunt Documentation](http://gruntjs.com/getting-started) and [API Reference](http://gruntjs.com/api/grunt) and takes cues from Belén Albeza's excellent primer [_Power-up Your Front-End Development with Grunt_](https://leanpub.com/grunt), which I encourage you to take a look at.
+
+You can find the book on GitHub: https://github.com/danburzo/grunt-recipes. 
+
+Contributions & corrections are always welcome.
 
 ## Getting started
 
@@ -859,6 +863,186 @@ And here's how we might use this to append the timestamp to our generated CSS fi
 			}
 		}
 	}
+### Files, in-depth
+http://gruntjs.com/configuring-tasks#files
+
+Tasks can be:
+
+* single tasks or multitasks;
+* read-only tasks or read-write tasks.
+* one-to-one tasks or many-to-one tasks.
+
+Multi-tasks work by taking source files and mapping them to destination files. For each destination, you can define one or more source files. Let's look at the ways to define files:
+
+#### Compact mode
+
+todo.
+
+#### Files object format
+
+In the Files Object Format, you specify a `files` object that has:
+
+* the destination file as key
+* a string or array of strings to define the source file(s) for the destination
+
+It looks something like this:
+
+	files: {
+		'dist/file1.js': 'app/file1.js',
+		'dist/combined.js': ['app/file1.js', 'app/file2.js', 'app/file3.js']
+	}
+
+The first line defines one source for the destination file, while the second defines multiple source files for the destination.
+
+#### Files Array Format
+
+The Files Array Format is the canonical form of defining source/destination pairs. Grunt converts all the other formats to the Files Array Format before sending them to the task. It's very similar to the Files Object format, except we explicitly define the `src` and `dest` properties:
+
+	files: [{
+		src: 'app/file1.js',
+		dest: 'dist/file1.js'
+	}, {
+		src: ['app/file1.js', 'app/file2.js', 'app/file3.js'],
+		dest: 'dist/combined.js'
+	}]
+
+It has the advantage of allowing us to specify additional properties, such as:
+
+* `dot`, allows patterns to match file names that start with a period (e.g. `.gitignore`), even if the pattern does not explicitly have a period there;
+* `filter`, which allows us to match files or folders specifically (e.g. filter: 'isFile' will filter out folders)/
+
+... and a couple of others.
+
+#### Defining the files object dynamically
+
+#### Patterns
+
+* `?` matches a single character, excluding `/`;
+* `*` matches any number of characters, _excluding_ `/`;
+* `**` matches any number of characters, _including_ `/`;
+* Use `{}` to define a comma-separated list of alternatives, such as `{backbone,jquery}.min.js`, which will match `backbone.min.js` and `jquery.min.js`;
+* Use `!` to exclude a match.
+
+##### A few common patterns
+
+Let's assume the following structure:
+
+	app/
+		app.js
+		data.js
+		lib/
+			jquery.js
+			backbone.js
+			underscore.js
+		modules/
+			api.js
+			auth.js
+
+
+The star pattern `*` is generally used to match all files in the folder:
+
+	src: 'app/*.js'
+	// matches app.js, data.js
+
+The double star pattern `**/*` is used to match all files in the folder and its subfolders:
+
+	src: 'app/**/*.js'
+	// matches app.js, data.js, jquery.js, backbone.js, underscore.js, api.js, auth.js
+
+
+You don't need to define complicated, all-encompassing patterns, because you can define the sources as arrays. They will all be processed and will result in _a set of files_ (meaning each file will appear only once even if it's matched by multiple patterns).
+
+For example, let's say you want to select all JavaScript files in the `app` folder and its subfolders, _but not_ the `lib` subfolder:
+
+	src: ['app/**/*.js', '!app/lib/*.js']
+	// matches app.js, data.js, api.js, auth.js
+
+This array of patterns will initially match all JavaScript files in `app` but then will exclude those from the `lib` subfolder. Easy! 
+
+##### Practice your patterns
+
+Todo.
+## Write your own Grunt tasks
+
+### Working with files
+
+Chances are your app will want to operate on files. You can learn about the different ways users can define files in the _Files In-Depth_ chapter, and there certainly are a bunch of them! Fortunately, Grunt does the heavy-lifting for us and normalizes all formats into the _Files Array_ format, expanding all the patterns it finds along the way. 
+
+So really all we have to do is grab the array from `this.files` containing objects which have two main properties:
+
+* the `dest` property holds the path to the destination;
+* the `src` property is an array of one or more source files for the destination.
+
+Let's try this out!
+
+Assume we have a project structure like this one:
+
+	app/
+		src1.js
+		src2.js
+	Gruntfile.js
+	package.json
+
+We write the following Grunt code:
+
+	grunt.initConfig({
+		logfiles: {
+			filesObject: {
+				files: {
+					'dist/file1.js': ['app/src*.js']
+				}
+			},
+			filesArray: {
+				files: [{
+					src: ['app/src*.js'],
+					dest: 'dist/file1.js'
+				}]
+			}
+		}
+	});
+
+	grunt.registerMultiTask(
+		'logfiles', 
+		'Log the source-destination mappings in a Grunt multitask', 
+		function() {
+			this.files.forEach(function(file) {
+				grunt.log.writeln('File ' + file.dest + ' has the sources ' + file.src);
+			});	
+		}
+	);
+
+Firstly, we created two targets corresponding to two different ways of defining files for our tasks. Secondly, we defined our multitask as a simple loop through the `this.files` array.
+
+Now let's check what each of them outputs:
+
+	grunt logfiles:filesObject
+	> Running "logfiles:filesObject" (logfiles) task
+	> File dist/file1.js has the sources app/src1.js, app/src2.js
+
+	grunt logfiles:filesArray
+	> Running "logfiles:filesArray" (logfiles) task
+	> File dist/file1.js has the sources app/src1.js, app/src2.js
+
+Identical &mdash; one less thing for us to worry about!
+
+#### Excluding sources that don't exist
+	
+A good practice in all tasks is to filter out the source files that don't actually exist in the project:
+
+	this.files.forEach(function(file) {
+		var sources = file.src.filter(function(path) {
+			if (!grunt.file.exists(path)) {
+				grunt.log.warn('Source file ' + path + ' not found.');
+				return false;
+			} else {
+				return true;
+			}
+		});
+	});	
+
+Now the `sources` variable contains only the subset of files that are valid.
+
+
 ### Some useful Grunt plugins
 
 Here are some handpicked plugins for your enjoyment. Most of the 'official' plugins (starting with `grunt-contrib`) are included.
@@ -867,122 +1051,81 @@ Here are some handpicked plugins for your enjoyment. Most of the 'official' plug
 
 These general purpose plugins operate on any text-based files.
 
-###### grunt-contrib-copy
-Copy projects from one location to another.
+Plugin 					| Description
+------ 					| -----------
+grunt-contrib-copy		| Copy files and folders from one location to another.
+grunt-contrib-concat 	| Concatenate files.
+grunt-contrib-clean 	| Delete files and folders from your project. You can use this to clean up if other tasks create temporary files.
+grunt-contrib-watch 	| Watch for changes on files in your project and trigger other tasks. We discussed about this in _Chapter 6_.
+grunt-contrib-compress 	| Create archives from your files.
+grunt-contrib-symlink 	| Create symbolic links, for when you don't need to physically copy files.
+grunt-rev 				| Prefix your files with a number representing their content, so each time you change the file, the output will have a different file name to bust the browser cache when you deploy it in production.
 
-###### grunt-contrib-concat
-Concatenate files.
+#### Server-oriented
 
-###### grunt-contrib-clean
-Delete files and directories from your project. You can use this to clean up if other tasks create temporary files.
-
-###### grunt-contrib-watch
-Watch for changes on files in your projects and trigger other tasks. We discussed about this in _Chapter 6_.
-
-###### grunt-contrib-compress
-Create ZIP archives from your files.
-
-###### grunt-contrib-symlink
-Create symbolic links, for when you don't need to physically copy files.
-
-#### Server
-
-###### grunt-contrib-connect
-Start a server to preview your changes or to facilitate other tasks, such as automated testing.
-
-###### grunt-contrib-livereload
-Reload your pages after each change you make. Works in conjunction with `grunt-contrib-connect` and `grunt-contrib-watch`.
+Plugin 						| Description
+------ 						| -----------
+grunt-contrib-connect 		| Start a server to preview your changes or to facilitate other tasks, such as automated testing.
+grunt-contrib-livereload 	| Reload your pages after each change you make. Works in conjunction with `grunt-contrib-connect` and `grunt-contrib-watch`.
 
 #### CSS-specific
 
-##### Preprocessing
-
-###### grunt-contrib-less
-[LESS](http://lesscss.org/) &rarr; CSS.
-
-###### grunt-contrib-sass
-[Sass](http://sass-lang.com/) &rarr; CSS.
-
-###### grunt-contrib-stylus
-[Stylus](http://learnboost.github.io/stylus/) &rarr; CSS.
-
-###### grunt-contrib-compass
-Allows you to use the [Compass](http://compass-style.org/) framework for Sass.
-
-##### Others
-
-###### grunt-contrib-csslint
-Lint tool for CSS.
-
-###### grunt-contrib-cssmin
-Minify your CSS files.
-
-###### grunt-contrib-mincss
-Another plugin for CSS minification.
+Plugin 					| Description
+------ 					| -----------
+grunt-contrib-less 		| Convert [LESS](http://lesscss.org/) to CSS.
+grunt-contrib-sass 		| Convert [Sass](http://sass-lang.com/) to CSS.
+grunt-contrib-stylus 	| Convert [Stylus](http://learnboost.github.io/stylus/) to CSS.
+grunt-contrib-compass 	| Allows you to use the [Compass](http://compass-style.org/) framework for Sass.
+grunt-recess 			| Use Twitter's RECESS module on top of LESS.
+grunt-contrib-csslint 	| Lint tool for CSS.
+grunt-contrib-cssmin 	| Minify your CSS files.
+grunt-contrib-mincss 	| Another plugin for CSS minification.
 
 
 #### JavaScript-specific
 
-###### grunt-contrib-coffee
-CoffeeScript to JavaScript.
-
-###### grunt-contrib-jshint
-Lint tool for JavaScript. We talked about it in _Chapter 3_.
-
-###### grunt-complexity
-Analyze the complexity of your code.
-
-###### grunt-plato
-Analyze your code with Plato.
+Plugin 					| Description
+------ 					| -----------
+grunt-contrib-coffee	| CoffeeScript to JavaScript.
+grunt-contrib-jshint	| Lint tool for JavaScript. We talked about it in _Chapter 3_.
+grunt-complexity		| Analyze the complexity of your code.
+grunt-plato				| Analyze your code with Plato.
 
 #### HTML-specific
 
-##### Precompilation
-
-###### grunt-contrib-handlebars
-Handlebars templates &rarr; JST.
-
-###### grunt-contrib-jst
-Underscore templates &rarr; JST.
-
-###### grunt-contrib-jade
-Jade templates &rarr; JST.
-
-##### Others
-
-###### grunt-contrib-htmlmin
-Minify your HTML files by removing comments and irrelevant white space.
-
-###### grunt-manifest
-Generate HTML5 cache manifest files for web sites that can run even when the device is not connected to the Internet.
+Plugin 						| Description
+------ 						| -----------
+grunt-contrib-handlebars	| Handlebars templates &rarr; JST.
+grunt-contrib-jst 			| Underscore templates &rarr; JST.
+grunt-contrib-jade 			| Jade templates &rarr; JST.
+grunt-contrib-htmlmin		| Minify your HTML files by removing comments and irrelevant white space.
+grunt-manifest				| Generate HTML5 cache manifest files for web sites that can run even when the device is not connected to the Internet.
+grunt-usemin				| This plugin is composed of two tasks `useminPrepare` and `usemin`.
 
 #### Image-specific
 
-###### grunt-contrib-imagemin
-Minify images.
-
-###### grunt-grunticon
-GruntIcon was created by Filament Group.
+Plugin 						| Description
+------ 						| -----------
+grunt-contrib-imagemin		| Minify images.
+grunt-grunticon				| GruntIcon was created by Filament Group.
+grunt-spritesmith			| Generate sprites from your image files.
 
 #### Automated testing
 
-###### grunt-contrib-jasmine
-Automatically builds and maintains your spec runner and runs your tests headlessly through phantomjs.
-
-###### grunt-contrib-nodeunit
-Unit testing for Node.
-
-###### grunt-contrib-qunit
-Run QUnit tests.
-
+Plugin 						| Description
+------ 						| -----------
+grunt-contrib-jasmine		| Automatically builds and maintains your spec runner and runs your tests headlessly through phantomjs.
+grunt-contrib-nodeunit		| Unit testing for Node.
+grunt-contrib-qunit			| Run QUnit tests.
+grunt-karma					| A Grunt plugin for the Karma test runner.
 
 #### Miscellaneous
 
-###### grunt-contrib-requirejs
-Build your RequireJS-powered app.
+Plugin 						| Description
+------ 						| -----------
+grunt-contrib-requirejs		| Build your RequireJS-powered app.
+grunt-contrib-yuidoc		| Generate documentation from YUIDoc.
 
-###### grunt-contrib-yuidoc
-Generate documentation from YUIDoc.
 
 ### Loading external data in our tasks
 
@@ -1013,9 +1156,8 @@ Let's use `readJSON()` for something fun like automatically loading all the task
 
 **Note:** `readJSON()` only accepts _valid_ JSON-files, while `package.json` can be JSON-like and still work with `npm install`. The most common JSON-like-but-not-quite-JSON thing it might contain are comments, which work perfectly fine with the NPM installer but will break the above script.
 
-### Files, in-depth
-http://gruntjs.com/configuring-tasks#files
-
 ### What is JST?
 
-## Write your own Grunt tasks
+## Using Grunt with other tools
+
+Grunt in Sublime Text: https://github.com/tvooo/sublime-grunt

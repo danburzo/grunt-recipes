@@ -24,7 +24,8 @@ module.exports = function(grunt) {
 				},
 				options: {
 					markdownOptions: {
-						gfm: true
+						gfm: true,
+						tables: true
 					},
 					template: 'grunt-recipes.tmpl'
 				}
@@ -38,6 +39,20 @@ module.exports = function(grunt) {
 					atBegin: true
 				}
 			}
+		},
+
+		logfiles: {
+			filesObject: {
+				files: {
+					'dist/destination': ['chapters/*.md', '*.tmpl']
+				}
+			},
+			filesArray: {
+				files: [{
+					src: ['chapters/*.md', '*.tmpl'],
+					dest: 'dist/destination'
+				}]
+			}
 		}
 	});
 
@@ -50,4 +65,10 @@ module.exports = function(grunt) {
 	}
 
 	grunt.registerTask('default', ['watch']);
+
+	grunt.registerMultiTask('logfiles', function() {
+		this.files.forEach(function(file) {
+            grunt.log.writeln('File ' + file.dest + ' has the sources ' + grunt.log.wordlist(file.src));
+        }); 
+	});
 };
