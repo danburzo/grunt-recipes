@@ -7,6 +7,8 @@ Let's put everything we know together to create a static website generator that 
 Let's look at the structure we want for the project:
 
 	my-blog
+		init/
+			sample.post
 		content/
 			hello_world.post
 			second_post.post
@@ -54,6 +56,11 @@ Let's think about the kind of metadata is useful:
 * `date` when the post was written; if ommited, we can look at the timestamp on the file itself.
 * `category` of the post.
 
+We've also created a `init` folder containing `sample.post` so we don't have to start each page from scratch. We'll create a separate Grunt task that creates new posts for us:
+
+	grunt new "Post title"
+
+
 ### Let's gather our tools
 
 Off the top of our heads, we will most definitely need:
@@ -66,9 +73,16 @@ Off the top of our heads, we will most definitely need:
 ### Building the Gruntfile
 
 	grunt.initConfig({
-
+		copy: {
+			sample: {
+				files: [{
+					src: 'init/sample.post',
+					dest: 'posts/new_post.post'
+				}]
+			}
+		}
 	});
 
 	grunt.registerTask('default', 'Build the blog', []);
-
+	grunt.registerTask('new', 'Create a new post', ['copy:sample'])
 

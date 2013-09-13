@@ -959,6 +959,8 @@ grunt logfiles:filesArray
 <h3>What we&#39;re trying to do</h3>
 <p>Let&#39;s look at the structure we want for the project:</p>
 <pre><code>my-blog
+    init/
+        sample.post
     content/
         hello_world.post
         second_post.post
@@ -1002,6 +1004,8 @@ category: General
 <li><code>date</code> when the post was written; if ommited, we can look at the timestamp on the file itself.</li>
 <li><code>category</code> of the post.</li>
 </ul>
+<p>We&#39;ve also created a <code>init</code> folder containing <code>sample.post</code> so we don&#39;t have to start each page from scratch. We&#39;ll create a separate Grunt task that creates new posts for us:</p>
+<pre><code>grunt new &quot;Post title&quot;</code></pre>
 <h3>Let&#39;s gather our tools</h3>
 <p>Off the top of our heads, we will most definitely need:</p>
 <ul>
@@ -1011,10 +1015,18 @@ category: General
 </ul>
 <h3>Building the Gruntfile</h3>
 <pre><code>grunt.initConfig({
-
+    copy: {
+        sample: {
+            files: [{
+                src: &#39;init/sample.post&#39;,
+                dest: &#39;posts/new_post.post&#39;
+            }]
+        }
+    }
 });
 
-grunt.registerTask(&#39;default&#39;, &#39;Build the blog&#39;, []);</code></pre>
+grunt.registerTask(&#39;default&#39;, &#39;Build the blog&#39;, []);
+grunt.registerTask(&#39;new&#39;, &#39;Create a new post&#39;, [&#39;copy:sample&#39;])</code></pre>
 <h2>Some useful Grunt plugins</h2>
 <p>Here are some handpicked plugins for your enjoyment. Most of the &#39;official&#39; plugins (starting with <code>grunt-contrib</code>) are included.</p>
 <h3>General purpose</h3>
