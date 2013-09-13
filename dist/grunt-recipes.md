@@ -378,6 +378,8 @@ In plain words, the previous construct reads as:
 
 If you run `grunt sass` again, you'll notice that everything still works, but with the added benefit that we add/remove Sass files to your project and they'll be picked up by the sass task without having to update the Gruntfile each time.
 
+Read more about the different ways to define files in the chapter _Files In-Depth_.
+
 #### Take five
 
 In this recipe, we've learned:
@@ -894,6 +896,7 @@ It looks something like this:
 
 The first line defines one source for the destination file, while the second defines multiple source files for the destination.
 
+
 #### Files Array Format
 
 The Files Array Format is the canonical form of defining source/destination pairs. Grunt converts all the other formats to the Files Array Format before sending them to the task. It's very similar to the Files Object format, except we explicitly define the `src` and `dest` properties:
@@ -912,8 +915,6 @@ It has the advantage of allowing us to specify additional properties, such as:
 * `filter`, which allows us to match files or folders specifically (e.g. filter: 'isFile' will filter out folders)/
 
 ... and a couple of others.
-
-#### Defining the files object dynamically
 
 #### Patterns
 
@@ -962,7 +963,143 @@ This array of patterns will initially match all JavaScript files in `app` but th
 ##### Practice your patterns
 
 Todo.
+
+#### Defining the files object dynamically
+
+We mentioned earlier that each object in the Files Array format can take additional properties. Some of these properties are useful in defining our file mappings dynamically.
+Let's take a look:
+
+* `expand` is set to `true` so that we can use dynamic mappings;
+* `cwd` (current working directory) is the common path to all the source files;
+* `src` is an array of one or more patterns to match, relative to `cwd`;
+* `dest` is the counterpart to `cwd` and describes the destination path prefix;
+* `ext` is the new extension for the destination files, which replaces the extension of the original file; 
+
+The dynamic mapping is useful for one-to-one mappings: for each source file you will get a destination file.
+
+A real-world example would be copying an entire folder structure from one place to another.
+
+	my-project
+		app/
+			js/
+				app.js
+				data.js
+				lib/
+					jquery.js
+					backbone.js
+				modules/
+					api.js
+					auth.js
+		dist/
+		Gruntfile.js
+		package.json
+
+We will use `grunt-contrib-copy` to copy the content of the `js` folder into `dist`. A first attempt:
+	
+	copy: {
+		all: {
+			files: [{
+				expand: true,
+				src: 'app/js/**/*.js',
+				dest: 'dist/'
+			}]
+		}
+	}
+
+An honest attempt, but it generates the following structure:
+
+	my-project
+		app/
+			js/
+				app.js
+				data.js
+				lib/
+					jquery.js
+					backbone.js
+				modules/
+					api.js
+					auth.js
+		dist/
+			app/
+				js/
+					app.js
+					data.js
+					lib/
+						jquery.js
+						backbone.js
+					modules/
+						api.js
+						auth.js
+		Gruntfile.js
+		package.json
+
+Close, but no cigar. We wanted the `js` folder included directly under `dist`.
+
+What we need to do is take the `app` part out of the `src` property and put it in the `cwd` property:
+
+	copy: {
+		all: {
+			files: [{
+				expand: true,
+				cwd: 'app/',
+				src: 'js/**/*.js',
+				dest: 'dist/'
+			}]
+		}
+	}
+
+Which gives us the expected result:
+
+	my-project
+		app/
+			js/
+				app.js
+				data.js
+				lib/
+					jquery.js
+					backbone.js
+				modules/
+					api.js
+					auth.js
+		dist/
+			js/
+				app.js
+				data.js
+				lib/
+					jquery.js
+					backbone.js
+				modules/
+					api.js
+					auth.js
+		Gruntfile.js
+		package.json
+
+Freeze Frame High-Five!&trade;
+
+So where's the difference? Well, the `cwd` parameter &mdash; standing for the Common Working Directory, if you remember &mdash; dictates where the root of the whole structure we want to match is located, and the rest of the folder structure (from the `src` parameter) is mapped one-to-one in the path defined by `dest`.
 ## Write your own Grunt tasks
+
+### A primer on custom tasks
+
+#### Aliasing existing tasks
+
+Task aliasing is useful for when you want to run multiple tasks in sequence without having to invoke Grunt specifically for each one. The way to do this is:
+
+	grunt.registerTask('mytask', 'Optional task description', ['jshint', 'qunit', 'concat']);
+
+This way you can simply run
+
+	grunt mytask
+
+...and it will trigger the succession of `jshint`, `qunit` and `concat`.
+
+We usually want to define a `default` task that will run when we simply type `grunt` in the command line:
+
+	grunt.registerTask('default', ['watch']);
+
+In addition, the list of tasks can come with specific targets:
+	
+	grunt.registerTask('default', ['watch:stylesheets']);
 
 ### Working with files
 
@@ -1043,11 +1180,41 @@ A good practice in all tasks is to filter out the source files that don't actual
 Now the `sources` variable contains only the subset of files that are valid.
 
 
-### Some useful Grunt plugins
+## Our Big Project &mdash; creating a static website plugin
+
+Let's put everything we know together to create a static website generator that takes pages in markdown format and assembles them into a fully-functional blog.
+
+Let's look at the structure we want for the project:
+
+	my-blog
+		posts/
+			hello_world.post
+			second_post.post
+		templates/
+			partials/
+				header.tmpl
+				footer.tmpl
+			index.tmpl
+			post.tmpl
+			archive.tmpl
+		styles/
+			blog.css
+		blog/
+			<our blog gets generated here>
+		Gruntfile.js
+		package.json
+
+We will need to take the information for each post from the `.post` file and build a corresponding `.html` file by assembling it from templates:
+
+*  `index.tmpl`, `post.tmpl` and `archive.tmpl` correspond to the different types of pages we will have: a home page, a list of all the posts and pages for the individual posts;
+* `partials` contains the parts common to all page types, such as the header and the footer.
+
+
+## Some useful Grunt plugins
 
 Here are some handpicked plugins for your enjoyment. Most of the 'official' plugins (starting with `grunt-contrib`) are included.
 
-#### General purpose
+### General purpose
 
 These general purpose plugins operate on any text-based files.
 
@@ -1061,14 +1228,14 @@ grunt-contrib-compress 	| Create archives from your files.
 grunt-contrib-symlink 	| Create symbolic links, for when you don't need to physically copy files.
 grunt-rev 				| Prefix your files with a number representing their content, so each time you change the file, the output will have a different file name to bust the browser cache when you deploy it in production.
 
-#### Server-oriented
+### Server-oriented
 
 Plugin 						| Description
 ------ 						| -----------
 grunt-contrib-connect 		| Start a server to preview your changes or to facilitate other tasks, such as automated testing.
 grunt-contrib-livereload 	| Reload your pages after each change you make. Works in conjunction with `grunt-contrib-connect` and `grunt-contrib-watch`.
 
-#### CSS-specific
+### CSS-specific
 
 Plugin 					| Description
 ------ 					| -----------
@@ -1082,7 +1249,7 @@ grunt-contrib-cssmin 	| Minify your CSS files.
 grunt-contrib-mincss 	| Another plugin for CSS minification.
 
 
-#### JavaScript-specific
+### JavaScript-specific
 
 Plugin 					| Description
 ------ 					| -----------
@@ -1091,7 +1258,7 @@ grunt-contrib-jshint	| Lint tool for JavaScript. We talked about it in _Chapter 
 grunt-complexity		| Analyze the complexity of your code.
 grunt-plato				| Analyze your code with Plato.
 
-#### HTML-specific
+### HTML-specific
 
 Plugin 						| Description
 ------ 						| -----------
@@ -1102,7 +1269,7 @@ grunt-contrib-htmlmin		| Minify your HTML files by removing comments and irrelev
 grunt-manifest				| Generate HTML5 cache manifest files for web sites that can run even when the device is not connected to the Internet.
 grunt-usemin				| This plugin is composed of two tasks `useminPrepare` and `usemin`.
 
-#### Image-specific
+### Image-specific
 
 Plugin 						| Description
 ------ 						| -----------
@@ -1110,7 +1277,7 @@ grunt-contrib-imagemin		| Minify images.
 grunt-grunticon				| GruntIcon was created by Filament Group.
 grunt-spritesmith			| Generate sprites from your image files.
 
-#### Automated testing
+### Automated testing
 
 Plugin 						| Description
 ------ 						| -----------
@@ -1119,7 +1286,7 @@ grunt-contrib-nodeunit		| Unit testing for Node.
 grunt-contrib-qunit			| Run QUnit tests.
 grunt-karma					| A Grunt plugin for the Karma test runner.
 
-#### Miscellaneous
+### Miscellaneous
 
 Plugin 						| Description
 ------ 						| -----------
@@ -1160,4 +1327,6 @@ Let's use `readJSON()` for something fun like automatically loading all the task
 
 ## Using Grunt with other tools
 
-Grunt in Sublime Text: https://github.com/tvooo/sublime-grunt
+### Grunt in Sublime Text
+
+The Sublime Text plugin [`sublime-grunt`](https://github.com/tvooo/sublime-grunt) allows you to run Grunt directly inside the editor, so you don't have to toggle between the IDE and the command line when developing.

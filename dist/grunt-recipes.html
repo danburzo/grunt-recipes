@@ -329,6 +329,7 @@ cd my-project</code></pre>
 <p>Run all files with the <code>.scss</code> extension from the <code>scss</code> folder through the <code>sass</code> task and place the resulting files in the <code>css</code> folder, each with their original names but with the <code>.css</code> extension instead of <code>.scss</code>.</p>
 </blockquote>
 <p>If you run <code>grunt sass</code> again, you&#39;ll notice that everything still works, but with the added benefit that we add/remove Sass files to your project and they&#39;ll be picked up by the sass task without having to update the Gruntfile each time.</p>
+<p>Read more about the different ways to define files in the chapter <em>Files In-Depth</em>.</p>
 <h4>Take five</h4>
 <p>In this recipe, we&#39;ve learned:</p>
 <ul>
@@ -746,7 +747,6 @@ We do the same for HTML, except we&#39;re using a dynamic declaration of the fil
 <li><code>filter</code>, which allows us to match files or folders specifically (e.g. filter: &#39;isFile&#39; will filter out folders)/</li>
 </ul>
 <p>... and a couple of others.</p>
-<h4>Defining the files object dynamically</h4>
 <h4>Patterns</h4>
 <ul>
 <li><code>?</code> matches a single character, excluding <code>/</code>;</li>
@@ -780,7 +780,117 @@ We do the same for HTML, except we&#39;re using a dynamic declaration of the fil
 <p>This array of patterns will initially match all JavaScript files in <code>app</code> but then will exclude those from the <code>lib</code> subfolder. Easy! </p>
 <h5>Practice your patterns</h5>
 <p>Todo.</p>
+<h4>Defining the files object dynamically</h4>
+<p>We mentioned earlier that each object in the Files Array format can take additional properties. Some of these properties are useful in defining our file mappings dynamically.
+Let&#39;s take a look:</p>
+<ul>
+<li><code>expand</code> is set to <code>true</code> so that we can use dynamic mappings;</li>
+<li><code>cwd</code> (current working directory) is the common path to all the source files;</li>
+<li><code>src</code> is an array of one or more patterns to match, relative to <code>cwd</code>;</li>
+<li><code>dest</code> is the counterpart to <code>cwd</code> and describes the destination path prefix;</li>
+<li><code>ext</code> is the new extension for the destination files, which replaces the extension of the original file; </li>
+</ul>
+<p>The dynamic mapping is useful for one-to-one mappings: for each source file you will get a destination file.</p>
+<p>A real-world example would be copying an entire folder structure from one place to another.</p>
+<pre><code>my-project
+    app/
+        js/
+            app.js
+            data.js
+            lib/
+                jquery.js
+                backbone.js
+            modules/
+                api.js
+                auth.js
+    dist/
+    Gruntfile.js
+    package.json</code></pre>
+<p>We will use <code>grunt-contrib-copy</code> to copy the content of the <code>js</code> folder into <code>dist</code>. A first attempt:</p>
+<pre><code>copy: {
+    all: {
+        files: [{
+            expand: true,
+            src: &#39;app/js/**/*.js&#39;,
+            dest: &#39;dist/&#39;
+        }]
+    }
+}</code></pre>
+<p>An honest attempt, but it generates the following structure:</p>
+<pre><code>my-project
+    app/
+        js/
+            app.js
+            data.js
+            lib/
+                jquery.js
+                backbone.js
+            modules/
+                api.js
+                auth.js
+    dist/
+        app/
+            js/
+                app.js
+                data.js
+                lib/
+                    jquery.js
+                    backbone.js
+                modules/
+                    api.js
+                    auth.js
+    Gruntfile.js
+    package.json</code></pre>
+<p>Close, but no cigar. We wanted the <code>js</code> folder included directly under <code>dist</code>.</p>
+<p>What we need to do is take the <code>app</code> part out of the <code>src</code> property and put it in the <code>cwd</code> property:</p>
+<pre><code>copy: {
+    all: {
+        files: [{
+            expand: true,
+            cwd: &#39;app/&#39;,
+            src: &#39;js/**/*.js&#39;,
+            dest: &#39;dist/&#39;
+        }]
+    }
+}</code></pre>
+<p>Which gives us the expected result:</p>
+<pre><code>my-project
+    app/
+        js/
+            app.js
+            data.js
+            lib/
+                jquery.js
+                backbone.js
+            modules/
+                api.js
+                auth.js
+    dist/
+        js/
+            app.js
+            data.js
+            lib/
+                jquery.js
+                backbone.js
+            modules/
+                api.js
+                auth.js
+    Gruntfile.js
+    package.json</code></pre>
+<p>Freeze Frame High-Five!&trade;</p>
+<p>So where&#39;s the difference? Well, the <code>cwd</code> parameter &mdash; standing for the Common Working Directory, if you remember &mdash; dictates where the root of the whole structure we want to match is located, and the rest of the folder structure (from the <code>src</code> parameter) is mapped one-to-one in the path defined by <code>dest</code>.</p>
 <h2>Write your own Grunt tasks</h2>
+<h3>A primer on custom tasks</h3>
+<h4>Aliasing existing tasks</h4>
+<p>Task aliasing is useful for when you want to run multiple tasks in sequence without having to invoke Grunt specifically for each one. The way to do this is:</p>
+<pre><code>grunt.registerTask(&#39;mytask&#39;, &#39;Optional task description&#39;, [&#39;jshint&#39;, &#39;qunit&#39;, &#39;concat&#39;]);</code></pre>
+<p>This way you can simply run</p>
+<pre><code>grunt mytask</code></pre>
+<p>...and it will trigger the succession of <code>jshint</code>, <code>qunit</code> and <code>concat</code>.</p>
+<p>We usually want to define a <code>default</code> task that will run when we simply type <code>grunt</code> in the command line:</p>
+<pre><code>grunt.registerTask(&#39;default&#39;, [&#39;watch&#39;]);</code></pre>
+<p>In addition, the list of tasks can come with specific targets:</p>
+<pre><code>grunt.registerTask(&#39;default&#39;, [&#39;watch:stylesheets&#39;]);</code></pre>
 <h3>Working with files</h3>
 <p>Chances are your app will want to operate on files. You can learn about the different ways users can define files in the <em>Files In-Depth</em> chapter, and there certainly are a bunch of them! Fortunately, Grunt does the heavy-lifting for us and normalizes all formats into the <em>Files Array</em> format, expanding all the patterns it finds along the way. </p>
 <p>So really all we have to do is grab the array from <code>this.files</code> containing objects which have two main properties:</p>
@@ -844,9 +954,34 @@ grunt logfiles:filesArray
     });
 });    </code></pre>
 <p>Now the <code>sources</code> variable contains only the subset of files that are valid.</p>
-<h3>Some useful Grunt plugins</h3>
+<h2>Our Big Project &mdash; creating a static website plugin</h2>
+<p>Let&#39;s put everything we know together to create a static website generator that takes pages in markdown format and assembles them into a fully-functional blog.</p>
+<p>Let&#39;s look at the structure we want for the project:</p>
+<pre><code>my-blog
+    posts/
+        hello_world.post
+        second_post.post
+    templates/
+        partials/
+            header.tmpl
+            footer.tmpl
+        index.tmpl
+        post.tmpl
+        archive.tmpl
+    styles/
+        blog.css
+    blog/
+        &lt;our blog gets generated here&gt;
+    Gruntfile.js
+    package.json</code></pre>
+<p>We will need to take the information for each post from the <code>.post</code> file and build a corresponding <code>.html</code> file by assembling it from templates:</p>
+<ul>
+<li><code>index.tmpl</code>, <code>post.tmpl</code> and <code>archive.tmpl</code> correspond to the different types of pages we will have: a home page, a list of all the posts and pages for the individual posts;</li>
+<li><code>partials</code> contains the parts common to all page types, such as the header and the footer.</li>
+</ul>
+<h2>Some useful Grunt plugins</h2>
 <p>Here are some handpicked plugins for your enjoyment. Most of the &#39;official&#39; plugins (starting with <code>grunt-contrib</code>) are included.</p>
-<h4>General purpose</h4>
+<h3>General purpose</h3>
 <p>These general purpose plugins operate on any text-based files.</p>
 <table>
 <thead>
@@ -886,7 +1021,7 @@ grunt logfiles:filesArray
 </tr>
 </tbody>
 </table>
-<h4>Server-oriented</h4>
+<h3>Server-oriented</h3>
 <table>
 <thead>
 <tr>
@@ -905,7 +1040,7 @@ grunt logfiles:filesArray
 </tr>
 </tbody>
 </table>
-<h4>CSS-specific</h4>
+<h3>CSS-specific</h3>
 <table>
 <thead>
 <tr>
@@ -948,7 +1083,7 @@ grunt logfiles:filesArray
 </tr>
 </tbody>
 </table>
-<h4>JavaScript-specific</h4>
+<h3>JavaScript-specific</h3>
 <table>
 <thead>
 <tr>
@@ -975,7 +1110,7 @@ grunt logfiles:filesArray
 </tr>
 </tbody>
 </table>
-<h4>HTML-specific</h4>
+<h3>HTML-specific</h3>
 <table>
 <thead>
 <tr>
@@ -1010,7 +1145,7 @@ grunt logfiles:filesArray
 </tr>
 </tbody>
 </table>
-<h4>Image-specific</h4>
+<h3>Image-specific</h3>
 <table>
 <thead>
 <tr>
@@ -1033,7 +1168,7 @@ grunt logfiles:filesArray
 </tr>
 </tbody>
 </table>
-<h4>Automated testing</h4>
+<h3>Automated testing</h3>
 <table>
 <thead>
 <tr>
@@ -1060,7 +1195,7 @@ grunt logfiles:filesArray
 </tr>
 </tbody>
 </table>
-<h4>Miscellaneous</h4>
+<h3>Miscellaneous</h3>
 <table>
 <thead>
 <tr>
@@ -1106,7 +1241,8 @@ grunt logfiles:filesArray
 <p><strong>Note:</strong> <code>readJSON()</code> only accepts <em>valid</em> JSON-files, while <code>package.json</code> can be JSON-like and still work with <code>npm install</code>. The most common JSON-like-but-not-quite-JSON thing it might contain are comments, which work perfectly fine with the NPM installer but will break the above script.</p>
 <h3>What is JST?</h3>
 <h2>Using Grunt with other tools</h2>
-<p>Grunt in Sublime Text: <a href="https://github.com/tvooo/sublime-grunt">https://github.com/tvooo/sublime-grunt</a></p>
+<h3>Grunt in Sublime Text</h3>
+<p>The Sublime Text plugin <a href="https://github.com/tvooo/sublime-grunt"><code>sublime-grunt</code></a> allows you to run Grunt directly inside the editor, so you don&#39;t have to toggle between the IDE and the command line when developing.</p>
 
 		</article>
 	</body>

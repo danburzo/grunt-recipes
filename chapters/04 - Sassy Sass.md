@@ -73,6 +73,8 @@ In plain words, the previous construct reads as:
 
 If you run `grunt sass` again, you'll notice that everything still works, but with the added benefit that we add/remove Sass files to your project and they'll be picked up by the sass task without having to update the Gruntfile each time.
 
+Read more about the different ways to define files in the chapter _Files In-Depth_.
+
 #### Take five
 
 In this recipe, we've learned:

@@ -1,8 +1,8 @@
-### Some useful Grunt plugins
+## Some useful Grunt plugins
 
 Here are some handpicked plugins for your enjoyment. Most of the 'official' plugins (starting with `grunt-contrib`) are included.
 
-#### General purpose
+### General purpose
 
 These general purpose plugins operate on any text-based files.
 
@@ -16,14 +16,14 @@ grunt-contrib-compress 	| Create archives from your files.
 grunt-contrib-symlink 	| Create symbolic links, for when you don't need to physically copy files.
 grunt-rev 				| Prefix your files with a number representing their content, so each time you change the file, the output will have a different file name to bust the browser cache when you deploy it in production.
 
-#### Server-oriented
+### Server-oriented
 
 Plugin 						| Description
 ------ 						| -----------
 grunt-contrib-connect 		| Start a server to preview your changes or to facilitate other tasks, such as automated testing.
 grunt-contrib-livereload 	| Reload your pages after each change you make. Works in conjunction with `grunt-contrib-connect` and `grunt-contrib-watch`.
 
-#### CSS-specific
+### CSS-specific
 
 Plugin 					| Description
 ------ 					| -----------
@@ -37,7 +37,7 @@ grunt-contrib-cssmin 	| Minify your CSS files.
 grunt-contrib-mincss 	| Another plugin for CSS minification.
 
 
-#### JavaScript-specific
+### JavaScript-specific
 
 Plugin 					| Description
 ------ 					| -----------
@@ -46,7 +46,7 @@ grunt-contrib-jshint	| Lint tool for JavaScript. We talked about it in _Chapter 
 grunt-complexity		| Analyze the complexity of your code.
 grunt-plato				| Analyze your code with Plato.
 
-#### HTML-specific
+### HTML-specific
 
 Plugin 						| Description
 ------ 						| -----------
@@ -57,7 +57,7 @@ grunt-contrib-htmlmin		| Minify your HTML files by removing comments and irrelev
 grunt-manifest				| Generate HTML5 cache manifest files for web sites that can run even when the device is not connected to the Internet.
 grunt-usemin				| This plugin is composed of two tasks `useminPrepare` and `usemin`.
 
-#### Image-specific
+### Image-specific
 
 Plugin 						| Description
 ------ 						| -----------
@@ -65,7 +65,7 @@ grunt-contrib-imagemin		| Minify images.
 grunt-grunticon				| GruntIcon was created by Filament Group.
 grunt-spritesmith			| Generate sprites from your image files.
 
-#### Automated testing
+### Automated testing
 
 Plugin 						| Description
 ------ 						| -----------
@@ -74,7 +74,7 @@ grunt-contrib-nodeunit		| Unit testing for Node.
 grunt-contrib-qunit			| Run QUnit tests.
 grunt-karma					| A Grunt plugin for the Karma test runner.
 
-#### Miscellaneous
+### Miscellaneous
 
 Plugin 						| Description
 ------ 						| -----------

@@ -31,4 +31,6 @@ Let's use `readJSON()` for something fun like automatically loading all the task
 
 ## Using Grunt with other tools
 
-Grunt in Sublime Text: https://github.com/tvooo/sublime-grunt
+### Grunt in Sublime Text
+
+The Sublime Text plugin [`sublime-grunt`](https://github.com/tvooo/sublime-grunt) allows you to run Grunt directly inside the editor, so you don't have to toggle between the IDE and the command line when developing.

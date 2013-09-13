@@ -1,5 +1,27 @@
 ## Write your own Grunt tasks
 
+### A primer on custom tasks
+
+#### Aliasing existing tasks
+
+Task aliasing is useful for when you want to run multiple tasks in sequence without having to invoke Grunt specifically for each one. The way to do this is:
+
+	grunt.registerTask('mytask', 'Optional task description', ['jshint', 'qunit', 'concat']);
+
+This way you can simply run
+
+	grunt mytask
+
+...and it will trigger the succession of `jshint`, `qunit` and `concat`.
+
+We usually want to define a `default` task that will run when we simply type `grunt` in the command line:
+
+	grunt.registerTask('default', ['watch']);
+
+In addition, the list of tasks can come with specific targets:
+	
+	grunt.registerTask('default', ['watch:stylesheets']);
+
 ### Working with files
 
 Chances are your app will want to operate on files. You can learn about the different ways users can define files in the _Files In-Depth_ chapter, and there certainly are a bunch of them! Fortunately, Grunt does the heavy-lifting for us and normalizes all formats into the _Files Array_ format, expanding all the patterns it finds along the way. 

@@ -29,6 +29,7 @@ It looks something like this:
 
 The first line defines one source for the destination file, while the second defines multiple source files for the destination.
 
+
 #### Files Array Format
 
 The Files Array Format is the canonical form of defining source/destination pairs. Grunt converts all the other formats to the Files Array Format before sending them to the task. It's very similar to the Files Object format, except we explicitly define the `src` and `dest` properties:
@@ -47,8 +48,6 @@ It has the advantage of allowing us to specify additional properties, such as:
 * `filter`, which allows us to match files or folders specifically (e.g. filter: 'isFile' will filter out folders)/
 
 ... and a couple of others.
-
-#### Defining the files object dynamically
 
 #### Patterns
 
@@ -97,3 +96,117 @@ This array of patterns will initially match all JavaScript files in `app` but th
 ##### Practice your patterns
 
 Todo.
+
+#### Defining the files object dynamically
+
+We mentioned earlier that each object in the Files Array format can take additional properties. Some of these properties are useful in defining our file mappings dynamically.
+Let's take a look:
+
+* `expand` is set to `true` so that we can use dynamic mappings;
+* `cwd` (current working directory) is the common path to all the source files;
+* `src` is an array of one or more patterns to match, relative to `cwd`;
+* `dest` is the counterpart to `cwd` and describes the destination path prefix;
+* `ext` is the new extension for the destination files, which replaces the extension of the original file; 
+
+The dynamic mapping is useful for one-to-one mappings: for each source file you will get a destination file.
+
+A real-world example would be copying an entire folder structure from one place to another.
+
+	my-project
+		app/
+			js/
+				app.js
+				data.js
+				lib/
+					jquery.js
+					backbone.js
+				modules/
+					api.js
+					auth.js
+		dist/
+		Gruntfile.js
+		package.json
+
+We will use `grunt-contrib-copy` to copy the content of the `js` folder into `dist`. A first attempt:
+	
+	copy: {
+		all: {
+			files: [{
+				expand: true,
+				src: 'app/js/**/*.js',
+				dest: 'dist/'
+			}]
+		}
+	}
+
+An honest attempt, but it generates the following structure:
+
+	my-project
+		app/
+			js/
+				app.js
+				data.js
+				lib/
+					jquery.js
+					backbone.js
+				modules/
+					api.js
+					auth.js
+		dist/
+			app/
+				js/
+					app.js
+					data.js
+					lib/
+						jquery.js
+						backbone.js
+					modules/
+						api.js
+						auth.js
+		Gruntfile.js
+		package.json
+
+Close, but no cigar. We wanted the `js` folder included directly under `dist`.
+
+What we need to do is take the `app` part out of the `src` property and put it in the `cwd` property:
+
+	copy: {
+		all: {
+			files: [{
+				expand: true,
+				cwd: 'app/',
+				src: 'js/**/*.js',
+				dest: 'dist/'
+			}]
+		}
+	}
+
+Which gives us the expected result:
+
+	my-project
+		app/
+			js/
+				app.js
+				data.js
+				lib/
+					jquery.js
+					backbone.js
+				modules/
+					api.js
+					auth.js
+		dist/
+			js/
+				app.js
+				data.js
+				lib/
+					jquery.js
+					backbone.js
+				modules/
+					api.js
+					auth.js
+		Gruntfile.js
+		package.json
+
+Freeze Frame High-Five!&trade;
+
+So where's the difference? Well, the `cwd` parameter &mdash; standing for the Common Working Directory, if you remember &mdash; dictates where the root of the whole structure we want to match is located, and the rest of the folder structure (from the `src` parameter) is mapped one-to-one in the path defined by `dest`.
