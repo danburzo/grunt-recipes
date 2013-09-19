@@ -527,6 +527,13 @@ cd my-project</code></pre>
 </ul>
 <h3>Start a server</h3>
 <p><strong>Using:</strong> <a href="https://npmjs.org/package/grunt-contrib-connect"><code>grunt-contrib-connect</code></a></p>
+<p>When working on a project on your machine, you test your stuff by pointing your browser to <code>file://path/to/your/project/index.html</code>. This alone is inelegant. But more importantly, <em>AJAX features won&#39;t work</em> since they use the HTTP protocol, not the file protocol. </p>
+<p>What you need is a web server installed locally. You might be tempted to use an AMP stack &mdash; a fancy way of calling a bundle of Apache, MySQL and PHP &mdash; but it&#39;s a hassle to link your projects to its <code>www</code> folder (I&#39;m lazy) and most of the time you&#39;ll use 1% of its features anyway. Plus, let&#39;s be honest, it feels a little retro. </p>
+<p>If you have Python installed, you can simply run this in your project folder instead:</p>
+<pre><code>python -m SimpleHTTPServer // for Python 2.x
+python -m http.server // for Python 3.x</code></pre>
+<p>It will start a web server through which you can access your project at <code>http://localhost:8000</code>.</p>
+<p>In this chapter, we&#39;ll learn how to configure the <code>connect</code> task to obtain a similar result, plus a few other perks.</p>
 <h4>Install the <code>connect</code> task</h4>
 <pre><code>npm install grunt-contrib-connect --save-dev</code></pre>
 <p>and then load it into  your Gruntfile:</p>
@@ -574,8 +581,43 @@ cd my-project</code></pre>
     }
 }</code></pre>
 <p>This makes the directories <code>first-site</code> and <code>second-site</code> from your project available at <a href="http://firstite:8000">http://firstite:8000</a> and <a href="http://secondsite:8000">http://secondsite:8000</a>, respectively.</p>
+<h4>Routing everything back to index.html</h4>
+<p>If you&#39;re writing a Single-Page Web Application that uses the <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history">HTML5 History API</a>, you&#39;ll be disappointed to find that your skillfully crafted URLs don&#39;t withstand a page refresh. The web server assumes a path like <code>http://localhost:8000/posts/100</code> points to a physical file and, failing to find it in your project, throws a <em>404 Not Found</em> error.</p>
+<p>Let&#39;s fix this by writing a custom <em>middleware</em> for the <code>connect</code> task to redirect paths that don&#39;t correspond to physical files back to <code>index.html</code>.</p>
+<p>For this we will be using the <code>connect-modrewrite</code> plugin &mdash; our first encounter with a plugin that&#39;s not specifically written for Grunt. But rest assured, it&#39;s basically the same thing. Let&#39;s install it in the same way as with any other plugin:</p>
+<pre><code>npm install connect-modrewrite --save-dev</code></pre>
+<p>And then use it in our Gruntfile:</p>
+<pre><code>var rewrite = require(&#39;connect-modrewrite&#39;);</code></pre>
+<p>Let&#39;s see how we can use it in our <code>connect</code> task:</p>
+<pre><code>var rewrite = require(&#39;connect-modrewrite&#39;);
+
+grunt.initConfig({
+    connect: {
+        server: {
+            keepalive: true,
+            hostname: &#39;localhost&#39;,
+            middleware: function(connect, options) {
+
+                var middleware = [];
+
+                // original middleware behavior
+                var base = options.directory || options.base[options.base.length - 1];
+                middleware.push(connect.static(base));
+
+                // mod-rewrite behavior
+                var rules = [
+                    &#39;!\\.html|\\.js|\\.css|\\.svg|\\.jp(e?)g|\\.png|\\.gif$ /index.html&#39;
+                ];
+                middleware.push(rewrite(rules));
+
+                return middleware;
+            }
+        }
+    }
+});    </code></pre>
+<p>We&#39;ve written a custom <code>middleware</code> function which returns an array of chained middleware. Because we&#39;re overwriting the original implementation altogether, we need to make sure to include it &mdash; it&#39;s the part with <code>connect.static</code>. We&#39;re then adding our rewrite middleware to the chain; it contains a single rule which states that all files except HTML, stylesheets, scripts and images should be redirected to <code>index.html</code>.</p>
 <h4>Take five</h4>
-<p>In this recipe, we&#39;ve learned how to use the <code>connect</code> task to start a local server.</p>
+<p>In this recipe, we&#39;ve learned how to use the <code>connect</code> task to start a local server. In addition, we&#39;ve made it useful for developing apps that use the HTML5 History API by redirecting all paths that don&#39;t correspond to static assets back to the main HTML.</p>
 <h3>Build an app for deployment</h3>
 <p>By now, you should be comfortable with working with one task at a time. It&#39;s time to really make Grunt shine by integrating the variety of tasks involved in preparing a web application for deployment, such as precompiling, minifying, concatenating and moving files around.</p>
 <h4>What we&#39;re trying to accomplish</h4>
