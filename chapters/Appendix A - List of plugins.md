@@ -1,4 +1,4 @@
-## Some useful Grunt plugins
+## Appendix A: Some useful Grunt plugins
 
 Here are some handpicked plugins for your enjoyment. Most of the 'official' plugins (starting with `grunt-contrib`) are included.
 

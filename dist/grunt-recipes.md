@@ -1241,6 +1241,55 @@ A good practice in all tasks is to filter out the source files that don't actual
 Now the `sources` variable contains only the subset of files that are valid.
 
 
+## Loading external data in our tasks
+
+Grunt provides two methods for loading external data into the Gruntfile:
+
+* `grunt.file.readJSON()` to load an external JSON file;
+* `grunt.file.readYAML()` to load an external YAML file;
+
+JSON and YAML are both languages to describe data structures, so you can choose whichever you feel more comfortable with.
+
+A common use for reading external data is to pull out task options into separate files, for easier maintenace.
+
+### Load Grunt tasks dynamically
+
+Let's use `readJSON()` for something fun like automatically loading all the tasks defined in `package.json`, instead of writing `grunt.loadNpmTasks()` for each one.
+
+	module.exports = function(grunt) {
+
+		// load `package.json`
+		var package = grunt.file.readJSON('package.json');
+		
+		// check if we have any dependencies
+		if (package.devDependencies) {
+
+			// filter out the ones that don't start with `grunt-`
+			var gruntTasks = Object.keys(package.devDependencies).filter(function(task) {
+				return task.indexOf('grunt-') === 0;	
+			});
+
+			// load each task
+			gruntTasks.forEach(grunt.loadNpmTasks);
+		}
+	};
+
+**Note:** A small caveat &mdash; `readJSON()` only accepts _valid_ JSON-files, while `package.json` can be merely JSON-like and still work with `npm install`. The most common JSON-like-but-not-quite-JSON thing it might contain are comments, which work perfectly fine with the NPM installer but will break the above script.
+
+## Conclusion
+
+Here you are, you've made it to the end of the book. I hope it was a worthwhile read. Armed with this knowledge, you should be able to use any Grunt plugin you come accross and even write your own.
+
+### What now
+
+If you're still looking for a challenge, here are a few suggestions:
+
+* Look into [Yeoman](http://yeoman.io/), which builds upon Grunt to help you scaffold new applications by generating the necessary project structure, fetching third-party libraries and adding all the Grunt tasks you need to get started;
+* Fix a bug in your favorite Grunt plugin;
+* Help make this book better! You can [contribute on GitHub](http://github.com/danburzo/grunt-recipes).
+
+
+
 ## Our Big Project &mdash; creating a static website plugin
 
 Let's put everything we know together to create a static website generator that takes pages in markdown format and assembles them into a fully-functional blog.
@@ -1330,7 +1379,7 @@ Off the top of our heads, we will most definitely need:
 	grunt.registerTask('new', 'Create a new post', ['copy:sample'])
 
 
-## Some useful Grunt plugins
+## Appendix A: Some useful Grunt plugins
 
 Here are some handpicked plugins for your enjoyment. Most of the 'official' plugins (starting with `grunt-contrib`) are included.
 
@@ -1414,38 +1463,7 @@ grunt-contrib-requirejs		| Build your RequireJS-powered app.
 grunt-contrib-yuidoc		| Generate documentation from YUIDoc.
 
 
-### Loading external data in our tasks
-
-Grunt provides two methods for loading external data into the Gruntfile:
-
-* `grunt.file.readJSON()` to load an external JSON file;
-* `grunt.file.readYAML()` to load an external YAML file;
-
-Let's use `readJSON()` for something fun like automatically loading all the tasks defined in `package.json`:
-
-	module.exports = function(grunt) {
-
-		// load `package.json`
-		var package = grunt.file.readJSON('package.json');
-		
-		// check if we have any dependencies
-		if (package.devDependencies) {
-
-			// filter out the ones that don't start with `grunt-`
-			var gruntTasks = Object.keys(package.devDependencies).filter(function(task) {
-				return task.indexOf('grunt-') === 0;	
-			});
-
-			// load each task
-			gruntTasks.forEach(grunt.loadNpmTasks);
-		}
-	};
-
-**Note:** `readJSON()` only accepts _valid_ JSON-files, while `package.json` can be JSON-like and still work with `npm install`. The most common JSON-like-but-not-quite-JSON thing it might contain are comments, which work perfectly fine with the NPM installer but will break the above script.
-
-### What is JST?
-
-## Using Grunt with other tools
+## Appendix B: Using Grunt with other tools
 
 ### Grunt in Sublime Text
 

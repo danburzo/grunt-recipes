@@ -1001,6 +1001,43 @@ grunt logfiles:filesArray
     });
 });    </code></pre>
 <p>Now the <code>sources</code> variable contains only the subset of files that are valid.</p>
+<h2>Loading external data in our tasks</h2>
+<p>Grunt provides two methods for loading external data into the Gruntfile:</p>
+<ul>
+<li><code>grunt.file.readJSON()</code> to load an external JSON file;</li>
+<li><code>grunt.file.readYAML()</code> to load an external YAML file;</li>
+</ul>
+<p>JSON and YAML are both languages to describe data structures, so you can choose whichever you feel more comfortable with.</p>
+<p>A common use for reading external data is to pull out task options into separate files, for easier maintenace.</p>
+<h3>Load Grunt tasks dynamically</h3>
+<p>Let&#39;s use <code>readJSON()</code> for something fun like automatically loading all the tasks defined in <code>package.json</code>, instead of writing <code>grunt.loadNpmTasks()</code> for each one.</p>
+<pre><code>module.exports = function(grunt) {
+
+    // load `package.json`
+    var package = grunt.file.readJSON(&#39;package.json&#39;);
+
+    // check if we have any dependencies
+    if (package.devDependencies) {
+
+        // filter out the ones that don&#39;t start with `grunt-`
+        var gruntTasks = Object.keys(package.devDependencies).filter(function(task) {
+            return task.indexOf(&#39;grunt-&#39;) === 0;    
+        });
+
+        // load each task
+        gruntTasks.forEach(grunt.loadNpmTasks);
+    }
+};</code></pre>
+<p><strong>Note:</strong> A small caveat &mdash; <code>readJSON()</code> only accepts <em>valid</em> JSON-files, while <code>package.json</code> can be merely JSON-like and still work with <code>npm install</code>. The most common JSON-like-but-not-quite-JSON thing it might contain are comments, which work perfectly fine with the NPM installer but will break the above script.</p>
+<h2>Conclusion</h2>
+<p>Here you are, you&#39;ve made it to the end of the book. I hope it was a worthwhile read. Armed with this knowledge, you should be able to use any Grunt plugin you come accross and even write your own.</p>
+<h3>What now</h3>
+<p>If you&#39;re still looking for a challenge, here are a few suggestions:</p>
+<ul>
+<li>Look into <a href="http://yeoman.io/">Yeoman</a>, which builds upon Grunt to help you scaffold new applications by generating the necessary project structure, fetching third-party libraries and adding all the Grunt tasks you need to get started;</li>
+<li>Fix a bug in your favorite Grunt plugin;</li>
+<li>Help make this book better! You can <a href="http://github.com/danburzo/grunt-recipes">contribute on GitHub</a>.</li>
+</ul>
 <h2>Our Big Project &mdash; creating a static website plugin</h2>
 <p>Let&#39;s put everything we know together to create a static website generator that takes pages in markdown format and assembles them into a fully-functional blog.</p>
 <h3>What we&#39;re trying to do</h3>
@@ -1074,7 +1111,7 @@ category: General
 
 grunt.registerTask(&#39;default&#39;, &#39;Build the blog&#39;, []);
 grunt.registerTask(&#39;new&#39;, &#39;Create a new post&#39;, [&#39;copy:sample&#39;])</code></pre>
-<h2>Some useful Grunt plugins</h2>
+<h2>Appendix A: Some useful Grunt plugins</h2>
 <p>Here are some handpicked plugins for your enjoyment. Most of the &#39;official&#39; plugins (starting with <code>grunt-contrib</code>) are included.</p>
 <h3>General purpose</h3>
 <p>These general purpose plugins operate on any text-based files.</p>
@@ -1309,33 +1346,7 @@ grunt.registerTask(&#39;new&#39;, &#39;Create a new post&#39;, [&#39;copy:sample
 </tr>
 </tbody>
 </table>
-<h3>Loading external data in our tasks</h3>
-<p>Grunt provides two methods for loading external data into the Gruntfile:</p>
-<ul>
-<li><code>grunt.file.readJSON()</code> to load an external JSON file;</li>
-<li><code>grunt.file.readYAML()</code> to load an external YAML file;</li>
-</ul>
-<p>Let&#39;s use <code>readJSON()</code> for something fun like automatically loading all the tasks defined in <code>package.json</code>:</p>
-<pre><code>module.exports = function(grunt) {
-
-    // load `package.json`
-    var package = grunt.file.readJSON(&#39;package.json&#39;);
-
-    // check if we have any dependencies
-    if (package.devDependencies) {
-
-        // filter out the ones that don&#39;t start with `grunt-`
-        var gruntTasks = Object.keys(package.devDependencies).filter(function(task) {
-            return task.indexOf(&#39;grunt-&#39;) === 0;    
-        });
-
-        // load each task
-        gruntTasks.forEach(grunt.loadNpmTasks);
-    }
-};</code></pre>
-<p><strong>Note:</strong> <code>readJSON()</code> only accepts <em>valid</em> JSON-files, while <code>package.json</code> can be JSON-like and still work with <code>npm install</code>. The most common JSON-like-but-not-quite-JSON thing it might contain are comments, which work perfectly fine with the NPM installer but will break the above script.</p>
-<h3>What is JST?</h3>
-<h2>Using Grunt with other tools</h2>
+<h2>Appendix B: Using Grunt with other tools</h2>
 <h3>Grunt in Sublime Text</h3>
 <p>The Sublime Text plugin <a href="https://github.com/tvooo/sublime-grunt"><code>sublime-grunt</code></a> allows you to run Grunt directly inside the editor, so you don&#39;t have to toggle between the IDE and the command line when developing.</p>
 
