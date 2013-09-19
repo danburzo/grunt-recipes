@@ -1,14 +1,14 @@
-### Build an app for deployment
+## Build an app for deployment
 
 By now, you should be comfortable with working with one task at a time. It's time to really make Grunt shine by integrating the variety of tasks involved in preparing a web application for deployment, such as precompiling, minifying, concatenating and moving files around.
 
-#### What we're trying to accomplish
+### What we're trying to accomplish
 
 We want to take our main HTML file, identify all the stylesheets and scripts it references, optimize those (e.g. minification, concatenation) and then update the references from the HTML with the optimized version.
 
 At the end of the task, we want to have a `dist` folder that contains the optimized version of our project, readily deployable to a production environment.
 
-#### Tasks we'll use in this recipe
+### Tasks we'll use in this recipe
 
 * [`grunt-contrib-uglify`](https://npmjs.org/package/grunt-contrib-uglify) to minify JavaScript;
 * [`grunt-contrib-cssmin`](https://npmjs.org/package/grunt-contrib-cssmin) to minify CSS;
@@ -19,7 +19,7 @@ At the end of the task, we want to have a `dist` folder that contains the optimi
 
 Now, don't get too intimidated! If you think about it each task has a very specific purpose in the workflow, and you'll see how easy is to choreograph them into one fluent, beautiful task.
 
-#### Let's install everything
+### Let's install everything
 
 	npm install grunt-contrib-uglify grunt-contrib-concat grunt-contrib-cssmin grunt-contrib-htmlmin grunt-contrib-copy grunt-usemin --save-dev
 
@@ -32,7 +32,7 @@ Now, don't get too intimidated! If you think about it each task has a very speci
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-usemin');
 
-#### Basic configuration
+### Basic configuration
 
 	grunt.initConfig({
 
@@ -153,3 +153,5 @@ And here's how we might use this to append the timestamp to our generated CSS fi
 			}
 		}
 	}
+
+### Take five

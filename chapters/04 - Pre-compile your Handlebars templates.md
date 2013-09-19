@@ -1,4 +1,4 @@
-### Pre-compile your Handlebars templates
+## Pre-compile your Handlebars templates
 
 **Plugins used:** [`grunt-contrib-handlebars`](https://npmjs.org/package/grunt-contrib-handlebars).
 
@@ -37,7 +37,7 @@ Both techniques, as described, only get you to the point where you have the cont
 
 Let's see how `grunt-contrib-handlebars` can make this all better.
 
-#### The advantages of pre-compiling your templates
+### The advantages of pre-compiling your templates
 
 Here's what's in it for you: 
 
@@ -47,7 +47,7 @@ Here's what's in it for you:
 
 Sold? Right, let's get on with it.
 
-#### Install the `handlebars` task
+### Install the `handlebars` task
 
 	npm install grunt-contrib-handlebars --save-dev
 
@@ -55,7 +55,7 @@ and then add it to your Gruntfile:
 	
 	grunt.loadNpmTasks('grunt-contrib-handlebars');
 
-#### Configuring the `handlebars` task
+### Configuring the `handlebars` task
 
 In its most basic form, we only need to define the _source_ and _destination_ files:
 
@@ -83,7 +83,7 @@ and in your JavaScript code, you access the templates as follows:
 
 	var personTemplate = JST['person']; // presto!
 
-#### More customization
+### More customization
 
 In real life, you'll probably want to add the templates under your application's namespace &mdash; something like `MyApp.Templates` &mdash; instead of `JST`. This is done using the `namespace` option:
 
@@ -120,6 +120,6 @@ In the example above, we're transforming the template path into a camel-case nam
 
 	templates/product/detail.hbs -> 'productDetail'
 
-#### Take five
+### Take five
 
 In this recipe, we made Handlebars templates better in terms of speed and maintainability. In fact, if you install Handlebars syntax highlighting in your favorite editor (I use Sublime Text), you'll get even more clarity by keeping your templates in separate `.hbs` files.

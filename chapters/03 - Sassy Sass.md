@@ -1,10 +1,10 @@
-### Sassy Sass
+## Sassy Sass
 
 **Plugins used:** [`grunt-contrib-sass`](https://npmjs.org/package/grunt-contrib-sass).
 
 **Note:** To make `grunt-contrib-sass` work, you also need to have Ruby and Sass installed. To check if you have ruby installed, type `ruby -v` in the console. When you've confirmed you have Ruby installed, run `gem install sass` to install Sass.
 
-#### Install the Sass plugin
+### Install the Sass plugin
 
 	npm install -g grunt-contrib-sass --save-dev
 
@@ -12,7 +12,7 @@ and then, in our Gruntfile:
 
 	grunt.loadNpmTasks('grunt-contrib-sass');
 
-#### Configure the `sass` task
+### Configure the `sass` task
 
 We'll create a single target called `all` for our task. We'll then define a list of source/destination pairs in the `files` property:
 
@@ -39,7 +39,7 @@ If you've read through the previous recipe, you'll recall that the `files` prope
 
 We've defined `files` as an object with key/value pairs correspond to _destination-file_/_source-file_. 
 
-#### Run the `sass` ask
+### Run the `sass` ask
 
 Let's run our task to see how it works:
 
@@ -75,7 +75,7 @@ If you run `grunt sass` again, you'll notice that everything still works, but wi
 
 Read more about the different ways to define files in the chapter _Files In-Depth_.
 
-#### Take five
+### Take five
 
 In this recipe, we've learned:
 

@@ -181,33 +181,24 @@ OK, let's recap what we've just done:
 
 You can read more at: http://gruntjs.com/getting-started
 
-## Recipes
-
-It's time to make Grunt do some actual work for us. Through these recipes, we'll automate stuff like:
-
-* Minifying and concatenating our CSS and JS files;
-* Starting a local web server;
-* Watching for changes on files and running tasks accordingly.
-
-In the process, we'll get familiar with some of the more popular Grunt plugins.
-### Lint your JavaScript code
+## Lint your JavaScript code
 
 **Plugins used:** [`grunt-contrib-jshint`](https://npmjs.org/package/grunt-contrib-jshint).
 
 A JavaScript linter is a tool that looks for syntax errors, bad practices and style inconsistencies in your code.
 
 
-#### Install the JSHint plugin
+### Install the JSHint plugin
 
 	npm install grunt-contrib-jshint --save-dev
 
-#### Load JSHint tasks into our Gruntfile
+### Load JSHint tasks into our Gruntfile
 
 	module.exports = function(grunt) {
 		grunt.loadNpmTasks('grunt-contrib-jshint');
 	};
 
-#### Confige the JSHint task
+### Confige the JSHint task
 
 	module.exports = function(grunt) {
 		grunt.initConfig({
@@ -230,7 +221,7 @@ In defining the list of JavaScript files to lint, we've used a shorthand. This i
 		}
 	}
 
-#### Run the JSHint task
+### Run the JSHint task
 
 In your project directory, run:
 	
@@ -264,7 +255,7 @@ That's much better. Now we have the list of errors in a handy file in our projec
 
 Here we've set `options` globally for _all targets_, but each individual target can have its own `options` property. Target-level options will override the task-level options. 
 
-#### More JSHint options
+### More JSHint options
 
 We've just configured an output file to serve as an error log. Next, let's look at how to customize the kind of rules JSHint enforces. Armed with the [full list of JSHint flags](http://www.jshint.com/docs/options/), we can create a JSON file which we'll name `.jshintrc` into our root directory. It looks something like this:
 
@@ -295,7 +286,7 @@ Now, let's tell JSHint to look at this file for the rules to enforce:
 		grunt.loadNpmTasks('grunt-contrib-jshint');
 	};
 
-#### Take five
+### Take five
 
 In this recipe, we've:
 
@@ -303,13 +294,13 @@ In this recipe, we've:
 * learned about targets and multitasks, both of which are wonderful things.
 
 **Extra credits:** You can grab a very similar task [`grunt-contrib-csslint`](https://npmjs.org/package/grunt-contrib-csslint), and make it lint the CSS files in your project.
-### Sassy Sass
+## Sassy Sass
 
 **Plugins used:** [`grunt-contrib-sass`](https://npmjs.org/package/grunt-contrib-sass).
 
 **Note:** To make `grunt-contrib-sass` work, you also need to have Ruby and Sass installed. To check if you have ruby installed, type `ruby -v` in the console. When you've confirmed you have Ruby installed, run `gem install sass` to install Sass.
 
-#### Install the Sass plugin
+### Install the Sass plugin
 
 	npm install -g grunt-contrib-sass --save-dev
 
@@ -317,7 +308,7 @@ and then, in our Gruntfile:
 
 	grunt.loadNpmTasks('grunt-contrib-sass');
 
-#### Configure the `sass` task
+### Configure the `sass` task
 
 We'll create a single target called `all` for our task. We'll then define a list of source/destination pairs in the `files` property:
 
@@ -344,7 +335,7 @@ If you've read through the previous recipe, you'll recall that the `files` prope
 
 We've defined `files` as an object with key/value pairs correspond to _destination-file_/_source-file_. 
 
-#### Run the `sass` ask
+### Run the `sass` ask
 
 Let's run our task to see how it works:
 
@@ -380,7 +371,7 @@ If you run `grunt sass` again, you'll notice that everything still works, but wi
 
 Read more about the different ways to define files in the chapter _Files In-Depth_.
 
-#### Take five
+### Take five
 
 In this recipe, we've learned:
 
@@ -388,7 +379,7 @@ In this recipe, we've learned:
 * to define these pairs dynamically so we don't have to maintain them, one by one, for all eternity.
 
 
-### Pre-compile your Handlebars templates
+## Pre-compile your Handlebars templates
 
 **Plugins used:** [`grunt-contrib-handlebars`](https://npmjs.org/package/grunt-contrib-handlebars).
 
@@ -427,7 +418,7 @@ Both techniques, as described, only get you to the point where you have the cont
 
 Let's see how `grunt-contrib-handlebars` can make this all better.
 
-#### The advantages of pre-compiling your templates
+### The advantages of pre-compiling your templates
 
 Here's what's in it for you: 
 
@@ -437,7 +428,7 @@ Here's what's in it for you:
 
 Sold? Right, let's get on with it.
 
-#### Install the `handlebars` task
+### Install the `handlebars` task
 
 	npm install grunt-contrib-handlebars --save-dev
 
@@ -445,7 +436,7 @@ and then add it to your Gruntfile:
 	
 	grunt.loadNpmTasks('grunt-contrib-handlebars');
 
-#### Configuring the `handlebars` task
+### Configuring the `handlebars` task
 
 In its most basic form, we only need to define the _source_ and _destination_ files:
 
@@ -473,7 +464,7 @@ and in your JavaScript code, you access the templates as follows:
 
 	var personTemplate = JST['person']; // presto!
 
-#### More customization
+### More customization
 
 In real life, you'll probably want to add the templates under your application's namespace &mdash; something like `MyApp.Templates` &mdash; instead of `JST`. This is done using the `namespace` option:
 
@@ -510,10 +501,10 @@ In the example above, we're transforming the template path into a camel-case nam
 
 	templates/product/detail.hbs -> 'productDetail'
 
-#### Take five
+### Take five
 
 In this recipe, we made Handlebars templates better in terms of speed and maintainability. In fact, if you install Handlebars syntax highlighting in your favorite editor (I use Sublime Text), you'll get even more clarity by keeping your templates in separate `.hbs` files.
-### Watch for changes
+## Watch for changes
 
 **Plugins used:** [`grunt-contrib-watch`](https://npmjs.org/package/grunt-contrib-watch).
 
@@ -540,7 +531,7 @@ and load the tasks in our Gruntfile, next to our Sass task:
 		grunt.loadNpmTasks('grunt-contrib-watch');
 	};
 
-#### Configuring the `watch` task
+### Configuring the `watch` task
 
 There are really only two things to define:
 
@@ -589,7 +580,7 @@ Because `watch` is a _multitask_, what we're actually saying with the above comm
 Now go ahead and change one of your Sass files, and notice that the `sass` task is run. At the same time, if a Handlebars template changes, the `handlebars` task is run.
 
 
-#### Tweaking the watch behavior
+### Tweaking the watch behavior
 
 By default, `watch` looks for three kinds of changes: 
 
@@ -630,7 +621,7 @@ There's one little quirk we need to address: the `watch` task will only pick up 
 	}
 
 
-#### Take five
+### Take five
 
 In this recipe, we've:
 
@@ -639,7 +630,7 @@ In this recipe, we've:
 * run the associated tasks at the beginning of the watch process to make sure everything is up to date.
 
 
-### Start a server
+## Start a server
 
 **Using:** [`grunt-contrib-connect`](https://npmjs.org/package/grunt-contrib-connect)
 
@@ -656,7 +647,7 @@ It will start a web server through which you can access your project at `http://
 
 In this chapter, we'll learn how to configure the `connect` task to obtain a similar result, plus a few other perks.
 
-#### Install the `connect` task
+### Install the `connect` task
 
 	npm install grunt-contrib-connect --save-dev
 
@@ -664,7 +655,7 @@ and then load it into  your Gruntfile:
 	
 	grunt.loadNpmTasks('grunt-contrib-connect');
 
-#### Configure a persistent server
+### Configure a persistent server
 
 To create a persistent server (one which does not stop after Grunt tasks have completed), we will use `keepalive: true`:
 
@@ -678,13 +669,13 @@ To create a persistent server (one which does not stop after Grunt tasks have co
 
 We've created a single target called `server` for our `connect` task.
 
-#### Run your server
+### Run your server
 
 	grunt connect:server
 
 Now go to http://localhost:8000 and you should be able to browse your app, and see your `index.html` if you have one.
 
-#### More server configuration
+### More server configuration
 
 You can customize the host name, port and protocol for your server:
 
@@ -720,7 +711,7 @@ The code above makes the server available at https://myapp:8080. This is useful 
 
 This makes the directories `first-site` and `second-site` from your project available at http://firstite:8000 and http://secondsite:8000, respectively.
 
-#### Routing everything back to index.html
+### Routing everything back to index.html
 
 If you're writing a Single-Page Web Application that uses the [HTML5 History API](https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history), you'll be disappointed to find that your skillfully crafted URLs don't withstand a page refresh. The web server assumes a path like `http://localhost:8000/posts/100` points to a physical file and, failing to find it in your project, throws a _404 Not Found_ error.
 
@@ -770,20 +761,20 @@ Let's see how we can use it in our `connect` task:
 
 We've written a custom `middleware` function which returns an array of chained middleware. Because we're overwriting the original implementation altogether, we need to make sure to include it &mdash; it's the part with `connect.static`. We're then adding our rewrite middleware to the chain; it contains a single rule which states that all files except HTML, stylesheets, scripts and images should be redirected to `index.html`.
 
-#### Take five
+### Take five
 
 In this recipe, we've learned how to use the `connect` task to start a local server. In addition, we've made it useful for developing apps that use the HTML5 History API by redirecting all paths that don't correspond to static assets back to the main HTML.
-### Build an app for deployment
+## Build an app for deployment
 
 By now, you should be comfortable with working with one task at a time. It's time to really make Grunt shine by integrating the variety of tasks involved in preparing a web application for deployment, such as precompiling, minifying, concatenating and moving files around.
 
-#### What we're trying to accomplish
+### What we're trying to accomplish
 
 We want to take our main HTML file, identify all the stylesheets and scripts it references, optimize those (e.g. minification, concatenation) and then update the references from the HTML with the optimized version.
 
 At the end of the task, we want to have a `dist` folder that contains the optimized version of our project, readily deployable to a production environment.
 
-#### Tasks we'll use in this recipe
+### Tasks we'll use in this recipe
 
 * [`grunt-contrib-uglify`](https://npmjs.org/package/grunt-contrib-uglify) to minify JavaScript;
 * [`grunt-contrib-cssmin`](https://npmjs.org/package/grunt-contrib-cssmin) to minify CSS;
@@ -794,7 +785,7 @@ At the end of the task, we want to have a `dist` folder that contains the optimi
 
 Now, don't get too intimidated! If you think about it each task has a very specific purpose in the workflow, and you'll see how easy is to choreograph them into one fluent, beautiful task.
 
-#### Let's install everything
+### Let's install everything
 
 	npm install grunt-contrib-uglify grunt-contrib-concat grunt-contrib-cssmin grunt-contrib-htmlmin grunt-contrib-copy grunt-usemin --save-dev
 
@@ -807,7 +798,7 @@ Now, don't get too intimidated! If you think about it each task has a very speci
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-usemin');
 
-#### Basic configuration
+### Basic configuration
 
 	grunt.initConfig({
 
@@ -928,7 +919,10 @@ And here's how we might use this to append the timestamp to our generated CSS fi
 			}
 		}
 	}
-### Files, in-depth
+
+### Take five
+
+## Files, in-depth
 http://gruntjs.com/configuring-tasks#files
 
 Tasks can be:
@@ -939,11 +933,11 @@ Tasks can be:
 
 Multi-tasks work by taking source files and mapping them to destination files. For each destination, you can define one or more source files. Let's look at the ways to define files:
 
-#### Compact mode
+### Compact mode
 
 todo.
 
-#### Files object format
+### Files object format
 
 In the Files Object Format, you specify a `files` object that has:
 
@@ -960,7 +954,7 @@ It looks something like this:
 The first line defines one source for the destination file, while the second defines multiple source files for the destination.
 
 
-#### Files Array Format
+### Files Array Format
 
 The Files Array Format is the canonical form of defining source/destination pairs. Grunt converts all the other formats to the Files Array Format before sending them to the task. It's very similar to the Files Object format, except we explicitly define the `src` and `dest` properties:
 
@@ -979,7 +973,7 @@ It has the advantage of allowing us to specify additional properties, such as:
 
 ... and a couple of others.
 
-#### Patterns
+### Patterns
 
 * `?` matches a single character, excluding `/`;
 * `*` matches any number of characters, _excluding_ `/`;
@@ -987,7 +981,7 @@ It has the advantage of allowing us to specify additional properties, such as:
 * Use `{}` to define a comma-separated list of alternatives, such as `{backbone,jquery}.min.js`, which will match `backbone.min.js` and `jquery.min.js`;
 * Use `!` to exclude a match.
 
-##### A few common patterns
+#### A few common patterns
 
 Let's assume the following structure:
 
@@ -1023,11 +1017,11 @@ For example, let's say you want to select all JavaScript files in the `app` fold
 
 This array of patterns will initially match all JavaScript files in `app` but then will exclude those from the `lib` subfolder. Easy! 
 
-##### Practice your patterns
+#### Practice your patterns
 
 Todo.
 
-#### Defining the files object dynamically
+### Defining the files object dynamically
 
 We mentioned earlier that each object in the Files Array format can take additional properties. Some of these properties are useful in defining our file mappings dynamically.
 Let's take a look:
@@ -1140,6 +1134,10 @@ Which gives us the expected result:
 Freeze Frame High-Five!&trade;
 
 So where's the difference? Well, the `cwd` parameter &mdash; standing for the Common Working Directory, if you remember &mdash; dictates where the root of the whole structure we want to match is located, and the rest of the folder structure (from the `src` parameter) is mapped one-to-one in the path defined by `dest`.
+
+### Take five
+
+
 ## Write your own Grunt tasks
 
 ### A primer on custom tasks

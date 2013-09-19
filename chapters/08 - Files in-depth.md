@@ -1,4 +1,4 @@
-### Files, in-depth
+## Files, in-depth
 http://gruntjs.com/configuring-tasks#files
 
 Tasks can be:
@@ -9,11 +9,11 @@ Tasks can be:
 
 Multi-tasks work by taking source files and mapping them to destination files. For each destination, you can define one or more source files. Let's look at the ways to define files:
 
-#### Compact mode
+### Compact mode
 
 todo.
 
-#### Files object format
+### Files object format
 
 In the Files Object Format, you specify a `files` object that has:
 
@@ -30,7 +30,7 @@ It looks something like this:
 The first line defines one source for the destination file, while the second defines multiple source files for the destination.
 
 
-#### Files Array Format
+### Files Array Format
 
 The Files Array Format is the canonical form of defining source/destination pairs. Grunt converts all the other formats to the Files Array Format before sending them to the task. It's very similar to the Files Object format, except we explicitly define the `src` and `dest` properties:
 
@@ -49,7 +49,7 @@ It has the advantage of allowing us to specify additional properties, such as:
 
 ... and a couple of others.
 
-#### Patterns
+### Patterns
 
 * `?` matches a single character, excluding `/`;
 * `*` matches any number of characters, _excluding_ `/`;
@@ -57,7 +57,7 @@ It has the advantage of allowing us to specify additional properties, such as:
 * Use `{}` to define a comma-separated list of alternatives, such as `{backbone,jquery}.min.js`, which will match `backbone.min.js` and `jquery.min.js`;
 * Use `!` to exclude a match.
 
-##### A few common patterns
+#### A few common patterns
 
 Let's assume the following structure:
 
@@ -93,11 +93,11 @@ For example, let's say you want to select all JavaScript files in the `app` fold
 
 This array of patterns will initially match all JavaScript files in `app` but then will exclude those from the `lib` subfolder. Easy! 
 
-##### Practice your patterns
+#### Practice your patterns
 
 Todo.
 
-#### Defining the files object dynamically
+### Defining the files object dynamically
 
 We mentioned earlier that each object in the Files Array format can take additional properties. Some of these properties are useful in defining our file mappings dynamically.
 Let's take a look:
@@ -210,3 +210,6 @@ Which gives us the expected result:
 Freeze Frame High-Five!&trade;
 
 So where's the difference? Well, the `cwd` parameter &mdash; standing for the Common Working Directory, if you remember &mdash; dictates where the root of the whole structure we want to match is located, and the rest of the folder structure (from the `src` parameter) is mapped one-to-one in the path defined by `dest`.
+
+### Take five
+

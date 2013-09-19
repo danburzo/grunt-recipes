@@ -1,21 +1,21 @@
-### Lint your JavaScript code
+## Lint your JavaScript code
 
 **Plugins used:** [`grunt-contrib-jshint`](https://npmjs.org/package/grunt-contrib-jshint).
 
 A JavaScript linter is a tool that looks for syntax errors, bad practices and style inconsistencies in your code.
 
 
-#### Install the JSHint plugin
+### Install the JSHint plugin
 
 	npm install grunt-contrib-jshint --save-dev
 
-#### Load JSHint tasks into our Gruntfile
+### Load JSHint tasks into our Gruntfile
 
 	module.exports = function(grunt) {
 		grunt.loadNpmTasks('grunt-contrib-jshint');
 	};
 
-#### Confige the JSHint task
+### Confige the JSHint task
 
 	module.exports = function(grunt) {
 		grunt.initConfig({
@@ -38,7 +38,7 @@ In defining the list of JavaScript files to lint, we've used a shorthand. This i
 		}
 	}
 
-#### Run the JSHint task
+### Run the JSHint task
 
 In your project directory, run:
 	
@@ -72,7 +72,7 @@ That's much better. Now we have the list of errors in a handy file in our projec
 
 Here we've set `options` globally for _all targets_, but each individual target can have its own `options` property. Target-level options will override the task-level options. 
 
-#### More JSHint options
+### More JSHint options
 
 We've just configured an output file to serve as an error log. Next, let's look at how to customize the kind of rules JSHint enforces. Armed with the [full list of JSHint flags](http://www.jshint.com/docs/options/), we can create a JSON file which we'll name `.jshintrc` into our root directory. It looks something like this:
 
@@ -103,7 +103,7 @@ Now, let's tell JSHint to look at this file for the rules to enforce:
 		grunt.loadNpmTasks('grunt-contrib-jshint');
 	};
 
-#### Take five
+### Take five
 
 In this recipe, we've:
 

@@ -1,4 +1,4 @@
-### Watch for changes
+## Watch for changes
 
 **Plugins used:** [`grunt-contrib-watch`](https://npmjs.org/package/grunt-contrib-watch).
 
@@ -25,7 +25,7 @@ and load the tasks in our Gruntfile, next to our Sass task:
 		grunt.loadNpmTasks('grunt-contrib-watch');
 	};
 
-#### Configuring the `watch` task
+### Configuring the `watch` task
 
 There are really only two things to define:
 
@@ -74,7 +74,7 @@ Because `watch` is a _multitask_, what we're actually saying with the above comm
 Now go ahead and change one of your Sass files, and notice that the `sass` task is run. At the same time, if a Handlebars template changes, the `handlebars` task is run.
 
 
-#### Tweaking the watch behavior
+### Tweaking the watch behavior
 
 By default, `watch` looks for three kinds of changes: 
 
@@ -115,7 +115,7 @@ There's one little quirk we need to address: the `watch` task will only pick up 
 	}
 
 
-#### Take five
+### Take five
 
 In this recipe, we've:
 

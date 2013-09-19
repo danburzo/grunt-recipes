@@ -16,6 +16,12 @@
 			font-family: Helvetica, Arial, sans-serif;
 		}
 
+		h2 {
+			border-bottom: 0.1em solid #222;
+			line-height: 2;
+			margin: 2em 0;
+		}
+
 		a {
 			color: #1F3C99;
 			text-decoration: none;
@@ -33,11 +39,11 @@
 		}
 
 		pre {
-			padding: 1em 5em;
-			background: #ddd;
+			padding: 1em;
+			background: #f0f0f0;
 			overflow: auto;
 			color: #555;
-			margin: 1em -5em;
+			border-left:0.3em solid #222;
 		}
 
 		#cover {
@@ -185,24 +191,16 @@ cd my-project</code></pre>
 <li>We ran <code>grunt</code> for the first time!</li>
 </ul>
 <p>You can read more at: <a href="http://gruntjs.com/getting-started">http://gruntjs.com/getting-started</a></p>
-<h2>Recipes</h2>
-<p>It&#39;s time to make Grunt do some actual work for us. Through these recipes, we&#39;ll automate stuff like:</p>
-<ul>
-<li>Minifying and concatenating our CSS and JS files;</li>
-<li>Starting a local web server;</li>
-<li>Watching for changes on files and running tasks accordingly.</li>
-</ul>
-<p>In the process, we&#39;ll get familiar with some of the more popular Grunt plugins.</p>
-<h3>Lint your JavaScript code</h3>
+<h2>Lint your JavaScript code</h2>
 <p><strong>Plugins used:</strong> <a href="https://npmjs.org/package/grunt-contrib-jshint"><code>grunt-contrib-jshint</code></a>.</p>
 <p>A JavaScript linter is a tool that looks for syntax errors, bad practices and style inconsistencies in your code.</p>
-<h4>Install the JSHint plugin</h4>
+<h3>Install the JSHint plugin</h3>
 <pre><code>npm install grunt-contrib-jshint --save-dev</code></pre>
-<h4>Load JSHint tasks into our Gruntfile</h4>
+<h3>Load JSHint tasks into our Gruntfile</h3>
 <pre><code>module.exports = function(grunt) {
     grunt.loadNpmTasks(&#39;grunt-contrib-jshint&#39;);
 };</code></pre>
-<h4>Confige the JSHint task</h4>
+<h3>Confige the JSHint task</h3>
 <pre><code>module.exports = function(grunt) {
     grunt.initConfig({
         jshint: {
@@ -219,7 +217,7 @@ cd my-project</code></pre>
         files: [&#39;scripts/*.js&#39;]
     }
 }</code></pre>
-<h4>Run the JSHint task</h4>
+<h3>Run the JSHint task</h3>
 <p>In your project directory, run:</p>
 <pre><code>grunt jshint:all</code></pre>
 <p>...to run the JSHint task with the <code>all</code> target. Or simply:</p>
@@ -242,7 +240,7 @@ cd my-project</code></pre>
 };</code></pre>
 <p>That&#39;s much better. Now we have the list of errors in a handy file in our project called <code>jshint.log</code>. Brilliant.</p>
 <p>Here we&#39;ve set <code>options</code> globally for <em>all targets</em>, but each individual target can have its own <code>options</code> property. Target-level options will override the task-level options. </p>
-<h4>More JSHint options</h4>
+<h3>More JSHint options</h3>
 <p>We&#39;ve just configured an output file to serve as an error log. Next, let&#39;s look at how to customize the kind of rules JSHint enforces. Armed with the <a href="http://www.jshint.com/docs/options/">full list of JSHint flags</a>, we can create a JSON file which we&#39;ll name <code>.jshintrc</code> into our root directory. It looks something like this:</p>
 <pre><code>{
   &quot;curly&quot;: true,
@@ -268,21 +266,21 @@ cd my-project</code></pre>
     });
     grunt.loadNpmTasks(&#39;grunt-contrib-jshint&#39;);
 };</code></pre>
-<h4>Take five</h4>
+<h3>Take five</h3>
 <p>In this recipe, we&#39;ve:</p>
 <ul>
 <li>installed, configured and ran our first <em>real</em> Grunt task;</li>
 <li>learned about targets and multitasks, both of which are wonderful things.</li>
 </ul>
 <p><strong>Extra credits:</strong> You can grab a very similar task <a href="https://npmjs.org/package/grunt-contrib-csslint"><code>grunt-contrib-csslint</code></a>, and make it lint the CSS files in your project.</p>
-<h3>Sassy Sass</h3>
+<h2>Sassy Sass</h2>
 <p><strong>Plugins used:</strong> <a href="https://npmjs.org/package/grunt-contrib-sass"><code>grunt-contrib-sass</code></a>.</p>
 <p><strong>Note:</strong> To make <code>grunt-contrib-sass</code> work, you also need to have Ruby and Sass installed. To check if you have ruby installed, type <code>ruby -v</code> in the console. When you&#39;ve confirmed you have Ruby installed, run <code>gem install sass</code> to install Sass.</p>
-<h4>Install the Sass plugin</h4>
+<h3>Install the Sass plugin</h3>
 <pre><code>npm install -g grunt-contrib-sass --save-dev</code></pre>
 <p>and then, in our Gruntfile:</p>
 <pre><code>grunt.loadNpmTasks(&#39;grunt-contrib-sass&#39;);</code></pre>
-<h4>Configure the <code>sass</code> task</h4>
+<h3>Configure the <code>sass</code> task</h3>
 <p>We&#39;ll create a single target called <code>all</code> for our task. We&#39;ll then define a list of source/destination pairs in the <code>files</code> property:</p>
 <pre><code>module.exports = function(grunt) {
     grunt.initConfig({
@@ -303,7 +301,7 @@ cd my-project</code></pre>
     &#39;css/homepage.css&#39;: &#39;scss/homepage.scss&#39;
 }</code></pre>
 <p>We&#39;ve defined <code>files</code> as an object with key/value pairs correspond to <em>destination-file</em>/<em>source-file</em>. </p>
-<h4>Run the <code>sass</code> ask</h4>
+<h3>Run the <code>sass</code> ask</h3>
 <p>Let&#39;s run our task to see how it works:</p>
 <pre><code>grunt sass</code></pre>
 <h3> </h3>
@@ -330,13 +328,13 @@ cd my-project</code></pre>
 </blockquote>
 <p>If you run <code>grunt sass</code> again, you&#39;ll notice that everything still works, but with the added benefit that we add/remove Sass files to your project and they&#39;ll be picked up by the sass task without having to update the Gruntfile each time.</p>
 <p>Read more about the different ways to define files in the chapter <em>Files In-Depth</em>.</p>
-<h4>Take five</h4>
+<h3>Take five</h3>
 <p>In this recipe, we&#39;ve learned:</p>
 <ul>
 <li>to write multiple source/destination pairs for the files used by our task;</li>
 <li>to define these pairs dynamically so we don&#39;t have to maintain them, one by one, for all eternity.</li>
 </ul>
-<h3>Pre-compile your Handlebars templates</h3>
+<h2>Pre-compile your Handlebars templates</h2>
 <p><strong>Plugins used:</strong> <a href="https://npmjs.org/package/grunt-contrib-handlebars"><code>grunt-contrib-handlebars</code></a>.</p>
 <p><a href="http://handlebarsjs.com/">Handlebars</a> is a popular template library which helps you build HTML fragments populated with data from an object. A template looks something like:</p>
 <pre><code>&lt;div class=&quot;person&quot;&gt;
@@ -366,7 +364,7 @@ cd my-project</code></pre>
 <li>Call the template function with a data object to get the HTML fragment.</li>
 </ol>
 <p>Let&#39;s see how <code>grunt-contrib-handlebars</code> can make this all better.</p>
-<h4>The advantages of pre-compiling your templates</h4>
+<h3>The advantages of pre-compiling your templates</h3>
 <p>Here&#39;s what&#39;s in it for you: </p>
 <ul>
 <li>You get to keep your templates in separate files, without the performance penalty of separate HTTP requests for each one;</li>
@@ -374,11 +372,11 @@ cd my-project</code></pre>
 <li>You reduce the payload by including only the Handlebars Runtime library, which is smaller and faster, instead of the whole shebang.</li>
 </ul>
 <p>Sold? Right, let&#39;s get on with it.</p>
-<h4>Install the <code>handlebars</code> task</h4>
+<h3>Install the <code>handlebars</code> task</h3>
 <pre><code>npm install grunt-contrib-handlebars --save-dev</code></pre>
 <p>and then add it to your Gruntfile:</p>
 <pre><code>grunt.loadNpmTasks(&#39;grunt-contrib-handlebars&#39;);</code></pre>
-<h4>Configuring the <code>handlebars</code> task</h4>
+<h3>Configuring the <code>handlebars</code> task</h3>
 <p>In its most basic form, we only need to define the <em>source</em> and <em>destination</em> files:</p>
 <pre><code>handlebars: {
     all: {
@@ -395,7 +393,7 @@ cd my-project</code></pre>
 <pre><code>&lt;script type=&#39;text/javascript&#39; src=&#39;js/templates.js&#39;&gt;&lt;/script&gt;</code></pre>
 <p>and in your JavaScript code, you access the templates as follows:</p>
 <pre><code>var personTemplate = JST[&#39;person&#39;]; // presto!</code></pre>
-<h4>More customization</h4>
+<h3>More customization</h3>
 <p>In real life, you&#39;ll probably want to add the templates under your application&#39;s namespace &mdash; something like <code>MyApp.Templates</code> &mdash; instead of <code>JST</code>. This is done using the <code>namespace</code> option:</p>
 <pre><code>handlebars: {
     options: {
@@ -425,9 +423,9 @@ cd my-project</code></pre>
 }</code></pre>
 <p>In the example above, we&#39;re transforming the template path into a camel-case name:</p>
 <pre><code>templates/product/detail.hbs -&gt; &#39;productDetail&#39;</code></pre>
-<h4>Take five</h4>
+<h3>Take five</h3>
 <p>In this recipe, we made Handlebars templates better in terms of speed and maintainability. In fact, if you install Handlebars syntax highlighting in your favorite editor (I use Sublime Text), you&#39;ll get even more clarity by keeping your templates in separate <code>.hbs</code> files.</p>
-<h3>Watch for changes</h3>
+<h2>Watch for changes</h2>
 <p><strong>Plugins used:</strong> <a href="https://npmjs.org/package/grunt-contrib-watch"><code>grunt-contrib-watch</code></a>.</p>
 <p>In the previous recipes, we saw how we can compile our Sass files into CSS files and merge your Handlebars templates into a single JST file. It is somewhat magical, but to run <code>grunt sass</code> after every change is far from being productive. Let&#39;s take this up a notch and make our files recompile automatically every time they change. For this, we will use the <code>watch</code> task provided by <code>grunt-contrib-watch</code>. </p>
 <p>As usual, let&#39;s install it in our project:</p>
@@ -447,7 +445,7 @@ cd my-project</code></pre>
     grunt.loadNpmTasks(&#39;grunt-contrib-sass&#39;);
     grunt.loadNpmTasks(&#39;grunt-contrib-watch&#39;);
 };</code></pre>
-<h4>Configuring the <code>watch</code> task</h4>
+<h3>Configuring the <code>watch</code> task</h3>
 <p>There are really only two things to define:</p>
 <ul>
 <li>which files we need to watch;</li>
@@ -485,7 +483,7 @@ cd my-project</code></pre>
 <p>Because <code>watch</code> is a <em>multitask</em>, what we&#39;re actually saying with the above command is:</p>
 <pre><code>grunt watch:sass watch:handlebars</code></pre>
 <p>Now go ahead and change one of your Sass files, and notice that the <code>sass</code> task is run. At the same time, if a Handlebars template changes, the <code>handlebars</code> task is run.</p>
-<h4>Tweaking the watch behavior</h4>
+<h3>Tweaking the watch behavior</h3>
 <p>By default, <code>watch</code> looks for three kinds of changes: </p>
 <ul>
 <li>files that were <em>added</em> to the project and match the pattern;</li>
@@ -518,14 +516,14 @@ cd my-project</code></pre>
         tasks: [&#39;handlebars&#39;]
     }
 }</code></pre>
-<h4>Take five</h4>
+<h3>Take five</h3>
 <p>In this recipe, we&#39;ve:</p>
 <ul>
 <li>learned how to use <code>watch</code> to trigger other tasks automatically when you make changes to your files;</li>
 <li>configured the types of events the watch responds to;</li>
 <li>run the associated tasks at the beginning of the watch process to make sure everything is up to date.</li>
 </ul>
-<h3>Start a server</h3>
+<h2>Start a server</h2>
 <p><strong>Using:</strong> <a href="https://npmjs.org/package/grunt-contrib-connect"><code>grunt-contrib-connect</code></a></p>
 <p>When working on a project on your machine, you test your stuff by pointing your browser to <code>file://path/to/your/project/index.html</code>. This alone is inelegant. But more importantly, <em>AJAX features won&#39;t work</em> since they use the HTTP protocol, not the file protocol. </p>
 <p>What you need is a web server installed locally. You might be tempted to use an AMP stack &mdash; a fancy way of calling a bundle of Apache, MySQL and PHP &mdash; but it&#39;s a hassle to link your projects to its <code>www</code> folder (I&#39;m lazy) and most of the time you&#39;ll use 1% of its features anyway. Plus, let&#39;s be honest, it feels a little retro. </p>
@@ -534,11 +532,11 @@ cd my-project</code></pre>
 python -m http.server // for Python 3.x</code></pre>
 <p>It will start a web server through which you can access your project at <code>http://localhost:8000</code>.</p>
 <p>In this chapter, we&#39;ll learn how to configure the <code>connect</code> task to obtain a similar result, plus a few other perks.</p>
-<h4>Install the <code>connect</code> task</h4>
+<h3>Install the <code>connect</code> task</h3>
 <pre><code>npm install grunt-contrib-connect --save-dev</code></pre>
 <p>and then load it into  your Gruntfile:</p>
 <pre><code>grunt.loadNpmTasks(&#39;grunt-contrib-connect&#39;);</code></pre>
-<h4>Configure a persistent server</h4>
+<h3>Configure a persistent server</h3>
 <p>To create a persistent server (one which does not stop after Grunt tasks have completed), we will use <code>keepalive: true</code>:</p>
 <pre><code>connect: {
     server: {
@@ -548,10 +546,10 @@ python -m http.server // for Python 3.x</code></pre>
     }
 }</code></pre>
 <p>We&#39;ve created a single target called <code>server</code> for our <code>connect</code> task.</p>
-<h4>Run your server</h4>
+<h3>Run your server</h3>
 <pre><code>grunt connect:server</code></pre>
 <p>Now go to <a href="http://localhost:8000">http://localhost:8000</a> and you should be able to browse your app, and see your <code>index.html</code> if you have one.</p>
-<h4>More server configuration</h4>
+<h3>More server configuration</h3>
 <p>You can customize the host name, port and protocol for your server:</p>
 <pre><code>connect: {
     server: {
@@ -581,7 +579,7 @@ python -m http.server // for Python 3.x</code></pre>
     }
 }</code></pre>
 <p>This makes the directories <code>first-site</code> and <code>second-site</code> from your project available at <a href="http://firstite:8000">http://firstite:8000</a> and <a href="http://secondsite:8000">http://secondsite:8000</a>, respectively.</p>
-<h4>Routing everything back to index.html</h4>
+<h3>Routing everything back to index.html</h3>
 <p>If you&#39;re writing a Single-Page Web Application that uses the <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history">HTML5 History API</a>, you&#39;ll be disappointed to find that your skillfully crafted URLs don&#39;t withstand a page refresh. The web server assumes a path like <code>http://localhost:8000/posts/100</code> points to a physical file and, failing to find it in your project, throws a <em>404 Not Found</em> error.</p>
 <p>Let&#39;s fix this by writing a custom <em>middleware</em> for the <code>connect</code> task to redirect paths that don&#39;t correspond to physical files back to <code>index.html</code>.</p>
 <p>For this we will be using the <code>connect-modrewrite</code> plugin &mdash; our first encounter with a plugin that&#39;s not specifically written for Grunt. But rest assured, it&#39;s basically the same thing. Let&#39;s install it in the same way as with any other plugin:</p>
@@ -621,14 +619,14 @@ grunt.initConfig({
     }
 });    </code></pre>
 <p>We&#39;ve written a custom <code>middleware</code> function which returns an array of chained middleware. Because we&#39;re overwriting the original implementation altogether, we need to make sure to include it &mdash; it&#39;s the part with <code>connect.static</code>. We&#39;re then adding our rewrite middleware to the chain; it contains a single rule which states that all files except HTML, stylesheets, scripts and images should be redirected to <code>index.html</code>.</p>
-<h4>Take five</h4>
+<h3>Take five</h3>
 <p>In this recipe, we&#39;ve learned how to use the <code>connect</code> task to start a local server. In addition, we&#39;ve made it useful for developing apps that use the HTML5 History API by redirecting all paths that don&#39;t correspond to static assets back to the main HTML.</p>
-<h3>Build an app for deployment</h3>
+<h2>Build an app for deployment</h2>
 <p>By now, you should be comfortable with working with one task at a time. It&#39;s time to really make Grunt shine by integrating the variety of tasks involved in preparing a web application for deployment, such as precompiling, minifying, concatenating and moving files around.</p>
-<h4>What we&#39;re trying to accomplish</h4>
+<h3>What we&#39;re trying to accomplish</h3>
 <p>We want to take our main HTML file, identify all the stylesheets and scripts it references, optimize those (e.g. minification, concatenation) and then update the references from the HTML with the optimized version.</p>
 <p>At the end of the task, we want to have a <code>dist</code> folder that contains the optimized version of our project, readily deployable to a production environment.</p>
-<h4>Tasks we&#39;ll use in this recipe</h4>
+<h3>Tasks we&#39;ll use in this recipe</h3>
 <ul>
 <li><a href="https://npmjs.org/package/grunt-contrib-uglify"><code>grunt-contrib-uglify</code></a> to minify JavaScript;</li>
 <li><a href="https://npmjs.org/package/grunt-contrib-cssmin"><code>grunt-contrib-cssmin</code></a> to minify CSS;</li>
@@ -638,7 +636,7 @@ grunt.initConfig({
 <li><a href="https://github.com/yeoman/grunt-usemin"><code>grunt-usemin</code></a> to replaces references to scripts and stylesheets in HTML files with their optimized versions.</li>
 </ul>
 <p>Now, don&#39;t get too intimidated! If you think about it each task has a very specific purpose in the workflow, and you&#39;ll see how easy is to choreograph them into one fluent, beautiful task.</p>
-<h4>Let&#39;s install everything</h4>
+<h3>Let&#39;s install everything</h3>
 <pre><code>npm install grunt-contrib-uglify grunt-contrib-concat grunt-contrib-cssmin grunt-contrib-htmlmin grunt-contrib-copy grunt-usemin --save-dev</code></pre>
 <p>... in one fell swoop, even. Now let&#39;s add all of it to our Gruntfile:</p>
 <pre><code>grunt.loadNpmTasks(&#39;grunt-contrib-uglify&#39;);
@@ -647,7 +645,7 @@ grunt.loadNpmTasks(&#39;grunt-contrib-cssmin&#39;);
 grunt.loadNpmTasks(&#39;grunt-contrib-htmlmin&#39;);
 grunt.loadNpmTasks(&#39;grunt-contrib-copy&#39;);
 grunt.loadNpmTasks(&#39;grunt-usemin&#39;);</code></pre>
-<h4>Basic configuration</h4>
+<h3>Basic configuration</h3>
 <pre><code>grunt.initConfig({
 
     // Minimize tasks
@@ -756,7 +754,8 @@ We do the same for HTML, except we&#39;re using a dynamic declaration of the fil
         }
     }
 }</code></pre>
-<h3>Files, in-depth</h3>
+<h3>Take five</h3>
+<h2>Files, in-depth</h2>
 <p><a href="http://gruntjs.com/configuring-tasks#files">http://gruntjs.com/configuring-tasks#files</a></p>
 <p>Tasks can be:</p>
 <ul>
@@ -765,9 +764,9 @@ We do the same for HTML, except we&#39;re using a dynamic declaration of the fil
 <li>one-to-one tasks or many-to-one tasks.</li>
 </ul>
 <p>Multi-tasks work by taking source files and mapping them to destination files. For each destination, you can define one or more source files. Let&#39;s look at the ways to define files:</p>
-<h4>Compact mode</h4>
+<h3>Compact mode</h3>
 <p>todo.</p>
-<h4>Files object format</h4>
+<h3>Files object format</h3>
 <p>In the Files Object Format, you specify a <code>files</code> object that has:</p>
 <ul>
 <li>the destination file as key</li>
@@ -779,7 +778,7 @@ We do the same for HTML, except we&#39;re using a dynamic declaration of the fil
     &#39;dist/combined.js&#39;: [&#39;app/file1.js&#39;, &#39;app/file2.js&#39;, &#39;app/file3.js&#39;]
 }</code></pre>
 <p>The first line defines one source for the destination file, while the second defines multiple source files for the destination.</p>
-<h4>Files Array Format</h4>
+<h3>Files Array Format</h3>
 <p>The Files Array Format is the canonical form of defining source/destination pairs. Grunt converts all the other formats to the Files Array Format before sending them to the task. It&#39;s very similar to the Files Object format, except we explicitly define the <code>src</code> and <code>dest</code> properties:</p>
 <pre><code>files: [{
     src: &#39;app/file1.js&#39;,
@@ -794,7 +793,7 @@ We do the same for HTML, except we&#39;re using a dynamic declaration of the fil
 <li><code>filter</code>, which allows us to match files or folders specifically (e.g. filter: &#39;isFile&#39; will filter out folders)/</li>
 </ul>
 <p>... and a couple of others.</p>
-<h4>Patterns</h4>
+<h3>Patterns</h3>
 <ul>
 <li><code>?</code> matches a single character, excluding <code>/</code>;</li>
 <li><code>*</code> matches any number of characters, <em>excluding</em> <code>/</code>;</li>
@@ -802,7 +801,7 @@ We do the same for HTML, except we&#39;re using a dynamic declaration of the fil
 <li>Use <code>{}</code> to define a comma-separated list of alternatives, such as <code>{backbone,jquery}.min.js</code>, which will match <code>backbone.min.js</code> and <code>jquery.min.js</code>;</li>
 <li>Use <code>!</code> to exclude a match.</li>
 </ul>
-<h5>A few common patterns</h5>
+<h4>A few common patterns</h4>
 <p>Let&#39;s assume the following structure:</p>
 <pre><code>app/
     app.js
@@ -825,9 +824,9 @@ We do the same for HTML, except we&#39;re using a dynamic declaration of the fil
 <pre><code>src: [&#39;app/**/*.js&#39;, &#39;!app/lib/*.js&#39;]
 // matches app.js, data.js, api.js, auth.js</code></pre>
 <p>This array of patterns will initially match all JavaScript files in <code>app</code> but then will exclude those from the <code>lib</code> subfolder. Easy! </p>
-<h5>Practice your patterns</h5>
+<h4>Practice your patterns</h4>
 <p>Todo.</p>
-<h4>Defining the files object dynamically</h4>
+<h3>Defining the files object dynamically</h3>
 <p>We mentioned earlier that each object in the Files Array format can take additional properties. Some of these properties are useful in defining our file mappings dynamically.
 Let&#39;s take a look:</p>
 <ul>
@@ -926,6 +925,7 @@ Let&#39;s take a look:</p>
     package.json</code></pre>
 <p>Freeze Frame High-Five!&trade;</p>
 <p>So where&#39;s the difference? Well, the <code>cwd</code> parameter &mdash; standing for the Common Working Directory, if you remember &mdash; dictates where the root of the whole structure we want to match is located, and the rest of the folder structure (from the <code>src</code> parameter) is mapped one-to-one in the path defined by <code>dest</code>.</p>
+<h3>Take five</h3>
 <h2>Write your own Grunt tasks</h2>
 <h3>A primer on custom tasks</h3>
 <h4>Aliasing existing tasks</h4>

@@ -1,4 +1,4 @@
-### Start a server
+## Start a server
 
 **Using:** [`grunt-contrib-connect`](https://npmjs.org/package/grunt-contrib-connect)
 
@@ -15,7 +15,7 @@ It will start a web server through which you can access your project at `http://
 
 In this chapter, we'll learn how to configure the `connect` task to obtain a similar result, plus a few other perks.
 
-#### Install the `connect` task
+### Install the `connect` task
 
 	npm install grunt-contrib-connect --save-dev
 
@@ -23,7 +23,7 @@ and then load it into  your Gruntfile:
 	
 	grunt.loadNpmTasks('grunt-contrib-connect');
 
-#### Configure a persistent server
+### Configure a persistent server
 
 To create a persistent server (one which does not stop after Grunt tasks have completed), we will use `keepalive: true`:
 
@@ -37,13 +37,13 @@ To create a persistent server (one which does not stop after Grunt tasks have co
 
 We've created a single target called `server` for our `connect` task.
 
-#### Run your server
+### Run your server
 
 	grunt connect:server
 
 Now go to http://localhost:8000 and you should be able to browse your app, and see your `index.html` if you have one.
 
-#### More server configuration
+### More server configuration
 
 You can customize the host name, port and protocol for your server:
 
@@ -79,7 +79,7 @@ The code above makes the server available at https://myapp:8080. This is useful 
 
 This makes the directories `first-site` and `second-site` from your project available at http://firstite:8000 and http://secondsite:8000, respectively.
 
-#### Routing everything back to index.html
+### Routing everything back to index.html
 
 If you're writing a Single-Page Web Application that uses the [HTML5 History API](https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history), you'll be disappointed to find that your skillfully crafted URLs don't withstand a page refresh. The web server assumes a path like `http://localhost:8000/posts/100` points to a physical file and, failing to find it in your project, throws a _404 Not Found_ error.
 
@@ -129,6 +129,6 @@ Let's see how we can use it in our `connect` task:
 
 We've written a custom `middleware` function which returns an array of chained middleware. Because we're overwriting the original implementation altogether, we need to make sure to include it &mdash; it's the part with `connect.static`. We're then adding our rewrite middleware to the chain; it contains a single rule which states that all files except HTML, stylesheets, scripts and images should be redirected to `index.html`.
 
-#### Take five
+### Take five
 
 In this recipe, we've learned how to use the `connect` task to start a local server. In addition, we've made it useful for developing apps that use the HTML5 History API by redirecting all paths that don't correspond to static assets back to the main HTML.
