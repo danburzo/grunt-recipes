@@ -385,9 +385,9 @@ In this recipe, we've learned:
 
 [Handlebars](http://handlebarsjs.com/) is a popular template library which helps you build HTML fragments populated with data from an object. A template looks something like:
 	
-	<div class="person">
-	  <h1>{{name}}</h1>
-	  <p>{{description}}</p>
+	<div class="post">
+	  <h1>{{title}}</h1>
+	  <p>Published: {{date}}</p>
 	</div>
 
 The portions between `{{` and `}}` are dynamic and are populated from the object you feed to the template. If you are not familiar with it, its homepage describes the library in more depth.
@@ -396,16 +396,16 @@ There are two basic ways to include Handlebars templates in your web application
 
 1. Inline them as strings in JavaScript: 
 
-		var template = "<div class="person"><h1>{{name}}</h1><p>{{description}}</p></div>";
+		var template = "<div class='post'><h1>{{title}}</h1><p>Published: {{date}}</p></div>";
 
 	This is bad because we're mixing JavaScript and HTML, and it's not too readable either.
 
 2. Include them in the HTML inside `<script>` tags:
 
-		<script type='text/x-handlebars' id='person-template'>
-			<div class="person">
-			  <h1>{{name}}</h1>
-			  <p>{{description}}</p>
+		<script type='text/x-handlebars' id='post-template'>
+			<div class="post">
+			  <h1>{{title}}</h1>
+			  <p>Published: {{date}}</p>
 			</div>
 		</script>
 
@@ -436,9 +436,21 @@ and then add it to your Gruntfile:
 	
 	grunt.loadNpmTasks('grunt-contrib-handlebars');
 
-### Configuring the `handlebars` task
+### Configure the `handlebars` task
 
-In its most basic form, we only need to define the _source_ and _destination_ files:
+In its most basic form, we only need to define the _source_ and _destination_ files. Assuming the following file structure:
+
+	my-project/
+		templates/
+			posts/
+				list.hbs
+				detail.hbs
+			home.hbs
+		js/
+		Gruntfile.js
+		package.json
+
+We can write:
 
 	handlebars: {
 		all: {
@@ -452,19 +464,28 @@ Let's run this to see what happens:
 	
 	grunt handlebars
 
-Grunt will take all files with a `.hbs` extension from the `templates` folder and all its sub-folders and merge them into a single file called `templates.js`, which looks something like this:
-
-[[ INSERT CODE EXAMPLE ]] 
-
-You can now include a single file in your HTML:
+Grunt will take all files with a `.hbs` extension from the `templates` folder and all its sub-folders and merge them into a single file called `templates.js`. You can now include it in your HTML:
 
 	<script type='text/javascript' src='js/templates.js'></script>
 
-and in your JavaScript code, you access the templates as follows:
+Inspecting `JST` in Developer Tools, we'll see it's an object whose keys are the names of the templates and whose values are the Handlebars templating functions for each:
+	
+	> JST
+	Object
+		templates/home.hbs          function(context, options) {...}
+		templates/posts/list.hbs    function(context, options) {...}
+		templates/posts/detail.hbs  function(context, options) {...}
 
-	var personTemplate = JST['person']; // presto!
+In your JavaScript code, we use the templates as follows:
 
-### More customization
+	var post = {
+		title: 'My First Post',
+		date: '10/10/2013'
+	};
+	var postTemplate = JST['templates/post/detail.hbs'];
+	var html = postTemplate(post);
+
+### Customize the names
 
 In real life, you'll probably want to add the templates under your application's namespace &mdash; something like `MyApp.Templates` &mdash; instead of `JST`. This is done using the `namespace` option:
 
@@ -479,31 +500,98 @@ In real life, you'll probably want to add the templates under your application's
 		}
 	}
 
-Let's also configure how template names are generated for each file, using the `processName` option. We define a function which takes one argument (the file path) and returns the string to use as the template name:
+Let's also get rid of the cruft in our template names &mdash; doesn't `posts/detail` look better than `templates/posts/detail.hbs`? We can accomplish this by using the `processName` option, which accepts a function with one argument (the file path) and returns the string to use as the template name:
 
 	options: {
+		namespace: 'MyApp.Templates',
 		processName: function(filePath) {
-
-			// split path at slash, hyphen and space
-			var parts = filePath.split(/[\/\-\s]/); 
-			
-			// capitalize each part, starting from the second
-			for (var i = 1; i < parts.length; i++) {
-				parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].substr(1);
-			}
-
-			// restore the string and return it
-			return parts.join('');
+			return filePath.replace(/^templates\//, '').replace(/\.hbs$/, '');
 		}
 	}
 
-In the example above, we're transforming the template path into a camel-case name:
+So, by removing the `templates/` prefix and the `.hbs` suffix from the file paths, we gen nice clean template names:
 
-	templates/product/detail.hbs -> 'productDetail'
+	> MyApp.Templates
+		home            function(context, options) {...}
+		posts/list      function(context, options) {...}
+		posts/detail    function(context, options) {...}
+
+### What about partials?
+
+In templating languages, _partials_ are templates that can be reused in other templates. In Handlebars, you use the `{{> partial }}` helper to include partials. Let's take an example:
+
+	<script type='text/x-handlebars' id='post-list-template'>
+		<h2>{{ title }}</h2>
+		<ul>
+			{{#each posts}}
+				<li>{{> post-item}}</li>
+			{{/each}}
+		</ul>
+	</script>
+
+	<script type='text/x-handlebars' id='post-item-template'>
+		<span class='post'>{{ title }} - {{ date }}</span>
+	</script>
+
+We have two templates, one for the list of posts, and one for an individual item in the list. The former is a normal template, while the latter is used as a partial. To make everything happen, you'd write in your JavaScript code:
+
+	var listString = document.getElementById('post-list-template').innerHTML;
+	var itemString = document.getElementById('post-item-template').innerHTML;
+
+	Handlebars.registerPartial('post-item', itemString);
+	var template = Handlebars.compile(listString);
+
+	template({
+		title: 'All posts',
+		posts: [
+			{ title: 'First post', '10/10/2013'},
+			{ title: 'Second post', '10/11/2013'}
+		]	
+	});
+
+Which outputs the expected markup:
+	
+	<h2>All posts</h2>
+	<ul>
+		<li><span class='post'>First post - 10/10/2013</li>
+		<li><span class='post'>Second post - 10/10/2013</li>
+	</ul>
+
+__Note:__ It's important to register the partial _before_ compiling any template that includes it, otherwise it will throw an error.
+
+Let's see how the `handlebars` task works with partials. First, let's create a `_list-item.hbs` in our `templates` folder:
+
+	my-project/
+		templates/
+			posts/
+				_list-item.hbs
+				list.hbs
+				detail.hbs
+			home.hbs
+		js/
+		Gruntfile.js
+		package.json
+
+If we run `grunt handlebars` again, we'll see that our `MyApp.Templates` does not include our newly created template. That's because the `handlebars` task assumes all files that start with `_` are partials and registers them using `Handlebars.registerPartial()` &mdash; internally, they're kept in the `Handlebars.partials` array.
+
+Now we can just write:
+	
+	var template = MyApp.Templates['posts/list'];
+	template({
+		title: 'All posts',
+		posts: [
+			{ title: 'First post', '10/10/2013'},
+			{ title: 'Second post', '10/11/2013'}
+		]	
+	});
+
+and it works wonderfully!
 
 ### Take five
 
-In this recipe, we made Handlebars templates better in terms of speed and maintainability. In fact, if you install Handlebars syntax highlighting in your favorite editor (I use Sublime Text), you'll get even more clarity by keeping your templates in separate `.hbs` files.
+In this recipe, we made Handlebars templates better in terms of speed and maintainability by moving them to separate `.hbs` files.
+
+__Tip:__ For even _more_ goodness, install Handlebars syntax highlighting in your favorite editor &mdash; I use [sublime-text-handlebars](https://github.com/nrw/sublime-text-handlebars) for Sublime Text.
 ## Watch for changes
 
 **Plugins used:** [`grunt-contrib-watch`](https://npmjs.org/package/grunt-contrib-watch).
@@ -1381,7 +1469,7 @@ If you're still looking for a challenge, here are a few suggestions:
 
 ## Appendix A: Some useful Grunt plugins
 
-Here are some handpicked plugins for your enjoyment. Most of the 'official' plugins (starting with `grunt-contrib`) are included.
+Here are some hand-picked plugins for your enjoyment. Most of the 'official' plugins (starting with `grunt-contrib`) are included. I've also included a few non-Grunt plugins (marked with `*`) because they play nice with the others.
 
 ### General purpose
 
@@ -1399,12 +1487,18 @@ grunt-rev 				| Prefix your files with a number representing their content, so e
 
 ### Server-oriented
 
+These plugins are geared towards running a web server locally.
+
 Plugin 						| Description
 ------ 						| -----------
 grunt-contrib-connect 		| Start a server to preview your changes or to facilitate other tasks, such as automated testing.
 grunt-contrib-livereload 	| Reload your pages after each change you make. Works in conjunction with `grunt-contrib-connect` and `grunt-contrib-watch`.
+\*connect-modrewrite		| When used in conjunction with `grunt-contrib-connect`, allows you to add mod-rewrite rules.
+
 
 ### CSS-specific
+
+Plugins to work with various languages and frameworks that compile to CSS or to lint &amp; minify your stylesheets.
 
 Plugin 					| Description
 ------ 					| -----------
@@ -1419,6 +1513,8 @@ grunt-contrib-mincss 	| Another plugin for CSS minification.
 
 
 ### JavaScript-specific
+
+These are plugins that work primarily on JavaScript and other languages that compile to JavaScript.
 
 Plugin 					| Description
 ------ 					| -----------

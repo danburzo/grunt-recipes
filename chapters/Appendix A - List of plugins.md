@@ -1,6 +1,6 @@
 ## Appendix A: Some useful Grunt plugins
 
-Here are some handpicked plugins for your enjoyment. Most of the 'official' plugins (starting with `grunt-contrib`) are included.
+Here are some hand-picked plugins for your enjoyment. Most of the 'official' plugins (starting with `grunt-contrib`) are included. I've also included a few non-Grunt plugins (marked with `*`) because they play nice with the others.
 
 ### General purpose
 
@@ -18,12 +18,18 @@ grunt-rev 				| Prefix your files with a number representing their content, so e
 
 ### Server-oriented
 
+These plugins are geared towards running a web server locally.
+
 Plugin 						| Description
 ------ 						| -----------
 grunt-contrib-connect 		| Start a server to preview your changes or to facilitate other tasks, such as automated testing.
 grunt-contrib-livereload 	| Reload your pages after each change you make. Works in conjunction with `grunt-contrib-connect` and `grunt-contrib-watch`.
+\*connect-modrewrite		| When used in conjunction with `grunt-contrib-connect`, allows you to add mod-rewrite rules.
+
 
 ### CSS-specific
+
+Plugins to work with various languages and frameworks that compile to CSS or to lint &amp; minify your stylesheets.
 
 Plugin 					| Description
 ------ 					| -----------
@@ -38,6 +44,8 @@ grunt-contrib-mincss 	| Another plugin for CSS minification.
 
 
 ### JavaScript-specific
+
+These are plugins that work primarily on JavaScript and other languages that compile to JavaScript.
 
 Plugin 					| Description
 ------ 					| -----------
