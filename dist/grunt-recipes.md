@@ -748,9 +748,14 @@ Let's see how we can use it in our `connect` task:
 					var middleware = [];
 					
 					// original middleware behavior
-					var base = options.directory || options.base[options.base.length - 1];
-					middleware.push(connect.static(base));
-					
+					var base = options.base;
+					if (!Array.isArray(base)) {
+						base = [base];
+					}
+					base.forEach(function(path) {
+						middleware.push(connect.static(path));
+					});
+
 					// mod-rewrite behavior
 					var rules = [
 						'!\\.html|\\.js|\\.css|\\.svg|\\.jp(e?)g|\\.png|\\.gif$ /index.html'
