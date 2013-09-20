@@ -14,14 +14,25 @@ and load the tasks in our Gruntfile, next to our Sass task:
 		grunt.initConfig({
 			sass: {
 				all: {
+					files: [{
+						expand: true,
+						cwd: 'scss/',
+						src: ['*.scss'],
+						dest: 'css/',
+						ext: '.css'
+					}]
+				}
+			},
+			handlebars: {
+				all: {
 					files: {
-						'main.css': 'main.scss',
-						'homepage.css': 'homepage.scss'
+						'js/templates.js': ['templates/**/*.hbs']
 					}
 				}
 			}
 		});
 		grunt.loadNpmTasks('grunt-contrib-sass');
+		grunt.loadNpmTasks('grunt-contrib-handlebars');
 		grunt.loadNpmTasks('grunt-contrib-watch');
 	};
 
@@ -38,9 +49,20 @@ So let's go ahead and do that:
 		grunt.initConfig({
 			sass: {
 				all: {
+					files: [{
+						expand: true,
+						cwd: 'scss/',
+						src: ['*.scss'],
+						dest: 'css/',
+						ext: '.css'
+					}]
+				}
+			},
+
+			handlebars: {
+				all: {
 					files: {
-						'css/main.css': 'scss/main.scss',
-						'css/homepage.css': 'scss/homepage.scss'
+						'js/templates.js': ['templates/**/*.hbs']
 					}
 				}
 			},
@@ -57,6 +79,7 @@ So let's go ahead and do that:
 			}
 		});
 		grunt.loadNpmTasks('grunt-contrib-sass');
+		grunt.loadNpmTasks('grunt-contrib-handlebars');
 		grunt.loadNpmTasks('grunt-contrib-watch');
 	};
 
@@ -72,6 +95,8 @@ Because `watch` is a _multitask_, what we're actually saying with the above comm
 
 
 Now go ahead and change one of your Sass files, and notice that the `sass` task is run. At the same time, if a Handlebars template changes, the `handlebars` task is run.
+
+__Note:__ `watch` is a persistent task. To stop it, use `Ctrl+C` in the console.
 
 
 ### Tweaking the watch behavior

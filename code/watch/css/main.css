@@ -1,0 +1,19 @@
+body {
+  font-family: 'Helvetica', 'Arial', sans-serif; }
+
+.button, .button-happy, .button-sad {
+  display: inline-block;
+  text-decoration: none;
+  border-radius: 5px;
+  background: #eee;
+  color: #222;
+  padding: 0.5em 1em;
+  border: 1px solid rgba(0, 0, 0, 0.2); }
+
+.button-happy {
+  background: #0c0;
+  color: #fff; }
+
+.button-sad {
+  background: #c00;
+  color: #fff; }
