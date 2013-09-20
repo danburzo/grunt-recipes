@@ -3,14 +3,14 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		jshint: {
 			options: {
+
+				// path for our rules file
 				jshintrc: '.jshintrc',
+
+				// path to our output file
 				reporterOutput: 'jshint.log'
 			},
-			all: {
-				files: { 
-					src: ['scripts/*.js']
-				}
-			}
+			all: ['scripts/*.js']
 		}
 	});
 
