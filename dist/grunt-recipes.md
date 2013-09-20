@@ -1576,3 +1576,12 @@ grunt-contrib-yuidoc		| Generate documentation from YUIDoc.
 ### Grunt in Sublime Text
 
 The Sublime Text plugin [`sublime-grunt`](https://github.com/tvooo/sublime-grunt) allows you to run Grunt directly inside the editor, so you don't have to toggle between the IDE and the command line when developing.
+## Appendix C: Using the code that comes with this book
+
+You can download code associated with the chapters [[HERE]]. 
+
+To prepare the code, navigate in one of the folders corresponding to a chapter and run:
+
+	npm install
+
+This will install all the necessary dependencies for the project.
