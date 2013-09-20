@@ -8,9 +8,7 @@ This is a book about using Grunt to automate your web development workflow.
 
 It's based on the [Grunt Documentation](http://gruntjs.com/getting-started) and [API Reference](http://gruntjs.com/api/grunt) and takes cues from Belén Albeza's excellent primer [_Power-up Your Front-End Development with Grunt_](https://leanpub.com/grunt), which I encourage you to take a look at.
 
-You can find the book on GitHub: https://github.com/danburzo/grunt-recipes. 
-
-Contributions & corrections are always welcome.
+You can find the book on GitHub: https://github.com/danburzo/grunt-recipes. Contributions & corrections are always welcome.
 
 ## Getting started
 
@@ -213,14 +211,6 @@ We added a call to `initConfig` for the `jshint` task. In it, we defined a singl
 
 **Note:** Grunt tasks can have multiple configurations, named _targets_. This allows us to use different sets of options for the same task, depending on what we need. A common scenario is having a target for _development_ and one for _distribution_.
 
-In defining the list of JavaScript files to lint, we've used a shorthand. This is the equivalent, more explicit version:
-
-	jshint: {
-		all: {
-			files: ['scripts/*.js']
-		}
-	}
-
 ### Run the JSHint task
 
 In your project directory, run:
@@ -243,9 +233,7 @@ In the output, you should see a list of all problems the tool found in the speci
 				options: {
 					reporterOutput: 'jshint.log'
 				}
-				all: {
-					files: ['scripts/*.js']
-				}
+				all: ['scripts/*.js']
 			}
 		});
 		grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -278,9 +266,7 @@ Now, let's tell JSHint to look at this file for the rules to enforce:
 					jshintrc: '.jshintrc',
 					reporterOutput: 'jshint.log'
 				}
-				all: {
-					files: ['scripts/*.js']
-				}
+				all: ['scripts/*.js']
 			}
 		});
 		grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -608,14 +594,25 @@ and load the tasks in our Gruntfile, next to our Sass task:
 		grunt.initConfig({
 			sass: {
 				all: {
+					files: [{
+						expand: true,
+						cwd: 'scss/',
+						src: ['*.scss'],
+						dest: 'css/',
+						ext: '.css'
+					}]
+				}
+			},
+			handlebars: {
+				all: {
 					files: {
-						'main.css': 'main.scss',
-						'homepage.css': 'homepage.scss'
+						'js/templates.js': ['templates/**/*.hbs']
 					}
 				}
 			}
 		});
 		grunt.loadNpmTasks('grunt-contrib-sass');
+		grunt.loadNpmTasks('grunt-contrib-handlebars');
 		grunt.loadNpmTasks('grunt-contrib-watch');
 	};
 
@@ -632,9 +629,20 @@ So let's go ahead and do that:
 		grunt.initConfig({
 			sass: {
 				all: {
+					files: [{
+						expand: true,
+						cwd: 'scss/',
+						src: ['*.scss'],
+						dest: 'css/',
+						ext: '.css'
+					}]
+				}
+			},
+
+			handlebars: {
+				all: {
 					files: {
-						'css/main.css': 'scss/main.scss',
-						'css/homepage.css': 'scss/homepage.scss'
+						'js/templates.js': ['templates/**/*.hbs']
 					}
 				}
 			},
@@ -651,6 +659,7 @@ So let's go ahead and do that:
 			}
 		});
 		grunt.loadNpmTasks('grunt-contrib-sass');
+		grunt.loadNpmTasks('grunt-contrib-handlebars');
 		grunt.loadNpmTasks('grunt-contrib-watch');
 	};
 
@@ -667,6 +676,9 @@ Because `watch` is a _multitask_, what we're actually saying with the above comm
 
 Now go ahead and change one of your Sass files, and notice that the `sass` task is run. At the same time, if a Handlebars template changes, the `handlebars` task is run.
 
+#### A note about persistent tasks
+
+Some tasks such as `watch` or `connect` (about which we'll learn in the next chapter) are persistent, in the sense that once you start them they run in the background as long as the console is open. To stop a persistent task without closing the console, use `Ctrl+C`.
 
 ### Tweaking the watch behavior
 

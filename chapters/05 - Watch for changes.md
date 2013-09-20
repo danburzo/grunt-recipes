@@ -96,8 +96,9 @@ Because `watch` is a _multitask_, what we're actually saying with the above comm
 
 Now go ahead and change one of your Sass files, and notice that the `sass` task is run. At the same time, if a Handlebars template changes, the `handlebars` task is run.
 
-__Note:__ `watch` is a persistent task. To stop it, use `Ctrl+C` in the console.
+#### A note about persistent tasks
 
+Some tasks such as `watch` or `connect` (about which we'll learn in the next chapter) are persistent, in the sense that once you start them they run in the background as long as the console is open. To stop a persistent task without closing the console, use `Ctrl+C`.
 
 ### Tweaking the watch behavior
 

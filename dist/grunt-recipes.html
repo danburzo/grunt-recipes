@@ -79,8 +79,7 @@
 <h2>About this book</h2>
 <p>This is a book about using Grunt to automate your web development workflow. </p>
 <p>It&#39;s based on the <a href="http://gruntjs.com/getting-started">Grunt Documentation</a> and <a href="http://gruntjs.com/api/grunt">API Reference</a> and takes cues from Belén Albeza&#39;s excellent primer <a href="https://leanpub.com/grunt"><em>Power-up Your Front-End Development with Grunt</em></a>, which I encourage you to take a look at.</p>
-<p>You can find the book on GitHub: <a href="https://github.com/danburzo/grunt-recipes">https://github.com/danburzo/grunt-recipes</a>. </p>
-<p>Contributions &amp; corrections are always welcome.</p>
+<p>You can find the book on GitHub: <a href="https://github.com/danburzo/grunt-recipes">https://github.com/danburzo/grunt-recipes</a>. Contributions &amp; corrections are always welcome.</p>
 <h2>Getting started</h2>
 <h3>Meet Grunt</h3>
 <p>Grunt was created by Ben Alman a.k.a. <a href="http://twitter.com/cowboy">@cowboy</a> to automate his front-end development workflow. You know, all the little repetitive tasks like unit testing, minifying your JavaScript and CSS, compiling your Sass stylesheets or CoffeeScripts, linting and what-not. With Grunt, they become a breeze: configure them once and let Grunt run them for you; in this sense, Grunt is a <em>task runner</em> for the boring but oh-so-necessary parts of the web developer&#39;s life. It&#39;s <a href="https://github.com/gruntjs/">open source</a> and at the heart of a wonderful ecosystem of thousands of plugins. As such, any tool you&#39;ve ever used in your workflow is likely to have a Grunt counterpart. And if it doesn&#39;t, it&#39;s easy to roll out your own plugin and share it with the community. Organizations like Twitter, Adobe, jQuery (and <a href="http://gruntjs.com/who-uses-grunt">many others</a>) use it and so should you, because it&#39;s A Great Thing&trade;.</p>
@@ -211,12 +210,6 @@ cd my-project</code></pre>
 };</code></pre>
 <p>We added a call to <code>initConfig</code> for the <code>jshint</code> task. In it, we defined a single <em>target</em> called <code>all</code>. We told JSHint to look at all files with a <code>.js</code> extension within the <code>scripts</code> folder.</p>
 <p><strong>Note:</strong> Grunt tasks can have multiple configurations, named <em>targets</em>. This allows us to use different sets of options for the same task, depending on what we need. A common scenario is having a target for <em>development</em> and one for <em>distribution</em>.</p>
-<p>In defining the list of JavaScript files to lint, we&#39;ve used a shorthand. This is the equivalent, more explicit version:</p>
-<pre><code>jshint: {
-    all: {
-        files: [&#39;scripts/*.js&#39;]
-    }
-}</code></pre>
 <h3>Run the JSHint task</h3>
 <p>In your project directory, run:</p>
 <pre><code>grunt jshint:all</code></pre>
@@ -231,9 +224,7 @@ cd my-project</code></pre>
             options: {
                 reporterOutput: &#39;jshint.log&#39;
             }
-            all: {
-                files: [&#39;scripts/*.js&#39;]
-            }
+            all: [&#39;scripts/*.js&#39;]
         }
     });
     grunt.loadNpmTasks(&#39;grunt-contrib-jshint&#39;);
@@ -259,9 +250,7 @@ cd my-project</code></pre>
                 jshintrc: &#39;.jshintrc&#39;,
                 reporterOutput: &#39;jshint.log&#39;
             }
-            all: {
-                files: [&#39;scripts/*.js&#39;]
-            }
+            all: [&#39;scripts/*.js&#39;]
         }
     });
     grunt.loadNpmTasks(&#39;grunt-contrib-jshint&#39;);
@@ -506,14 +495,25 @@ template({
     grunt.initConfig({
         sass: {
             all: {
+                files: [{
+                    expand: true,
+                    cwd: &#39;scss/&#39;,
+                    src: [&#39;*.scss&#39;],
+                    dest: &#39;css/&#39;,
+                    ext: &#39;.css&#39;
+                }]
+            }
+        },
+        handlebars: {
+            all: {
                 files: {
-                    &#39;main.css&#39;: &#39;main.scss&#39;,
-                    &#39;homepage.css&#39;: &#39;homepage.scss&#39;
+                    &#39;js/templates.js&#39;: [&#39;templates/**/*.hbs&#39;]
                 }
             }
         }
     });
     grunt.loadNpmTasks(&#39;grunt-contrib-sass&#39;);
+    grunt.loadNpmTasks(&#39;grunt-contrib-handlebars&#39;);
     grunt.loadNpmTasks(&#39;grunt-contrib-watch&#39;);
 };</code></pre>
 <h3>Configuring the <code>watch</code> task</h3>
@@ -527,9 +527,20 @@ template({
     grunt.initConfig({
         sass: {
             all: {
+                files: [{
+                    expand: true,
+                    cwd: &#39;scss/&#39;,
+                    src: [&#39;*.scss&#39;],
+                    dest: &#39;css/&#39;,
+                    ext: &#39;.css&#39;
+                }]
+            }
+        },
+
+        handlebars: {
+            all: {
                 files: {
-                    &#39;css/main.css&#39;: &#39;scss/main.scss&#39;,
-                    &#39;css/homepage.css&#39;: &#39;scss/homepage.scss&#39;
+                    &#39;js/templates.js&#39;: [&#39;templates/**/*.hbs&#39;]
                 }
             }
         },
@@ -546,6 +557,7 @@ template({
         }
     });
     grunt.loadNpmTasks(&#39;grunt-contrib-sass&#39;);
+    grunt.loadNpmTasks(&#39;grunt-contrib-handlebars&#39;);
     grunt.loadNpmTasks(&#39;grunt-contrib-watch&#39;);
 };</code></pre>
 <p>We&#39;ve created two targets for our <code>watch</code> task, one for watching the Sass files and one for watching the Handlebars templates. In both instances, we&#39;ve used <em>wildcards</em> to define patterns to match the desired files. In effect, the <code>scss/**/*.scss</code> pattern is similar to <code>scss/*.scss</code> (i.e. match all files with the <code>.scss</code> extension within the <code>scss</code> folder) with the exception that the former looks into subfolders as well. When any of the files change, the associated task is executed. </p>
@@ -554,6 +566,8 @@ template({
 <p>Because <code>watch</code> is a <em>multitask</em>, what we&#39;re actually saying with the above command is:</p>
 <pre><code>grunt watch:sass watch:handlebars</code></pre>
 <p>Now go ahead and change one of your Sass files, and notice that the <code>sass</code> task is run. At the same time, if a Handlebars template changes, the <code>handlebars</code> task is run.</p>
+<h4>A note about persistent tasks</h4>
+<p>Some tasks such as <code>watch</code> or <code>connect</code> (about which we&#39;ll learn in the next chapter) are persistent, in the sense that once you start them they run in the background as long as the console is open. To stop a persistent task without closing the console, use <code>Ctrl+C</code>.</p>
 <h3>Tweaking the watch behavior</h3>
 <p>By default, <code>watch</code> looks for three kinds of changes: </p>
 <ul>
