@@ -77,7 +77,7 @@
 			<h1>Grunt Up &amp; Running</h1>
 <p>A book by Dan Burzo (<a href="http://twitter.com/danburzo">@danburzo</a>)</p>
 <h2>About this book</h2>
-<p>This is a book about using Grunt to automate your web development workflow. </p>
+<p>This is a book about using Grunt to automate your web development workflow. It covers Grunt v0.4.x.</p>
 <p>It&#39;s based on the <a href="http://gruntjs.com/getting-started">Grunt Documentation</a> and <a href="http://gruntjs.com/api/grunt">API Reference</a> and takes cues from Belén Albeza&#39;s excellent primer <a href="https://leanpub.com/grunt"><em>Power-up Your Front-End Development with Grunt</em></a>, which I encourage you to take a look at.</p>
 <p>You can find the book on GitHub: <a href="https://github.com/danburzo/grunt-recipes">https://github.com/danburzo/grunt-recipes</a>. Contributions &amp; corrections are always welcome.</p>
 <h2>Getting started</h2>
@@ -261,7 +261,7 @@ cd my-project</code></pre>
 <li>installed, configured and ran our first <em>real</em> Grunt task;</li>
 <li>learned about targets and multitasks, both of which are wonderful things.</li>
 </ul>
-<p><strong>Extra credits:</strong> You can grab a very similar task <a href="https://npmjs.org/package/grunt-contrib-csslint"><code>grunt-contrib-csslint</code></a>, and make it lint the CSS files in your project.</p>
+<p>Feeling adventurous? Give the the very similar plugin <a href="https://npmjs.org/package/grunt-contrib-csslint"><code>grunt-contrib-csslint</code></a> a spin to lint the stylesheets in your project.</p>
 <h2>Sassy Sass</h2>
 <p><strong>Plugins used:</strong> <a href="https://npmjs.org/package/grunt-contrib-sass"><code>grunt-contrib-sass</code></a>.</p>
 <p><strong>Note:</strong> To make <code>grunt-contrib-sass</code> work, you also need to have Ruby and Sass installed. To check if you have ruby installed, type <code>ruby -v</code> in the console. When you&#39;ve confirmed you have Ruby installed, run <code>gem install sass</code> to install Sass.</p>
@@ -487,10 +487,10 @@ template({
 <p><strong>Tip:</strong> For even <em>more</em> goodness, install Handlebars syntax highlighting in your favorite editor &mdash; I use <a href="https://github.com/nrw/sublime-text-handlebars">sublime-text-handlebars</a> for Sublime Text.</p>
 <h2>Watch for changes</h2>
 <p><strong>Plugins used:</strong> <a href="https://npmjs.org/package/grunt-contrib-watch"><code>grunt-contrib-watch</code></a>.</p>
-<p>In the previous recipes, we saw how we can compile our Sass files into CSS files and merge your Handlebars templates into a single JST file. It is somewhat magical, but to run <code>grunt sass</code> after every change is far from being productive. Let&#39;s take this up a notch and make our files recompile automatically every time they change. For this, we will use the <code>watch</code> task provided by <code>grunt-contrib-watch</code>. </p>
+<p>In the previous recipes, we saw how we can compile our Sass files into CSS files and merge your Handlebars templates into a single JST file. It is somewhat magical, but to run <code>grunt sass handlebars</code> after every change is far from being productive. Let&#39;s take this up a notch and make our files re-compile automatically every time we make a change to them. For this we will use the <code>watch</code> task provided by <code>grunt-contrib-watch</code>. </p>
 <p>As usual, let&#39;s install it in our project:</p>
 <pre><code>npm install grunt-contrib-watch</code></pre>
-<p>and load the tasks in our Gruntfile, next to our Sass task:</p>
+<p>and load the tasks in our Gruntfile, after our <code>sass</code> and <code>handlebars</code> tasks:</p>
 <pre><code>module.exports = function(grunt) {
     grunt.initConfig({
         sass: {
@@ -517,11 +517,11 @@ template({
     grunt.loadNpmTasks(&#39;grunt-contrib-watch&#39;);
 };</code></pre>
 <h3>Configuring the <code>watch</code> task</h3>
-<p>There are really only two things to define:</p>
-<ul>
-<li>which files we need to watch;</li>
-<li>what task(s) to run when the files change.</li>
-</ul>
+<p>There are really only two things we need to define:</p>
+<ol>
+<li>the files we want to watch;</li>
+<li>the task(s) to run when the files change.</li>
+</ol>
 <p>So let&#39;s go ahead and do that:</p>
 <pre><code>module.exports = function(grunt) {
     grunt.initConfig({
@@ -560,12 +560,20 @@ template({
     grunt.loadNpmTasks(&#39;grunt-contrib-handlebars&#39;);
     grunt.loadNpmTasks(&#39;grunt-contrib-watch&#39;);
 };</code></pre>
-<p>We&#39;ve created two targets for our <code>watch</code> task, one for watching the Sass files and one for watching the Handlebars templates. In both instances, we&#39;ve used <em>wildcards</em> to define patterns to match the desired files. In effect, the <code>scss/**/*.scss</code> pattern is similar to <code>scss/*.scss</code> (i.e. match all files with the <code>.scss</code> extension within the <code>scss</code> folder) with the exception that the former looks into subfolders as well. When any of the files change, the associated task is executed. </p>
+<p>We&#39;ve created <em>two targets</em> for our task, one for watching the Sass files and one for watching the Handlebars templates. In both instances, we&#39;ve used <em>wildcards</em> to define patterns to match all desired files. The <code>scss/**/*.scss</code> pattern is similar to <code>scss/*.scss</code> (i.e. match all files with the <code>.scss</code> extension within the <code>scss</code> folder) with the exception that the former looks into subfolders as well &mdash; you can read all about it in the <em>Files in-depth</em> chapter. </p>
+<p>When any of the targeted files change, the associated task is executed.</p>
 <p>Let&#39;s check it out in action:</p>
 <pre><code>grunt watch</code></pre>
 <p>Because <code>watch</code> is a <em>multitask</em>, what we&#39;re actually saying with the above command is:</p>
 <pre><code>grunt watch:sass watch:handlebars</code></pre>
 <p>Now go ahead and change one of your Sass files, and notice that the <code>sass</code> task is run. At the same time, if a Handlebars template changes, the <code>handlebars</code> task is run.</p>
+<p><strong>Note:</strong> In our example, we&#39;re running a single task with each change, but in effect the <code>tasks</code> option can take an array of tasks to be run in sequence. You can even include specific targets for each task, e.g.:</p>
+<pre><code>watch: {
+    sass: {
+        files: [&#39;scss/**/*.scss&#39;],
+        tasks: [&#39;sass:all&#39;, &#39;csslint:all&#39;]
+    }
+}</code></pre>
 <h4>A note about persistent tasks</h4>
 <p>Some tasks such as <code>watch</code> or <code>connect</code> (about which we&#39;ll learn in the next chapter) are persistent, in the sense that once you start them they run in the background as long as the console is open. To stop a persistent task without closing the console, use <code>Ctrl+C</code>.</p>
 <h3>Tweaking the watch behavior</h3>
@@ -1442,10 +1450,11 @@ grunt.registerTask(&#39;new&#39;, &#39;Create a new post&#39;, [&#39;copy:sample
 <h3>Grunt in Sublime Text</h3>
 <p>The Sublime Text plugin <a href="https://github.com/tvooo/sublime-grunt"><code>sublime-grunt</code></a> allows you to run Grunt directly inside the editor, so you don&#39;t have to toggle between the IDE and the command line when developing.</p>
 <h2>Appendix C: Using the code that comes with this book</h2>
-<p>You can download code associated with the chapters [[HERE]]. </p>
-<p>To prepare the code, navigate in one of the folders corresponding to a chapter and run:</p>
+<p>Each chapter in this book comes with code samples that you can run to get a better idea of how the concepts apply in real life. You can download the code here: [[LINK]]</p>
+<p>To install the necessary dependencies for each project, open up a console and navigate to the project folder. Then simply run:</p>
 <pre><code>npm install</code></pre>
-<p>This will install all the necessary dependencies for the project.</p>
+<p>NPM (Node Package Manager) will install Grunt and the other plugins needed to run the Gruntfile.</p>
+<p>You can also check out the <code>README.md</code> file that comes with each project for more details.</p>
 
 		</article>
 	</body>

@@ -98,4 +98,4 @@ In this recipe, we've:
 * installed, configured and ran our first _real_ Grunt task;
 * learned about targets and multitasks, both of which are wonderful things.
 
-**Extra credits:** You can grab a very similar task [`grunt-contrib-csslint`](https://npmjs.org/package/grunt-contrib-csslint), and make it lint the CSS files in your project.
+Feeling adventurous? Give the the very similar plugin [`grunt-contrib-csslint`](https://npmjs.org/package/grunt-contrib-csslint) a spin to lint the stylesheets in your project.

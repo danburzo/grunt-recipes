@@ -4,7 +4,7 @@ A book by Dan Burzo ([@danburzo](http://twitter.com/danburzo))
 
 ## About this book
 
-This is a book about using Grunt to automate your web development workflow. 
+This is a book about using Grunt to automate your web development workflow. It covers Grunt v0.4.x.
 
 It's based on the [Grunt Documentation](http://gruntjs.com/getting-started) and [API Reference](http://gruntjs.com/api/grunt) and takes cues from Belén Albeza's excellent primer [_Power-up Your Front-End Development with Grunt_](https://leanpub.com/grunt), which I encourage you to take a look at.
 
@@ -279,7 +279,7 @@ In this recipe, we've:
 * installed, configured and ran our first _real_ Grunt task;
 * learned about targets and multitasks, both of which are wonderful things.
 
-**Extra credits:** You can grab a very similar task [`grunt-contrib-csslint`](https://npmjs.org/package/grunt-contrib-csslint), and make it lint the CSS files in your project.
+Feeling adventurous? Give the the very similar plugin [`grunt-contrib-csslint`](https://npmjs.org/package/grunt-contrib-csslint) a spin to lint the stylesheets in your project.
 ## Sassy Sass
 
 **Plugins used:** [`grunt-contrib-sass`](https://npmjs.org/package/grunt-contrib-sass).
@@ -582,13 +582,13 @@ __Tip:__ For even _more_ goodness, install Handlebars syntax highlighting in you
 
 **Plugins used:** [`grunt-contrib-watch`](https://npmjs.org/package/grunt-contrib-watch).
 
-In the previous recipes, we saw how we can compile our Sass files into CSS files and merge your Handlebars templates into a single JST file. It is somewhat magical, but to run `grunt sass` after every change is far from being productive. Let's take this up a notch and make our files recompile automatically every time they change. For this, we will use the `watch` task provided by `grunt-contrib-watch`. 
+In the previous recipes, we saw how we can compile our Sass files into CSS files and merge your Handlebars templates into a single JST file. It is somewhat magical, but to run `grunt sass handlebars` after every change is far from being productive. Let's take this up a notch and make our files re-compile automatically every time we make a change to them. For this we will use the `watch` task provided by `grunt-contrib-watch`. 
 
 As usual, let's install it in our project:
 
 	npm install grunt-contrib-watch
 
-and load the tasks in our Gruntfile, next to our Sass task:
+and load the tasks in our Gruntfile, after our `sass` and `handlebars` tasks:
 
 	module.exports = function(grunt) {
 		grunt.initConfig({
@@ -618,10 +618,10 @@ and load the tasks in our Gruntfile, next to our Sass task:
 
 ### Configuring the `watch` task
 
-There are really only two things to define:
+There are really only two things we need to define:
 
-* which files we need to watch;
-* what task(s) to run when the files change.
+1. the files we want to watch;
+2. the task(s) to run when the files change.
 
 So let's go ahead and do that:
 
@@ -663,7 +663,9 @@ So let's go ahead and do that:
 		grunt.loadNpmTasks('grunt-contrib-watch');
 	};
 
-We've created two targets for our `watch` task, one for watching the Sass files and one for watching the Handlebars templates. In both instances, we've used _wildcards_ to define patterns to match the desired files. In effect, the `scss/**/*.scss` pattern is similar to `scss/*.scss` (i.e. match all files with the `.scss` extension within the `scss` folder) with the exception that the former looks into subfolders as well. When any of the files change, the associated task is executed. 
+We've created _two targets_ for our task, one for watching the Sass files and one for watching the Handlebars templates. In both instances, we've used _wildcards_ to define patterns to match all desired files. The `scss/**/*.scss` pattern is similar to `scss/*.scss` (i.e. match all files with the `.scss` extension within the `scss` folder) with the exception that the former looks into subfolders as well &mdash; you can read all about it in the _Files in-depth_ chapter. 
+
+When any of the targeted files change, the associated task is executed.
 
 Let's check it out in action:
 	
@@ -675,6 +677,15 @@ Because `watch` is a _multitask_, what we're actually saying with the above comm
 
 
 Now go ahead and change one of your Sass files, and notice that the `sass` task is run. At the same time, if a Handlebars template changes, the `handlebars` task is run.
+
+__Note:__ In our example, we're running a single task with each change, but in effect the `tasks` option can take an array of tasks to be run in sequence. You can even include specific targets for each task, e.g.:
+
+	watch: {
+        sass: {
+            files: ['scss/**/*.scss'],
+            tasks: ['sass:all', 'csslint:all']
+        }
+    }
 
 #### A note about persistent tasks
 
@@ -1578,10 +1589,12 @@ grunt-contrib-yuidoc		| Generate documentation from YUIDoc.
 The Sublime Text plugin [`sublime-grunt`](https://github.com/tvooo/sublime-grunt) allows you to run Grunt directly inside the editor, so you don't have to toggle between the IDE and the command line when developing.
 ## Appendix C: Using the code that comes with this book
 
-You can download code associated with the chapters [[HERE]]. 
+Each chapter in this book comes with code samples that you can run to get a better idea of how the concepts apply in real life. You can download the code here: [[LINK]]
 
-To prepare the code, navigate in one of the folders corresponding to a chapter and run:
+To install the necessary dependencies for each project, open up a console and navigate to the project folder. Then simply run:
 
 	npm install
 
-This will install all the necessary dependencies for the project.
+NPM (Node Package Manager) will install Grunt and the other plugins needed to run the Gruntfile.
+
+You can also check out the `README.md` file that comes with each project for more details.
