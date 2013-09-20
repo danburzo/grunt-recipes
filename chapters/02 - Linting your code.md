@@ -30,14 +30,6 @@ We added a call to `initConfig` for the `jshint` task. In it, we defined a singl
 
 **Note:** Grunt tasks can have multiple configurations, named _targets_. This allows us to use different sets of options for the same task, depending on what we need. A common scenario is having a target for _development_ and one for _distribution_.
 
-In defining the list of JavaScript files to lint, we've used a shorthand. This is the equivalent, more explicit version:
-
-	jshint: {
-		all: {
-			files: ['scripts/*.js']
-		}
-	}
-
 ### Run the JSHint task
 
 In your project directory, run:
@@ -60,9 +52,7 @@ In the output, you should see a list of all problems the tool found in the speci
 				options: {
 					reporterOutput: 'jshint.log'
 				}
-				all: {
-					files: ['scripts/*.js']
-				}
+				all: ['scripts/*.js']
 			}
 		});
 		grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -95,9 +85,7 @@ Now, let's tell JSHint to look at this file for the rules to enforce:
 					jshintrc: '.jshintrc',
 					reporterOutput: 'jshint.log'
 				}
-				all: {
-					files: ['scripts/*.js']
-				}
+				all: ['scripts/*.js']
 			}
 		});
 		grunt.loadNpmTasks('grunt-contrib-jshint');
