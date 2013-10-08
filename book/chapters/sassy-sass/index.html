@@ -1,0 +1,89 @@
+
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>Sassy Sass</title>
+		<link rel="stylesheet" type="text/css" href="../../assets/book.css"/>
+		<link rel="stylesheet" type="text/css" href="../../assets/pygments.css"/>
+	</head>
+	<body>
+		<article>
+			<h1>Sassy Sass</h1>
+			<p>Last updated on Jan 1st, 1970</p>
+			<h2><a name="sassy-sass"class="anchor" href="#sassy-sass"><span class="header-link"></span></a>Sassy Sass</h2>
+<p><strong>Plugins used:</strong> <a href="https://npmjs.org/package/grunt-contrib-sass"><code>grunt-contrib-sass</code></a>.</p>
+<p><strong>Note:</strong> To make <code>grunt-contrib-sass</code> work, you also need to have Ruby and Sass installed. To check if you have ruby installed, type <code>ruby -v</code> in the console. When you&#39;ve confirmed you have Ruby installed, run <code>gem install sass</code> to install Sass.</p>
+<h3><a name="install-the-sass-plugin"class="anchor" href="#install-the-sass-plugin"><span class="header-link"></span></a>Install the Sass plugin</h3>
+<pre><code><div class="highlight"><pre><span class="nx">npm</span> <span class="nx">install</span> <span class="o">-</span><span class="nx">g</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">contrib</span><span class="o">-</span><span class="nx">sass</span> <span class="o">--</span><span class="nx">save</span><span class="o">-</span><span class="nx">dev</span>
+</pre></div>
+</code></pre>
+<p>and then, in our Gruntfile:</p>
+<pre><code><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-sass&#39;</span><span class="p">);</span>
+</pre></div>
+</code></pre>
+<h3><a name="configure-the-sass-task"class="anchor" href="#configure-the-sass-task"><span class="header-link"></span></a>Configure the <code>sass</code> task</h3>
+<p>We&#39;ll create a single target called <code>all</code> for our task. We&#39;ll then define a list of source/destination pairs in the <code>files</code> property:</p>
+<pre><code><div class="highlight"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+        <span class="nx">sass</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">files</span><span class="o">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;css/main.css&#39;</span><span class="o">:</span> <span class="s1">&#39;scss/main.scss&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;css/homepage.css&#39;</span><span class="o">:</span> <span class="s1">&#39;scss/homepage.scss&#39;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+    <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-sass&#39;</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+</code></pre>
+<p>If you&#39;ve read through the previous recipe, you&#39;ll recall that the <code>files</code> property accepted an array of comma-separated file paths. Turns out there are a host of ways to describe the files your tasks needs to operate on, but we&#39;ll talk about that later. For now, let&#39;s examine this form:</p>
+<pre><code><div class="highlight"><pre><span class="nx">files</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s1">&#39;css/main.css&#39;</span><span class="o">:</span> <span class="s1">&#39;scss/main.scss&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;css/homepage.css&#39;</span><span class="o">:</span> <span class="s1">&#39;scss/homepage.scss&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>We&#39;ve defined <code>files</code> as an object with key/value pairs correspond to <em>destination-file</em>/<em>source-file</em>. </p>
+<h3><a name="run-the-sass-ask"class="anchor" href="#run-the-sass-ask"><span class="header-link"></span></a>Run the <code>sass</code> ask</h3>
+<p>Let&#39;s run our task to see how it works:</p>
+<pre><code><div class="highlight"><pre><span class="nx">grunt</span> <span class="nx">sass</span>
+</pre></div>
+</code></pre>
+<h3><a name="-"class="anchor" href="#-"><span class="header-link"></span></a> </h3>
+<p>This means that for each new Sass file that you add to your project, you&#39;ll need to edit your Gruntfile to include a new source/destination pair in your <code>sass</code> task. Not too sexy. </p>
+<p>Let&#39;s fix that by <em>building the files object dynamically</em>:</p>
+<pre><code><div class="highlight"><pre><span class="nx">files</span><span class="o">:</span> <span class="p">[{</span>
+    <span class="nx">expand</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">cwd</span><span class="o">:</span> <span class="s1">&#39;scss/&#39;</span><span class="p">,</span>
+    <span class="nx">src</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;*.scss&#39;</span><span class="p">],</span>
+    <span class="nx">dest</span><span class="o">:</span> <span class="s1">&#39;css/&#39;</span><span class="p">,</span>
+    <span class="nx">ext</span><span class="o">:</span> <span class="s1">&#39;.css&#39;</span>
+<span class="p">}]</span>
+</pre></div>
+</code></pre>
+<p>Okay, take a deep breath! There&#39;s a lot going on in the few lines above. First, we&#39;ve moved back to <code>files</code> as an array, but instead of strings describing single paths, we now have objects describing source/destination mappings. How is it done? Let&#39;s look at each property:</p>
+<ul>
+<li><code>expand</code> is set to <code>true</code> so that we can use the properties below:</li>
+<li><code>cwd</code> (current working directory) is the common path to all the source files; in our case, all <code>.scss</code> files are inside the <code>scss</code> folder (note the trailing slash character);</li>
+<li><code>src</code> is an array of one or more patterns to match, relative to <code>cwd</code>;</li>
+<li><code>dest</code> is the counterpart to <code>cwd</code> and describes the destination path prefix; in other words, this is the destination folder for all our generated CSS files;</li>
+<li><code>ext</code> is the new extension for the destination files; in our case, we want all <code>.scss</code> files to become <code>.css</code> files.</li>
+</ul>
+<p>In plain words, the previous construct reads as: </p>
+<blockquote>
+<p>Run all files with the <code>.scss</code> extension from the <code>scss</code> folder through the <code>sass</code> task and place the resulting files in the <code>css</code> folder, each with their original names but with the <code>.css</code> extension instead of <code>.scss</code>.</p>
+</blockquote>
+<p>If you run <code>grunt sass</code> again, you&#39;ll notice that everything still works, but with the added benefit that we add/remove Sass files to your project and they&#39;ll be picked up by the sass task without having to update the Gruntfile each time.</p>
+<p>Read more about the different ways to define files in the chapter <em>Files In-Depth</em>.</p>
+<h3><a name="take-five"class="anchor" href="#take-five"><span class="header-link"></span></a>Take five</h3>
+<p>In this recipe, we&#39;ve learned:</p>
+<ul>
+<li>to write multiple source/destination pairs for the files used by our task;</li>
+<li>to define these pairs dynamically so we don&#39;t have to maintain them, one by one, for all eternity.</li>
+</ul>
+
+		</article>
+	</body>
+</html>

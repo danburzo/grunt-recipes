@@ -1,3 +1,7 @@
+{
+  title: "Watch for changes"
+}
+
 ## Watch for changes
 
 **Plugins used:** [`grunt-contrib-watch`](https://npmjs.org/package/grunt-contrib-watch).

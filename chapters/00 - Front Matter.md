@@ -1,3 +1,7 @@
+{
+  title: "Front Matter"
+}
+
 # Grunt Up & Running
 
 A book by Dan Burzo ([@danburzo](http://twitter.com/danburzo))

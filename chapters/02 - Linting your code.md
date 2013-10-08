@@ -1,3 +1,7 @@
+{
+  title: "Lint your code"
+}
+
 ## Lint your JavaScript code
 
 **Plugins used:** [`grunt-contrib-jshint`](https://npmjs.org/package/grunt-contrib-jshint).

@@ -1,3 +1,8 @@
+{
+  title: "Start a server",
+  date: '10/10/2013'
+}
+
 ## Start a server
 
 **Using:** [`grunt-contrib-connect`](https://npmjs.org/package/grunt-contrib-connect)
@@ -129,6 +134,21 @@ Let's see how we can use it in our `connect` task:
 
 We've written a custom `middleware` function which returns an array of chained middleware. Because we're overwriting the original implementation altogether, we need to make sure to include it &mdash; it's the part with `connect.static`. We're then adding our rewrite middleware to the chain; it contains a single rule which states that all files except HTML, stylesheets, scripts and images should be redirected to `index.html`.
 
+### Testing on other devices
+
+To make our app available to other devices &mdash; like a phone or tablet connected to the same network as our development machine &mdash; we need to make one small adjustment:
+
+	hostname: '*'
+
+Now you can test your app on any device by going to `http://ip-address:8000`. 
+
+__Note:__ To find out your machine's IP, run `ifconfig` in the command line and look for the IP next to `inet addr`. On Windows, you run `ipconfig` and look for `IPv4 Address`.
+
 ### Take five
 
-In this recipe, we've learned how to use the `connect` task to start a local server. In addition, we've made it useful for developing apps that use the HTML5 History API by redirecting all paths that don't correspond to static assets back to the main HTML.
+In this recipe, we've done quite a few things:
+
+* we learned how to use the `connect` task to start a local server;
+* we made it useful for developing apps that use the HTML5 History API by redirecting all paths that don't correspond to static assets back to the main HTML;
+* we configured the server so that we can test our app on other devices.
+

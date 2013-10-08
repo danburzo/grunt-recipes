@@ -1,3 +1,7 @@
+{
+  title: "Write your own Grunt tasks"
+}
+
 ## Write your own Grunt tasks
 
 ### A primer on custom tasks

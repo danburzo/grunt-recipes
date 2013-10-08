@@ -1,0 +1,107 @@
+
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>Write your own Grunt tasks</title>
+		<link rel="stylesheet" type="text/css" href="../../assets/book.css"/>
+		<link rel="stylesheet" type="text/css" href="../../assets/pygments.css"/>
+	</head>
+	<body>
+		<article>
+			<h1>Write your own Grunt tasks</h1>
+			<p>Last updated on Jan 1st, 1970</p>
+			<h2><a name="write-your-own-grunt-tasks"class="anchor" href="#write-your-own-grunt-tasks"><span class="header-link"></span></a>Write your own Grunt tasks</h2>
+<h3><a name="a-primer-on-custom-tasks"class="anchor" href="#a-primer-on-custom-tasks"><span class="header-link"></span></a>A primer on custom tasks</h3>
+<h4><a name="aliasing-existing-tasks"class="anchor" href="#aliasing-existing-tasks"><span class="header-link"></span></a>Aliasing existing tasks</h4>
+<p>Task aliasing is useful for when you want to run multiple tasks in sequence without having to invoke Grunt specifically for each one. The way to do this is:</p>
+<pre><code><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;mytask&#39;</span><span class="p">,</span> <span class="s1">&#39;Optional task description&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;jshint&#39;</span><span class="p">,</span> <span class="s1">&#39;qunit&#39;</span><span class="p">,</span> <span class="s1">&#39;concat&#39;</span><span class="p">]);</span>
+</pre></div>
+</code></pre>
+<p>This way you can simply run</p>
+<pre><code><div class="highlight"><pre><span class="nx">grunt</span> <span class="nx">mytask</span>
+</pre></div>
+</code></pre>
+<p>...and it will trigger the succession of <code>jshint</code>, <code>qunit</code> and <code>concat</code>.</p>
+<p>We usually want to define a <code>default</code> task that will run when we simply type <code>grunt</code> in the command line:</p>
+<pre><code><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;watch&#39;</span><span class="p">]);</span>
+</pre></div>
+</code></pre>
+<p>In addition, the list of tasks can come with specific targets:</p>
+<pre><code><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;watch:stylesheets&#39;</span><span class="p">]);</span>
+</pre></div>
+</code></pre>
+<h3><a name="working-with-files"class="anchor" href="#working-with-files"><span class="header-link"></span></a>Working with files</h3>
+<p>Chances are your app will want to operate on files. You can learn about the different ways users can define files in the <em>Files In-Depth</em> chapter, and there certainly are a bunch of them! Fortunately, Grunt does the heavy-lifting for us and normalizes all formats into the <em>Files Array</em> format, expanding all the patterns it finds along the way. </p>
+<p>So really all we have to do is grab the array from <code>this.files</code> containing objects which have two main properties:</p>
+<ul>
+<li>the <code>dest</code> property holds the path to the destination;</li>
+<li>the <code>src</code> property is an array of one or more source files for the destination.</li>
+</ul>
+<p>Let&#39;s try this out!</p>
+<p>Assume we have a project structure like this one:</p>
+<pre><code><div class="highlight"><pre><span class="nx">app</span><span class="o">/</span>
+    <span class="nx">src1</span><span class="p">.</span><span class="nx">js</span>
+    <span class="nx">src2</span><span class="p">.</span><span class="nx">js</span>
+<span class="nx">Gruntfile</span><span class="p">.</span><span class="nx">js</span>
+<span class="kr">package</span><span class="p">.</span><span class="nx">json</span>
+</pre></div>
+</code></pre>
+<p>We write the following Grunt code:</p>
+<pre><code><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+    <span class="nx">logfiles</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">filesObject</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">files</span><span class="o">:</span> <span class="p">{</span>
+                <span class="s1">&#39;dist/file1.js&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;app/src*.js&#39;</span><span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nx">filesArray</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">files</span><span class="o">:</span> <span class="p">[{</span>
+                <span class="nx">src</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;app/src*.js&#39;</span><span class="p">],</span>
+                <span class="nx">dest</span><span class="o">:</span> <span class="s1">&#39;dist/file1.js&#39;</span>
+            <span class="p">}]</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">grunt</span><span class="p">.</span><span class="nx">registerMultiTask</span><span class="p">(</span>
+    <span class="s1">&#39;logfiles&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;Log the source-destination mappings in a Grunt multitask&#39;</span><span class="p">,</span> 
+    <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">files</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">grunt</span><span class="p">.</span><span class="nx">log</span><span class="p">.</span><span class="nx">writeln</span><span class="p">(</span><span class="s1">&#39;File &#39;</span> <span class="o">+</span> <span class="nx">file</span><span class="p">.</span><span class="nx">dest</span> <span class="o">+</span> <span class="s1">&#39; has the sources &#39;</span> <span class="o">+</span> <span class="nx">file</span><span class="p">.</span><span class="nx">src</span><span class="p">);</span>
+        <span class="p">});</span>    
+    <span class="p">}</span>
+<span class="p">);</span>
+</pre></div>
+</code></pre>
+<p>Firstly, we created two targets corresponding to two different ways of defining files for our tasks. Secondly, we defined our multitask as a simple loop through the <code>this.files</code> array.</p>
+<p>Now let&#39;s check what each of them outputs:</p>
+<pre><code><div class="highlight"><pre><span class="nx">grunt</span> <span class="nx">logfiles</span><span class="o">:</span><span class="nx">filesObject</span>
+<span class="o">&gt;</span> <span class="nx">Running</span> <span class="s2">&quot;logfiles:filesObject&quot;</span> <span class="p">(</span><span class="nx">logfiles</span><span class="p">)</span> <span class="nx">task</span>
+<span class="o">&gt;</span> <span class="nx">File</span> <span class="nx">dist</span><span class="o">/</span><span class="nx">file1</span><span class="p">.</span><span class="nx">js</span> <span class="nx">has</span> <span class="nx">the</span> <span class="nx">sources</span> <span class="nx">app</span><span class="o">/</span><span class="nx">src1</span><span class="p">.</span><span class="nx">js</span><span class="p">,</span> <span class="nx">app</span><span class="o">/</span><span class="nx">src2</span><span class="p">.</span><span class="nx">js</span>
+
+<span class="nx">grunt</span> <span class="nx">logfiles</span><span class="o">:</span><span class="nx">filesArray</span>
+<span class="o">&gt;</span> <span class="nx">Running</span> <span class="s2">&quot;logfiles:filesArray&quot;</span> <span class="p">(</span><span class="nx">logfiles</span><span class="p">)</span> <span class="nx">task</span>
+<span class="o">&gt;</span> <span class="nx">File</span> <span class="nx">dist</span><span class="o">/</span><span class="nx">file1</span><span class="p">.</span><span class="nx">js</span> <span class="nx">has</span> <span class="nx">the</span> <span class="nx">sources</span> <span class="nx">app</span><span class="o">/</span><span class="nx">src1</span><span class="p">.</span><span class="nx">js</span><span class="p">,</span> <span class="nx">app</span><span class="o">/</span><span class="nx">src2</span><span class="p">.</span><span class="nx">js</span>
+</pre></div>
+</code></pre>
+<p>Identical &mdash; one less thing for us to worry about!</p>
+<h4><a name="excluding-sources-that-don-t-exist"class="anchor" href="#excluding-sources-that-don-t-exist"><span class="header-link"></span></a>Excluding sources that don&#39;t exist</h4>
+<p>A good practice in all tasks is to filter out the source files that don&#39;t actually exist in the project:</p>
+<pre><code><div class="highlight"><pre><span class="k">this</span><span class="p">.</span><span class="nx">files</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">sources</span> <span class="o">=</span> <span class="nx">file</span><span class="p">.</span><span class="nx">src</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">grunt</span><span class="p">.</span><span class="nx">file</span><span class="p">.</span><span class="nx">exists</span><span class="p">(</span><span class="nx">path</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nx">grunt</span><span class="p">.</span><span class="nx">log</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s1">&#39;Source file &#39;</span> <span class="o">+</span> <span class="nx">path</span> <span class="o">+</span> <span class="s1">&#39; not found.&#39;</span><span class="p">);</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">});</span>    
+</pre></div>
+</code></pre>
+<p>Now the <code>sources</code> variable contains only the subset of files that are valid.</p>
+
+		</article>
+	</body>
+</html>

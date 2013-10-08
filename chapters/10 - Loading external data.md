@@ -1,3 +1,7 @@
+{
+  title: "Loading external data"
+}
+
 ## Loading external data in our tasks
 
 Grunt provides two methods for loading external data into the Gruntfile:

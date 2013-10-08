@@ -1,0 +1,258 @@
+
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>Appendix A: Some useful Grunt plugins</title>
+		<link rel="stylesheet" type="text/css" href="../../assets/book.css"/>
+		<link rel="stylesheet" type="text/css" href="../../assets/pygments.css"/>
+	</head>
+	<body>
+		<article>
+			<h1>Appendix A: Some useful Grunt plugins</h1>
+			<p>Last updated on Jan 1st, 1970</p>
+			<h2><a name="appendix-a-some-useful-grunt-plugins"class="anchor" href="#appendix-a-some-useful-grunt-plugins"><span class="header-link"></span></a>Appendix A: Some useful Grunt plugins</h2>
+<p>Here are some hand-picked plugins for your enjoyment. Most of the &#39;official&#39; plugins (starting with <code>grunt-contrib</code>) are included. I&#39;ve also included a few non-Grunt plugins (marked with <code>*</code>) because they play nice with the others.</p>
+<h3><a name="general-purpose"class="anchor" href="#general-purpose"><span class="header-link"></span></a>General purpose</h3>
+<p>These general purpose plugins operate on any text-based files.</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>grunt-contrib-copy</td>
+<td>Copy files and folders from one location to another.</td>
+</tr>
+<tr>
+<td>grunt-contrib-concat</td>
+<td>Concatenate files.</td>
+</tr>
+<tr>
+<td>grunt-contrib-clean</td>
+<td>Delete files and folders from your project. You can use this to clean up if other tasks create temporary files.</td>
+</tr>
+<tr>
+<td>grunt-contrib-watch</td>
+<td>Watch for changes on files in your project and trigger other tasks. We discussed about this in <em>Chapter 6</em>.</td>
+</tr>
+<tr>
+<td>grunt-contrib-compress</td>
+<td>Create archives from your files.</td>
+</tr>
+<tr>
+<td>grunt-contrib-symlink</td>
+<td>Create symbolic links, for when you don&#39;t need to physically copy files.</td>
+</tr>
+<tr>
+<td>grunt-rev</td>
+<td>Prefix your files with a number representing their content, so each time you change the file, the output will have a different file name to bust the browser cache when you deploy it in production.</td>
+</tr>
+</tbody>
+</table>
+<h3><a name="server-oriented"class="anchor" href="#server-oriented"><span class="header-link"></span></a>Server-oriented</h3>
+<p>These plugins are geared towards running a web server locally.</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>grunt-contrib-connect</td>
+<td>Start a server to preview your changes or to facilitate other tasks, such as automated testing.</td>
+</tr>
+<tr>
+<td>grunt-contrib-livereload</td>
+<td>Reload your pages after each change you make. Works in conjunction with <code>grunt-contrib-connect</code> and <code>grunt-contrib-watch</code>.</td>
+</tr>
+<tr>
+<td>*connect-modrewrite</td>
+<td>When used in conjunction with <code>grunt-contrib-connect</code>, allows you to add mod-rewrite rules.</td>
+</tr>
+</tbody>
+</table>
+<h3><a name="css-specific"class="anchor" href="#css-specific"><span class="header-link"></span></a>CSS-specific</h3>
+<p>Plugins to work with various languages and frameworks that compile to CSS or to lint &amp; minify your stylesheets.</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>grunt-contrib-less</td>
+<td>Convert <a href="http://lesscss.org/">LESS</a> to CSS.</td>
+</tr>
+<tr>
+<td>grunt-contrib-sass</td>
+<td>Convert <a href="http://sass-lang.com/">Sass</a> to CSS.</td>
+</tr>
+<tr>
+<td>grunt-contrib-stylus</td>
+<td>Convert <a href="http://learnboost.github.io/stylus/">Stylus</a> to CSS.</td>
+</tr>
+<tr>
+<td>grunt-contrib-compass</td>
+<td>Allows you to use the <a href="http://compass-style.org/">Compass</a> framework for Sass.</td>
+</tr>
+<tr>
+<td>grunt-recess</td>
+<td>Use Twitter&#39;s RECESS module on top of LESS.</td>
+</tr>
+<tr>
+<td>grunt-contrib-csslint</td>
+<td>Lint tool for CSS.</td>
+</tr>
+<tr>
+<td>grunt-contrib-cssmin</td>
+<td>Minify your CSS files.</td>
+</tr>
+<tr>
+<td>grunt-contrib-mincss</td>
+<td>Another plugin for CSS minification.</td>
+</tr>
+</tbody>
+</table>
+<h3><a name="javascript-specific"class="anchor" href="#javascript-specific"><span class="header-link"></span></a>JavaScript-specific</h3>
+<p>These are plugins that work primarily on JavaScript and other languages that compile to JavaScript.</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>grunt-contrib-coffee</td>
+<td>CoffeeScript to JavaScript.</td>
+</tr>
+<tr>
+<td>grunt-contrib-jshint</td>
+<td>Lint tool for JavaScript. We talked about it in <em>Chapter 3</em>.</td>
+</tr>
+<tr>
+<td>grunt-complexity</td>
+<td>Analyze the complexity of your code.</td>
+</tr>
+<tr>
+<td>grunt-plato</td>
+<td>Analyze your code with Plato.</td>
+</tr>
+</tbody>
+</table>
+<h3><a name="html-specific"class="anchor" href="#html-specific"><span class="header-link"></span></a>HTML-specific</h3>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>grunt-contrib-handlebars</td>
+<td>Handlebars templates &rarr; JST.</td>
+</tr>
+<tr>
+<td>grunt-contrib-jst</td>
+<td>Underscore templates &rarr; JST.</td>
+</tr>
+<tr>
+<td>grunt-contrib-jade</td>
+<td>Jade templates &rarr; JST.</td>
+</tr>
+<tr>
+<td>grunt-contrib-htmlmin</td>
+<td>Minify your HTML files by removing comments and irrelevant white space.</td>
+</tr>
+<tr>
+<td>grunt-manifest</td>
+<td>Generate HTML5 cache manifest files for web sites that can run even when the device is not connected to the Internet.</td>
+</tr>
+<tr>
+<td>grunt-usemin</td>
+<td>This plugin is composed of two tasks <code>useminPrepare</code> and <code>usemin</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3><a name="image-specific"class="anchor" href="#image-specific"><span class="header-link"></span></a>Image-specific</h3>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>grunt-contrib-imagemin</td>
+<td>Minify images.</td>
+</tr>
+<tr>
+<td>grunt-grunticon</td>
+<td>GruntIcon was created by Filament Group.</td>
+</tr>
+<tr>
+<td>grunt-spritesmith</td>
+<td>Generate sprites from your image files.</td>
+</tr>
+</tbody>
+</table>
+<h3><a name="automated-testing"class="anchor" href="#automated-testing"><span class="header-link"></span></a>Automated testing</h3>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>grunt-contrib-jasmine</td>
+<td>Automatically builds and maintains your spec runner and runs your tests headlessly through phantomjs.</td>
+</tr>
+<tr>
+<td>grunt-contrib-nodeunit</td>
+<td>Unit testing for Node.</td>
+</tr>
+<tr>
+<td>grunt-contrib-qunit</td>
+<td>Run QUnit tests.</td>
+</tr>
+<tr>
+<td>grunt-karma</td>
+<td>A Grunt plugin for the Karma test runner.</td>
+</tr>
+</tbody>
+</table>
+<h3><a name="miscellaneous"class="anchor" href="#miscellaneous"><span class="header-link"></span></a>Miscellaneous</h3>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>grunt-contrib-requirejs</td>
+<td>Build your RequireJS-powered app.</td>
+</tr>
+<tr>
+<td>grunt-contrib-yuidoc</td>
+<td>Generate documentation from YUIDoc.</td>
+</tr>
+</tbody>
+</table>
+
+		</article>
+	</body>
+</html>

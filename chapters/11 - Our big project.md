@@ -1,3 +1,7 @@
+{
+  title: "Our big project"
+}
+
 ## Our Big Project &mdash; creating a static website plugin
 
 Let's put everything we know together to create a static website generator that takes pages in markdown format and assembles them into a fully-functional blog.

@@ -1,57 +1,32 @@
 module.exports = function(grunt) {
 
 	grunt.initConfig({
-		concat: {
-			all: {
-				files: {
-					'dist/grunt-recipes.md': ['chapters/*.md']
-				}
-			}
-		},
 		copy: {
 			all: {
 				files: [{
 					expand: true,
 					src: ['assets/**'],
-					dest: 'dist/'
+					dest: 'book/'
 				}]
-			}
-		},
-		markdown: {
-			all: {
-				files: {
-					'dist/grunt-recipes.html': 'dist/grunt-recipes.md'
-				},
-				options: {
-					markdownOptions: {
-						gfm: true,
-						tables: true
-					},
-					template: 'grunt-recipes.tmpl'
-				}
 			}
 		},
 		watch: {
 			all: {
-				files: ['chapters/*.md', '*.tmpl'],
-				tasks: ['concat', 'copy', 'markdown'],
+				files: ['chapters/*.md', 'grunt-chapter.ejs'],
+				tasks: ['copy', 'pages'],
 				options: {
 					atBegin: true
 				}
 			}
 		},
 
-		logfiles: {
-			filesObject: {
-				files: {
-					'dist/destination': ['chapters/*.md', '*.tmpl']
-				}
-			},
-			filesArray: {
-				files: [{
-					src: ['chapters/*.md', '*.tmpl'],
-					dest: 'dist/destination'
-				}]
+		pages: {
+			options: {},
+			posts: {
+				src: 'chapters',
+				dest: 'book/chapters',
+				layout: 'grunt-chapter.ejs',
+				url: ':title/'
 			}
 		}
 	});
@@ -65,10 +40,4 @@ module.exports = function(grunt) {
 	}
 
 	grunt.registerTask('default', ['watch']);
-
-	grunt.registerMultiTask('logfiles', function() {
-		this.files.forEach(function(file) {
-            grunt.log.writeln('File ' + file.dest + ' has the sources ' + grunt.log.wordlist(file.src));
-        }); 
-	});
 };

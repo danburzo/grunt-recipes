@@ -1,3 +1,7 @@
+{
+  title: "Sassy Sass"
+}
+
 ## Sassy Sass
 
 **Plugins used:** [`grunt-contrib-sass`](https://npmjs.org/package/grunt-contrib-sass).

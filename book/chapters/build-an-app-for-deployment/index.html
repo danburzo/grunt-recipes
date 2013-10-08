@@ -1,0 +1,162 @@
+
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>Build an app for deployment</title>
+		<link rel="stylesheet" type="text/css" href="../../assets/book.css"/>
+		<link rel="stylesheet" type="text/css" href="../../assets/pygments.css"/>
+	</head>
+	<body>
+		<article>
+			<h1>Build an app for deployment</h1>
+			<p>Last updated on Jan 1st, 1970</p>
+			<h2><a name="build-an-app-for-deployment"class="anchor" href="#build-an-app-for-deployment"><span class="header-link"></span></a>Build an app for deployment</h2>
+<p>By now, you should be comfortable with working with one task at a time. It&#39;s time to really make Grunt shine by integrating the variety of tasks involved in preparing a web application for deployment, such as precompiling, minifying, concatenating and moving files around.</p>
+<h3><a name="what-we-re-trying-to-accomplish"class="anchor" href="#what-we-re-trying-to-accomplish"><span class="header-link"></span></a>What we&#39;re trying to accomplish</h3>
+<p>We want to take our main HTML file, identify all the stylesheets and scripts it references, optimize those (e.g. minification, concatenation) and then update the references from the HTML with the optimized version.</p>
+<p>At the end of the task, we want to have a <code>dist</code> folder that contains the optimized version of our project, readily deployable to a production environment.</p>
+<h3><a name="tasks-we-ll-use-in-this-recipe"class="anchor" href="#tasks-we-ll-use-in-this-recipe"><span class="header-link"></span></a>Tasks we&#39;ll use in this recipe</h3>
+<ul>
+<li><a href="https://npmjs.org/package/grunt-contrib-uglify"><code>grunt-contrib-uglify</code></a> to minify JavaScript;</li>
+<li><a href="https://npmjs.org/package/grunt-contrib-cssmin"><code>grunt-contrib-cssmin</code></a> to minify CSS;</li>
+<li><a href="https://npmjs.org/package/grunt-contrib-htmlmin"><code>grunt-contrib-htmlmin</code></a> to minify gruntde;</li>
+<li><a href="https://npmjs.org/package/grunt-contrib-concat"><code>HTML-contrib-concat</code></a> to concatenate files;</li>
+<li><a href="https://npmjs.org/package/grunt-contrib-copy"><code>grunt-contrib-copy</code></a> to copy files and folders;</li>
+<li><a href="https://github.com/yeoman/grunt-usemin"><code>grunt-usemin</code></a> to replaces references to scripts and stylesheets in HTML files with their optimized versions.</li>
+</ul>
+<p>Now, don&#39;t get too intimidated! If you think about it each task has a very specific purpose in the workflow, and you&#39;ll see how easy is to choreograph them into one fluent, beautiful task.</p>
+<h3><a name="let-s-install-everything"class="anchor" href="#let-s-install-everything"><span class="header-link"></span></a>Let&#39;s install everything</h3>
+<pre><code><div class="highlight"><pre><span class="nx">npm</span> <span class="nx">install</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">contrib</span><span class="o">-</span><span class="nx">uglify</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">contrib</span><span class="o">-</span><span class="nx">concat</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">contrib</span><span class="o">-</span><span class="nx">cssmin</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">contrib</span><span class="o">-</span><span class="nx">htmlmin</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">contrib</span><span class="o">-</span><span class="nx">copy</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">usemin</span> <span class="o">--</span><span class="nx">save</span><span class="o">-</span><span class="nx">dev</span>
+</pre></div>
+</code></pre>
+<p>... in one fell swoop, even. Now let&#39;s add all of it to our Gruntfile:</p>
+<pre><code><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-uglify&#39;</span><span class="p">);</span>
+<span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-concat&#39;</span><span class="p">);</span>
+<span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-cssmin&#39;</span><span class="p">);</span>
+<span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-htmlmin&#39;</span><span class="p">);</span>
+<span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-copy&#39;</span><span class="p">);</span>
+<span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-usemin&#39;</span><span class="p">);</span>
+</pre></div>
+</code></pre>
+<h3><a name="basic-configuration"class="anchor" href="#basic-configuration"><span class="header-link"></span></a>Basic configuration</h3>
+<pre><code><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+
+    <span class="c1">// Minimize tasks</span>
+    <span class="nx">cssmin</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">files</span><span class="o">:</span> <span class="p">{</span>
+                <span class="s1">&#39;dist/css/app.css&#39;</span><span class="o">:</span> <span class="s1">&#39;app/css/**/*.css&#39;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+
+    <span class="nx">htmlmin</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">files</span><span class="o">:</span> <span class="p">[{</span>
+                <span class="nx">expand</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+                <span class="nx">cwd</span><span class="o">:</span> <span class="s1">&#39;app/&#39;</span><span class="p">,</span>
+                <span class="nx">src</span><span class="o">:</span> <span class="s1">&#39;**/*.html&#39;</span><span class="p">,</span>
+                <span class="nx">dest</span><span class="o">:</span> <span class="s1">&#39;dist/&#39;</span>
+            <span class="p">}]</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+
+    <span class="c1">// Move other things around</span>
+    <span class="nx">copy</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">files</span><span class="o">:</span> <span class="p">[{</span>
+                <span class="nx">expand</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+                <span class="nx">cwd</span><span class="o">:</span> <span class="s1">&#39;app/&#39;</span><span class="p">,</span>
+                <span class="nx">dest</span><span class="o">:</span> <span class="s1">&#39;dist/&#39;</span><span class="p">,</span>
+                <span class="nx">src</span><span class="o">:</span> <span class="p">[</span>
+                    <span class="s1">&#39;.htaccess&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;*.ico&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;images/**/*.{jpg,png,gif}&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;css/fonts/*&#39;</span>
+                <span class="p">]</span>        
+            <span class="p">}]</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="p">});</span>
+</pre></div>
+</code></pre>
+<p>Let&#39;s take the code above apart, piece by piece.</p>
+<p>First, we configure the <code>cssmin</code> task to take all stylesheets from <code>app/css</code> and minimize and concatenate them in a single file in <code>dist/css</code> called <code>app.css</code>.
+We do the same for HTML, except we&#39;re using a dynamic declaration of the files object since we want to have a separate HTML file in the <code>dist</code> folder for each HTML in our <code>app</code> folder.</p>
+<p>Then we configure the <code>copy</code> task to copy into the <code>dist</code> folder one by one any files not already covered by the other tasks &mdash; stuff like icons, images, fonts, etc.  </p>
+<p>We already notice we&#39;ve been using <code>app</code> and <code>dist</code> a lot, so let me take this moment to introduce a handy way to Not Repeat Yourself: enter <strong>Grunt templates</strong>. They are tiny dynamic snippets delimited by <code>&lt;%</code> and <code>%&gt;</code> that you can add to your strings. We&#39;re interested in templates of the form <code>&lt;%= object.property.path %&gt;</code> which expands to the corresponding value from Grunt&#39;s configuration object. Let&#39;s see it in action:</p>
+<pre><code><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+
+    <span class="nx">appConfig</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">appRoot</span><span class="o">:</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
+        <span class="nx">distRoot</span><span class="o">:</span> <span class="s1">&#39;dist&#39;</span>
+    <span class="p">},</span>
+
+    <span class="c1">// Minimize tasks</span>
+    <span class="nx">cssmin</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">files</span><span class="o">:</span> <span class="p">{</span>
+                <span class="s1">&#39;&lt;%= appConfig.distRoot %&gt;/css/app.css&#39;</span><span class="o">:</span> <span class="s1">&#39;&lt;%= appConfig.appRoot %&gt;/css/**/*.css&#39;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+
+    <span class="nx">htmlmin</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">files</span><span class="o">:</span> <span class="p">[{</span>
+                <span class="nx">expand</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+                <span class="nx">cwd</span><span class="o">:</span> <span class="s1">&#39;&lt;%= appConfig.appRoot %&gt;/&#39;</span><span class="p">,</span>
+                <span class="nx">src</span><span class="o">:</span> <span class="s1">&#39;**/*.html&#39;</span><span class="p">,</span>
+                <span class="nx">dest</span><span class="o">:</span> <span class="s1">&#39;&lt;%= appConfig.distRoot %&gt;&#39;</span>
+            <span class="p">}]</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+
+    <span class="c1">// Move other things around</span>
+    <span class="nx">copy</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">files</span><span class="o">:</span> <span class="p">[{</span>
+                <span class="nx">expand</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+                <span class="nx">cwd</span><span class="o">:</span> <span class="s1">&#39;&lt;%= appConfig.appRoot %&gt;/&#39;</span><span class="p">,</span>
+                <span class="nx">dest</span><span class="o">:</span> <span class="s1">&#39;&lt;%= appConfig.distRoot %&gt;&#39;</span><span class="p">,</span>
+                <span class="nx">src</span><span class="o">:</span> <span class="p">[</span>
+                    <span class="s1">&#39;.htaccess&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;*.ico&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;images/**/*.{jpg,png,gif}&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;css/fonts/*&#39;</span>
+                <span class="p">]</span>        
+            <span class="p">}]</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="p">});</span>
+</pre></div>
+</code></pre>
+<p>We&#39;ve defined an <code>appConfig</code> property to hold our commonly-used paths. Now we can refer to the two paths as <code>&lt;%= appConfig.appRoot %&gt;</code> and <code>&lt;%= appConfig.distRoot %&gt;</code> in all our tasks.</p>
+<p><strong>Note:</strong> You can define any number of custom properties in your Grunt configuration (like we did above with <code>appConfig</code>), but make sure the names don&#39;t conflict with any task names and stay away from the <code>grunt</code> keyword, which is reserved to access the Grunt object in the templates.</p>
+<p>Another cool thing we can do is to get a timestamp for the current Grunt run and add that to the generated CSS/JS files to ensure they are unique.</p>
+<pre><code><div class="highlight"><pre><span class="p">{</span>
+    <span class="nx">appConfig</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">appRoot</span><span class="o">:</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
+        <span class="nx">distRoot</span><span class="o">:</span> <span class="s1">&#39;dist&#39;</span><span class="p">,</span>
+        <span class="nx">timestamp</span><span class="o">:</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>And here&#39;s how we might use this to append the timestamp to our generated CSS file in <code>cssmin</code>:</p>
+<pre><code><div class="highlight"><pre><span class="nx">cssmin</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">files</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s1">&#39;&lt;%= appConfig.distRoot %&gt;/css/app.&lt;%= appConfig.timestamp %&gt;.css&#39;</span><span class="o">:</span> <span class="s1">&#39;&lt;%= appConfig.appRoot %&gt;/css/**/*.css&#39;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<h3><a name="take-five"class="anchor" href="#take-five"><span class="header-link"></span></a>Take five</h3>
+
+		</article>
+	</body>
+</html>

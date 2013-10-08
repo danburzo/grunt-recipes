@@ -1,0 +1,146 @@
+
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>Start a server</title>
+		<link rel="stylesheet" type="text/css" href="../../assets/book.css"/>
+		<link rel="stylesheet" type="text/css" href="../../assets/pygments.css"/>
+	</head>
+	<body>
+		<article>
+			<h1>Start a server</h1>
+			<p>Last updated on Oct 10th, 2013</p>
+			<h2><a name="start-a-server"class="anchor" href="#start-a-server"><span class="header-link"></span></a>Start a server</h2>
+<p><strong>Using:</strong> <a href="https://npmjs.org/package/grunt-contrib-connect"><code>grunt-contrib-connect</code></a></p>
+<p>When working on a project on your machine, you test your stuff by pointing your browser to <code>file://path/to/your/project/index.html</code>. This alone is inelegant. But more importantly, <em>AJAX features won&#39;t work</em> since they use the HTTP protocol, not the file protocol. </p>
+<p>What you need is a web server installed locally. You might be tempted to use an AMP stack &mdash; a fancy way of calling a bundle of Apache, MySQL and PHP &mdash; but it&#39;s a hassle to link your projects to its <code>www</code> folder (I&#39;m lazy) and most of the time you&#39;ll use 1% of its features anyway. Plus, let&#39;s be honest, it feels a little retro. </p>
+<p>If you have Python installed, you can simply run this in your project folder instead:</p>
+<pre><code><div class="highlight"><pre><span class="nx">python</span> <span class="o">-</span><span class="nx">m</span> <span class="nx">SimpleHTTPServer</span> <span class="c1">// for Python 2.x</span>
+<span class="nx">python</span> <span class="o">-</span><span class="nx">m</span> <span class="nx">http</span><span class="p">.</span><span class="nx">server</span> <span class="c1">// for Python 3.x</span>
+</pre></div>
+</code></pre>
+<p>It will start a web server through which you can access your project at <code>http://localhost:8000</code>.</p>
+<p>In this chapter, we&#39;ll learn how to configure the <code>connect</code> task to obtain a similar result, plus a few other perks.</p>
+<h3><a name="install-the-connect-task"class="anchor" href="#install-the-connect-task"><span class="header-link"></span></a>Install the <code>connect</code> task</h3>
+<pre><code><div class="highlight"><pre><span class="nx">npm</span> <span class="nx">install</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">contrib</span><span class="o">-</span><span class="nx">connect</span> <span class="o">--</span><span class="nx">save</span><span class="o">-</span><span class="nx">dev</span>
+</pre></div>
+</code></pre>
+<p>and then load it into  your Gruntfile:</p>
+<pre><code><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-connect&#39;</span><span class="p">);</span>
+</pre></div>
+</code></pre>
+<h3><a name="configure-a-persistent-server"class="anchor" href="#configure-a-persistent-server"><span class="header-link"></span></a>Configure a persistent server</h3>
+<p>To create a persistent server (one which does not stop after Grunt tasks have completed), we will use <code>keepalive: true</code>:</p>
+<pre><code><div class="highlight"><pre><span class="nx">connect</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">server</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">keepalive</span><span class="o">:</span> <span class="kc">true</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>We&#39;ve created a single target called <code>server</code> for our <code>connect</code> task.</p>
+<h3><a name="run-your-server"class="anchor" href="#run-your-server"><span class="header-link"></span></a>Run your server</h3>
+<pre><code><div class="highlight"><pre><span class="nx">grunt</span> <span class="nx">connect</span><span class="o">:</span><span class="nx">server</span>
+</pre></div>
+</code></pre>
+<p>Now go to <a href="http://localhost:8000">http://localhost:8000</a> and you should be able to browse your app, and see your <code>index.html</code> if you have one.</p>
+<h3><a name="more-server-configuration"class="anchor" href="#more-server-configuration"><span class="header-link"></span></a>More server configuration</h3>
+<p>You can customize the host name, port and protocol for your server:</p>
+<pre><code><div class="highlight"><pre><span class="nx">connect</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">server</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">keepalive</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">protocol</span><span class="o">:</span> <span class="s1">&#39;https&#39;</span><span class="p">,</span>
+            <span class="nx">hostname</span><span class="o">:</span> <span class="s1">&#39;myapp&#39;</span><span class="p">,</span>
+            <span class="nx">port</span><span class="o">:</span> <span class="s1">&#39;8080&#39;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>The code above makes the server available at <a href="https://myapp:8080">https://myapp:8080</a>. This is useful in the case you want to start several servers at once, with different base directories, as in the example below:</p>
+<pre><code><div class="highlight"><pre><span class="nx">connect</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">first</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">keepalive</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">hostname</span><span class="o">:</span> <span class="s1">&#39;firstsite&#39;</span><span class="p">,</span>
+            <span class="nx">base</span><span class="o">:</span> <span class="s1">&#39;first-site&#39;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nx">second</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">keepalive</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">hostname</span><span class="o">:</span> <span class="s1">&#39;secondsite&#39;</span><span class="p">,</span>
+            <span class="nx">base</span><span class="o">:</span> <span class="s1">&#39;second-site&#39;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</code></pre>
+<p>This makes the directories <code>first-site</code> and <code>second-site</code> from your project available at <a href="http://firstite:8000">http://firstite:8000</a> and <a href="http://secondsite:8000">http://secondsite:8000</a>, respectively.</p>
+<h3><a name="routing-everything-back-to-index-html"class="anchor" href="#routing-everything-back-to-index-html"><span class="header-link"></span></a>Routing everything back to index.html</h3>
+<p>If you&#39;re writing a Single-Page Web Application that uses the <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history">HTML5 History API</a>, you&#39;ll be disappointed to find that your skillfully crafted URLs don&#39;t withstand a page refresh. The web server assumes a path like <code>http://localhost:8000/posts/100</code> points to a physical file and, failing to find it in your project, throws a <em>404 Not Found</em> error.</p>
+<p>Let&#39;s fix this by writing a custom <em>middleware</em> for the <code>connect</code> task to redirect paths that don&#39;t correspond to physical files back to <code>index.html</code>.</p>
+<p>For this we will be using the <code>connect-modrewrite</code> plugin &mdash; our first encounter with a plugin that&#39;s not specifically written for Grunt. But rest assured, it&#39;s basically the same thing. Let&#39;s install it in the same way as with any other plugin:</p>
+<pre><code><div class="highlight"><pre><span class="nx">npm</span> <span class="nx">install</span> <span class="nx">connect</span><span class="o">-</span><span class="nx">modrewrite</span> <span class="o">--</span><span class="nx">save</span><span class="o">-</span><span class="nx">dev</span>
+</pre></div>
+</code></pre>
+<p>And then use it in our Gruntfile:</p>
+<pre><code><div class="highlight"><pre><span class="kd">var</span> <span class="nx">rewrite</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;connect-modrewrite&#39;</span><span class="p">);</span>
+</pre></div>
+</code></pre>
+<p>Let&#39;s see how we can use it in our <code>connect</code> task:</p>
+<pre><code><div class="highlight"><pre><span class="kd">var</span> <span class="nx">rewrite</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;connect-modrewrite&#39;</span><span class="p">);</span>
+
+<span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+    <span class="nx">connect</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">server</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">keepalive</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">hostname</span><span class="o">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+            <span class="nx">middleware</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">connect</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+
+                <span class="kd">var</span> <span class="nx">middleware</span> <span class="o">=</span> <span class="p">[];</span>
+
+                <span class="c1">// original middleware behavior</span>
+                <span class="kd">var</span> <span class="nx">base</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">base</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">base</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="nx">base</span> <span class="o">=</span> <span class="p">[</span><span class="nx">base</span><span class="p">];</span>
+                <span class="p">}</span>
+                <span class="nx">base</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">middleware</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">connect</span><span class="p">.</span><span class="kr">static</span><span class="p">(</span><span class="nx">path</span><span class="p">));</span>
+                <span class="p">});</span>
+
+                <span class="c1">// mod-rewrite behavior</span>
+                <span class="kd">var</span> <span class="nx">rules</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="s1">&#39;!\\.html|\\.js|\\.css|\\.svg|\\.jp(e?)g|\\.png|\\.gif$ /index.html&#39;</span>
+                <span class="p">];</span>
+                <span class="nx">middleware</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">rewrite</span><span class="p">(</span><span class="nx">rules</span><span class="p">));</span>
+
+                <span class="k">return</span> <span class="nx">middleware</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>    
+</pre></div>
+</code></pre>
+<p>We&#39;ve written a custom <code>middleware</code> function which returns an array of chained middleware. Because we&#39;re overwriting the original implementation altogether, we need to make sure to include it &mdash; it&#39;s the part with <code>connect.static</code>. We&#39;re then adding our rewrite middleware to the chain; it contains a single rule which states that all files except HTML, stylesheets, scripts and images should be redirected to <code>index.html</code>.</p>
+<h3><a name="testing-on-other-devices"class="anchor" href="#testing-on-other-devices"><span class="header-link"></span></a>Testing on other devices</h3>
+<p>To make our app available to other devices &mdash; like a phone or tablet connected to the same network as our development machine &mdash; we need to make one small adjustment:</p>
+<pre><code><div class="highlight"><pre><span class="nx">hostname</span><span class="o">:</span> <span class="s1">&#39;*&#39;</span>
+</pre></div>
+</code></pre>
+<p>Now you can test your app on any device by going to <code>http://ip-address:8000</code>. </p>
+<p><strong>Note:</strong> To find out your machine&#39;s IP, run <code>ifconfig</code> in the command line and look for the IP next to <code>inet addr</code>. On Windows, you run <code>ipconfig</code> and look for <code>IPv4 Address</code>.</p>
+<h3><a name="take-five"class="anchor" href="#take-five"><span class="header-link"></span></a>Take five</h3>
+<p>In this recipe, we&#39;ve done quite a few things:</p>
+<ul>
+<li>we learned how to use the <code>connect</code> task to start a local server;</li>
+<li>we made it useful for developing apps that use the HTML5 History API by redirecting all paths that don&#39;t correspond to static assets back to the main HTML;</li>
+<li>we configured the server so that we can test our app on other devices.</li>
+</ul>
+
+		</article>
+	</body>
+</html>

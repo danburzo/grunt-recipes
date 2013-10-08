@@ -1,0 +1,24 @@
+<%
+var prettyDate = function(date) {
+	return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][date.getMonth()] + " " +
+		(function (d) {
+			var s = d.toString(), l = s[s.length-1];
+			return s + (['st','nd','rd'][l-1] || 'th');
+		})(date.getDate()) + ", " + date.getFullYear();
+};
+%>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title><%= post.title %></title>
+		<link rel="stylesheet" type="text/css" href="../../assets/book.css"/>
+		<link rel="stylesheet" type="text/css" href="../../assets/pygments.css"/>
+	</head>
+	<body>
+		<article>
+			<h1><%- post.title %></h1>
+			<p>Last updated on <%= prettyDate(post.date) %></p>
+			<%- post.content %>
+		</article>
+	</body>
+</html>

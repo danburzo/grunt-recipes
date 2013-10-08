@@ -1,3 +1,7 @@
+{
+  title: "Getting Started"
+}
+
 ## Getting started
 
 ### Meet Grunt
