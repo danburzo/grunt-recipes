@@ -1,9 +1,6 @@
 {
-  title: "Start a server",
-  date: '10/10/2013'
+  title: "Start a server"
 }
-
-## Start a server
 
 **Using:** [`grunt-contrib-connect`](https://npmjs.org/package/grunt-contrib-connect)
 

@@ -10,10 +10,13 @@ module.exports = function(grunt) {
 				}]
 			}
 		},
+		clean: {
+			all: ['book']
+		},
 		watch: {
 			all: {
 				files: ['chapters/*.md', 'grunt-chapter.ejs'],
-				tasks: ['copy', 'pages'],
+				tasks: ['clean', 'copy', 'pages'],
 				options: {
 					atBegin: true
 				}

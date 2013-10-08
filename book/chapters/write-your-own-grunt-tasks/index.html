@@ -8,10 +8,11 @@
 	</head>
 	<body>
 		<article>
-			<h1>Write your own Grunt tasks</h1>
-			<p>Last updated on Jan 1st, 1970</p>
-			<h2><a name="write-your-own-grunt-tasks"class="anchor" href="#write-your-own-grunt-tasks"><span class="header-link"></span></a>Write your own Grunt tasks</h2>
-<h3><a name="a-primer-on-custom-tasks"class="anchor" href="#a-primer-on-custom-tasks"><span class="header-link"></span></a>A primer on custom tasks</h3>
+			<header>
+				<h1>Write your own Grunt tasks</h1>
+				<p>Last updated on Oct 8th, 2013</p>
+			</header>
+			<h3><a name="a-primer-on-custom-tasks"class="anchor" href="#a-primer-on-custom-tasks"><span class="header-link"></span></a>A primer on custom tasks</h3>
 <h4><a name="aliasing-existing-tasks"class="anchor" href="#aliasing-existing-tasks"><span class="header-link"></span></a>Aliasing existing tasks</h4>
 <p>Task aliasing is useful for when you want to run multiple tasks in sequence without having to invoke Grunt specifically for each one. The way to do this is:</p>
 <pre><code><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;mytask&#39;</span><span class="p">,</span> <span class="s1">&#39;Optional task description&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;jshint&#39;</span><span class="p">,</span> <span class="s1">&#39;qunit&#39;</span><span class="p">,</span> <span class="s1">&#39;concat&#39;</span><span class="p">]);</span>

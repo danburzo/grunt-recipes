@@ -2,8 +2,6 @@
   title: "Pre-compile your Handlebars templates"
 }
 
-## Pre-compile your Handlebars templates
-
 **Plugins used:** [`grunt-contrib-handlebars`](https://npmjs.org/package/grunt-contrib-handlebars).
 
 [Handlebars](http://handlebarsjs.com/) is a popular template library which helps you build HTML fragments populated with data from an object. A template looks something like:

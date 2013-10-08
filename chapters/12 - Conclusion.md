@@ -2,8 +2,6 @@
   title: "Conclusion"
 }
 
-## Conclusion
-
 Here you are, you've made it to the end of the book. I hope it was a worthwhile read. Armed with this knowledge, you should be able to use any Grunt plugin you come accross and even write your own.
 
 ### What now

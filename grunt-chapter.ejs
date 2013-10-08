@@ -16,8 +16,10 @@ var prettyDate = function(date) {
 	</head>
 	<body>
 		<article>
-			<h1><%- post.title %></h1>
-			<p>Last updated on <%= prettyDate(post.date) %></p>
+			<header>
+				<h1><%- post.title %></h1>
+				<p>Last updated on <%= prettyDate(post.date) %></p>
+			</header>
 			<%- post.content %>
 		</article>
 	</body>

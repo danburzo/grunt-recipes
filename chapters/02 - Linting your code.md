@@ -1,5 +1,5 @@
 {
-  title: "Lint your code"
+  title: "Lint your JavaScript code"
 }
 
 ## Lint your JavaScript code

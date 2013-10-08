@@ -2,8 +2,6 @@
   title: "Appendix A: Some useful Grunt plugins"
 }
 
-## Appendix A: Some useful Grunt plugins
-
 Here are some hand-picked plugins for your enjoyment. Most of the 'official' plugins (starting with `grunt-contrib`) are included. I've also included a few non-Grunt plugins (marked with `*`) because they play nice with the others.
 
 ### General purpose

@@ -2,9 +2,6 @@
   title: "Files, in-depth"
 }
 
-## Files, in-depth
-http://gruntjs.com/configuring-tasks#files
-
 Tasks can be:
 
 * single tasks or multitasks;

@@ -2,8 +2,6 @@
   title: "Sassy Sass"
 }
 
-## Sassy Sass
-
 **Plugins used:** [`grunt-contrib-sass`](https://npmjs.org/package/grunt-contrib-sass).
 
 **Note:** To make `grunt-contrib-sass` work, you also need to have Ruby and Sass installed. To check if you have ruby installed, type `ruby -v` in the console. When you've confirmed you have Ruby installed, run `gem install sass` to install Sass.
