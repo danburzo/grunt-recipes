@@ -11,24 +11,30 @@ A JavaScript linter is a tool that looks for syntax errors, bad practices and st
 
 ### Install the JSHint plugin
 
-	npm install grunt-contrib-jshint --save-dev
+```bash
+npm install grunt-contrib-jshint --save-dev
+```
 
 ### Load JSHint tasks into our Gruntfile
 
-	module.exports = function(grunt) {
-		grunt.loadNpmTasks('grunt-contrib-jshint');
-	};
+```javascript
+module.exports = function(grunt) {
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+};
+```
 
 ### Confige the JSHint task
 
-	module.exports = function(grunt) {
-		grunt.initConfig({
-			jshint: {
-				all: ['scripts/*.js']
-			}
-		});
-		grunt.loadNpmTasks('grunt-contrib-jshint');
-	};
+```javascript
+module.exports = function(grunt) {
+	grunt.initConfig({
+		jshint: {
+			all: ['scripts/*.js']
+		}
+	});
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+};
+```
 	
 We added a call to `initConfig` for the `jshint` task. In it, we defined a single *target* called `all`. We told JSHint to look at all files with a `.js` extension within the `scripts` folder.
 
@@ -37,12 +43,16 @@ We added a call to `initConfig` for the `jshint` task. In it, we defined a singl
 ### Run the JSHint task
 
 In your project directory, run:
-	
-	grunt jshint:all
+
+```bash	
+grunt jshint:all
+```
 
 ...to run the JSHint task with the `all` target. Or simply:
 
-	grunt jshint
+```bash
+grunt jshint
+```
 
 This is because `grunt-contrib-jshint` (along with most other Grunt tasks) is a so-called _multitask_. 
 
@@ -50,17 +60,19 @@ This is because `grunt-contrib-jshint` (along with most other Grunt tasks) is a 
 
 In the output, you should see a list of all problems the tool found in the specified JavaScript files. This is great, albeit not so readable. Let's configure JSHint to output to a file rather than in the console:
 
-	module.exports = function(grunt) {
-		grunt.initConfig({
-			jshint: {
-				options: {
-					reporterOutput: 'jshint.log'
-				}
-				all: ['scripts/*.js']
+```javascript
+module.exports = function(grunt) {
+	grunt.initConfig({
+		jshint: {
+			options: {
+				reporterOutput: 'jshint.log'
 			}
-		});
-		grunt.loadNpmTasks('grunt-contrib-jshint');
-	};
+			all: ['scripts/*.js']
+		}
+	});
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+};
+```
 
 That's much better. Now we have the list of errors in a handy file in our project called `jshint.log`. Brilliant.
 
@@ -70,30 +82,34 @@ Here we've set `options` globally for _all targets_, but each individual target 
 
 We've just configured an output file to serve as an error log. Next, let's look at how to customize the kind of rules JSHint enforces. Armed with the [full list of JSHint flags](http://www.jshint.com/docs/options/), we can create a JSON file which we'll name `.jshintrc` into our root directory. It looks something like this:
 
-	{
-	  "curly": true,
-	  "eqnull": true,
-	  "eqeqeq": true,
-	  "undef": true,
-	  "globals": {
-	    "jQuery": true
-	  }
-	}
+```javascript
+{
+  "curly": true,
+  "eqnull": true,
+  "eqeqeq": true,
+  "undef": true,
+  "globals": {
+    "jQuery": true
+  }
+}
+```	
 
 Now, let's tell JSHint to look at this file for the rules to enforce:
 
-	module.exports = function(grunt) {
-		grunt.initConfig({
-			jshint: {
-				options: {
-					jshintrc: '.jshintrc',
-					reporterOutput: 'jshint.log'
-				}
-				all: ['scripts/*.js']
+```javascript
+module.exports = function(grunt) {
+	grunt.initConfig({
+		jshint: {
+			options: {
+				jshintrc: '.jshintrc',
+				reporterOutput: 'jshint.log'
 			}
-		});
-		grunt.loadNpmTasks('grunt-contrib-jshint');
-	};
+			all: ['scripts/*.js']
+		}
+	});
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+};
+```
 
 ### Take five
 

@@ -9,35 +9,39 @@ In the previous recipes, we saw how we can compile our Sass files into CSS files
 
 As usual, let's install it in our project:
 
-	npm install grunt-contrib-watch
+```bash
+npm install grunt-contrib-watch
+```
 
 and load the tasks in our Gruntfile, after our `sass` and `handlebars` tasks:
 
-	module.exports = function(grunt) {
-		grunt.initConfig({
-			sass: {
-				all: {
-					files: [{
-						expand: true,
-						cwd: 'scss/',
-						src: ['*.scss'],
-						dest: 'css/',
-						ext: '.css'
-					}]
-				}
-			},
-			handlebars: {
-				all: {
-					files: {
-						'js/templates.js': ['templates/**/*.hbs']
-					}
+```javascript
+module.exports = function(grunt) {
+	grunt.initConfig({
+		sass: {
+			all: {
+				files: [{
+					expand: true,
+					cwd: 'scss/',
+					src: ['*.scss'],
+					dest: 'css/',
+					ext: '.css'
+				}]
+			}
+		},
+		handlebars: {
+			all: {
+				files: {
+					'js/templates.js': ['templates/**/*.hbs']
 				}
 			}
-		});
-		grunt.loadNpmTasks('grunt-contrib-sass');
-		grunt.loadNpmTasks('grunt-contrib-handlebars');
-		grunt.loadNpmTasks('grunt-contrib-watch');
-	};
+		}
+	});
+	grunt.loadNpmTasks('grunt-contrib-sass');
+	grunt.loadNpmTasks('grunt-contrib-handlebars');
+	grunt.loadNpmTasks('grunt-contrib-watch');
+};
+```
 
 ### Configuring the `watch` task
 
@@ -48,43 +52,45 @@ There are really only two things we need to define:
 
 So let's go ahead and do that:
 
-	module.exports = function(grunt) {
-		grunt.initConfig({
-			sass: {
-				all: {
-					files: [{
-						expand: true,
-						cwd: 'scss/',
-						src: ['*.scss'],
-						dest: 'css/',
-						ext: '.css'
-					}]
-				}
-			},
+```javascript
+module.exports = function(grunt) {
+	grunt.initConfig({
+		sass: {
+			all: {
+				files: [{
+					expand: true,
+					cwd: 'scss/',
+					src: ['*.scss'],
+					dest: 'css/',
+					ext: '.css'
+				}]
+			}
+		},
 
-			handlebars: {
-				all: {
-					files: {
-						'js/templates.js': ['templates/**/*.hbs']
-					}
-				}
-			},
-
-			watch: {
-				sass: {
-					files: ['scss/**/*.scss'],
-					tasks: ['sass']
-				},
-				handlebars: {
-					files: ['templates/**/*.hbs'],
-					tasks: ['handlebars']
+		handlebars: {
+			all: {
+				files: {
+					'js/templates.js': ['templates/**/*.hbs']
 				}
 			}
-		});
-		grunt.loadNpmTasks('grunt-contrib-sass');
-		grunt.loadNpmTasks('grunt-contrib-handlebars');
-		grunt.loadNpmTasks('grunt-contrib-watch');
-	};
+		},
+
+		watch: {
+			sass: {
+				files: ['scss/**/*.scss'],
+				tasks: ['sass']
+			},
+			handlebars: {
+				files: ['templates/**/*.hbs'],
+				tasks: ['handlebars']
+			}
+		}
+	});
+	grunt.loadNpmTasks('grunt-contrib-sass');
+	grunt.loadNpmTasks('grunt-contrib-handlebars');
+	grunt.loadNpmTasks('grunt-contrib-watch');
+};
+```
 
 We've created _two targets_ for our task, one for watching the Sass files and one for watching the Handlebars templates. In both instances, we've used _wildcards_ to define patterns to match all desired files. The `scss/**/*.scss` pattern is similar to `scss/*.scss` (i.e. match all files with the `.scss` extension within the `scss` folder) with the exception that the former looks into subfolders as well &mdash; you can read all about it in the _Files in-depth_ chapter. 
 
@@ -92,23 +98,28 @@ When any of the targeted files change, the associated task is executed.
 
 Let's check it out in action:
 	
-	grunt watch
+```bash
+grunt watch
+```
 
 Because `watch` is a _multitask_, what we're actually saying with the above command is:
 
-	grunt watch:sass watch:handlebars
-
+```bash
+grunt watch:sass watch:handlebars
+```
 
 Now go ahead and change one of your Sass files, and notice that the `sass` task is run. At the same time, if a Handlebars template changes, the `handlebars` task is run.
 
 __Note:__ In our example, we're running a single task with each change, but in effect the `tasks` option can take an array of tasks to be run in sequence. You can even include specific targets for each task, e.g.:
 
-	watch: {
-        sass: {
-            files: ['scss/**/*.scss'],
-            tasks: ['sass:all', 'csslint:all']
-        }
+```javascript
+watch: {
+    sass: {
+        files: ['scss/**/*.scss'],
+        tasks: ['sass:all', 'csslint:all']
     }
+}
+```
 
 #### A note about persistent tasks
 
@@ -124,15 +135,17 @@ By default, `watch` looks for three kinds of changes:
 
 This behavior is controlled by the `events` option, which can have one or many of the values: `all` (the default), `changed`, `added` and `deleted`. Let's assume we want to run the `handlebars` task only when a template is added or deleted &mdash; an no, it doesn't make sense in a real-world scenario, but go with me:
 
-	watch: {
-		handlebars: {
-			files: ['templates/**/*.hbs'],
-			tasks: ['handlebars'],
-			options: {
-				events: ['added', 'deleted']
-			}
+```javascript
+watch: {
+	handlebars: {
+		files: ['templates/**/*.hbs'],
+		tasks: ['handlebars'],
+		options: {
+			events: ['added', 'deleted']
 		}
 	}
+}
+```
 
 This will make the watch ignore changes in existing Handlebars templates and only react when we add or remove Handlebars templates.
 
@@ -140,20 +153,21 @@ Alrighty then.
 
 There's one little quirk we need to address: the `watch` task will only pick up on changes that happen _after_ we call `grunt task`. We'd like to make sure our generated CSS and compiled templates are up-to-date when the watch starts. For this, we will use `atBegin: true` to run _all tasks_ associated with the watch before the actual watching begins. Because we want this behavior for both Sass and Handlebars files, we will add this option on the task directly rather than on each target:
 
-	watch: {
-		options: {
-			atBegin: true
-		},
-		sass: {
-			files: ['scss/**/*.scss'],
-			tasks: ['sass']
-		},
-		handlebars: {
-			files: ['templates/**/*.hbs'],
-			tasks: ['handlebars']
-		}
+```javascript
+watch: {
+	options: {
+		atBegin: true
+	},
+	sass: {
+		files: ['scss/**/*.scss'],
+		tasks: ['sass']
+	},
+	handlebars: {
+		files: ['templates/**/*.hbs'],
+		tasks: ['handlebars']
 	}
-
+}
+```
 
 ### Take five
 

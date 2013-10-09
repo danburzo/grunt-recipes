@@ -8,36 +8,44 @@
 
 ### Install the Sass plugin
 
-	npm install -g grunt-contrib-sass --save-dev
+```bash
+npm install -g grunt-contrib-sass --save-dev
+```
 
 and then, in our Gruntfile:
 
-	grunt.loadNpmTasks('grunt-contrib-sass');
+```bash
+grunt.loadNpmTasks('grunt-contrib-sass');
+```
 
 ### Configure the `sass` task
 
 We'll create a single target called `all` for our task. We'll then define a list of source/destination pairs in the `files` property:
 
-	module.exports = function(grunt) {
-		grunt.initConfig({
-			sass: {
-				all: {
-					files: {
-						'css/main.css': 'scss/main.scss',
-						'css/homepage.css': 'scss/homepage.scss'
-					}
+```javascript
+module.exports = function(grunt) {
+	grunt.initConfig({
+		sass: {
+			all: {
+				files: {
+					'css/main.css': 'scss/main.scss',
+					'css/homepage.css': 'scss/homepage.scss'
 				}
 			}
-		});
-		grunt.loadNpmTasks('grunt-contrib-sass');
-	};
+		}
+	});
+	grunt.loadNpmTasks('grunt-contrib-sass');
+};
+```
 
 If you've read through the previous recipe, you'll recall that the `files` property accepted an array of comma-separated file paths. Turns out there are a host of ways to describe the files your tasks needs to operate on, but we'll talk about that later. For now, let's examine this form:
 
-	files: {
-		'css/main.css': 'scss/main.scss',
-		'css/homepage.css': 'scss/homepage.scss'
-	}
+```javascript
+files: {
+	'css/main.css': 'scss/main.scss',
+	'css/homepage.css': 'scss/homepage.scss'
+}
+```
 
 We've defined `files` as an object with key/value pairs correspond to _destination-file_/_source-file_. 
 
@@ -45,7 +53,9 @@ We've defined `files` as an object with key/value pairs correspond to _destinati
 
 Let's run our task to see how it works:
 
-	grunt sass
+```bash
+grunt sass
+```
 
 ### 
 
@@ -53,13 +63,15 @@ This means that for each new Sass file that you add to your project, you'll need
 
 Let's fix that by _building the files object dynamically_:
 
-	files: [{
-		expand: true,
-		cwd: 'scss/',
-		src: ['*.scss'],
-		dest: 'css/',
-		ext: '.css'
-	}]
+```javascript
+files: [{
+	expand: true,
+	cwd: 'scss/',
+	src: ['*.scss'],
+	dest: 'css/',
+	ext: '.css'
+}]
+```
 
 Okay, take a deep breath! There's a lot going on in the few lines above. First, we've moved back to `files` as an array, but instead of strings describing single paths, we now have objects describing source/destination mappings. How is it done? Let's look at each property:
 

@@ -23,10 +23,12 @@ In the Files Object Format, you specify a `files` object that has:
 
 It looks something like this:
 
-	files: {
-		'dist/file1.js': 'app/file1.js',
-		'dist/combined.js': ['app/file1.js', 'app/file2.js', 'app/file3.js']
-	}
+```javascript
+files: {
+	'dist/file1.js': 'app/file1.js',
+	'dist/combined.js': ['app/file1.js', 'app/file2.js', 'app/file3.js']
+}
+```
 
 The first line defines one source for the destination file, while the second defines multiple source files for the destination.
 
@@ -35,13 +37,15 @@ The first line defines one source for the destination file, while the second def
 
 The Files Array Format is the canonical form of defining source/destination pairs. Grunt converts all the other formats to the Files Array Format before sending them to the task. It's very similar to the Files Object format, except we explicitly define the `src` and `dest` properties:
 
-	files: [{
-		src: 'app/file1.js',
-		dest: 'dist/file1.js'
-	}, {
-		src: ['app/file1.js', 'app/file2.js', 'app/file3.js'],
-		dest: 'dist/combined.js'
-	}]
+```javascript
+files: [{
+	src: 'app/file1.js',
+	dest: 'dist/file1.js'
+}, {
+	src: ['app/file1.js', 'app/file2.js', 'app/file3.js'],
+	dest: 'dist/combined.js'
+}]
+```
 
 It has the advantage of allowing us to specify additional properties, such as:
 
@@ -62,35 +66,41 @@ It has the advantage of allowing us to specify additional properties, such as:
 
 Let's assume the following structure:
 
-	app/
-		app.js
-		data.js
-		lib/
-			jquery.js
-			backbone.js
-			underscore.js
-		modules/
-			api.js
-			auth.js
-
+```bash
+app/
+	app.js
+	data.js
+	lib/
+		jquery.js
+		backbone.js
+		underscore.js
+	modules/
+		api.js
+		auth.js
+```
 
 The star pattern `*` is generally used to match all files in the folder:
 
-	src: 'app/*.js'
-	// matches app.js, data.js
+```javascript
+src: 'app/*.js'
+// matches app.js, data.js
+```
 
 The double star pattern `**/*` is used to match all files in the folder and its subfolders:
 
-	src: 'app/**/*.js'
-	// matches app.js, data.js, jquery.js, backbone.js, underscore.js, api.js, auth.js
-
+```javascript
+src: 'app/**/*.js'
+// matches app.js, data.js, jquery.js, backbone.js, underscore.js, api.js, auth.js
+```
 
 You don't need to define complicated, all-encompassing patterns, because you can define the sources as arrays. They will all be processed and will result in _a set of files_ (meaning each file will appear only once even if it's matched by multiple patterns).
 
 For example, let's say you want to select all JavaScript files in the `app` folder and its subfolders, _but not_ the `lib` subfolder:
 
-	src: ['app/**/*.js', '!app/lib/*.js']
-	// matches app.js, data.js, api.js, auth.js
+```javascript
+src: ['app/**/*.js', '!app/lib/*.js']
+// matches app.js, data.js, api.js, auth.js
+```
 
 This array of patterns will initially match all JavaScript files in `app` but then will exclude those from the `lib` subfolder. Easy! 
 
@@ -113,36 +123,52 @@ The dynamic mapping is useful for one-to-one mappings: for each source file you 
 
 A real-world example would be copying an entire folder structure from one place to another.
 
-	my-project
-		app/
-			js/
-				app.js
-				data.js
-				lib/
-					jquery.js
-					backbone.js
-				modules/
-					api.js
-					auth.js
-		dist/
-		Gruntfile.js
-		package.json
+```bash
+my-project
+	app/
+		js/
+			app.js
+			data.js
+			lib/
+				jquery.js
+				backbone.js
+			modules/
+				api.js
+				auth.js
+	dist/
+	Gruntfile.js
+	package.json
+```
 
 We will use `grunt-contrib-copy` to copy the content of the `js` folder into `dist`. A first attempt:
-	
-	copy: {
-		all: {
-			files: [{
-				expand: true,
-				src: 'app/js/**/*.js',
-				dest: 'dist/'
-			}]
-		}
+
+```javascript	
+copy: {
+	all: {
+		files: [{
+			expand: true,
+			src: 'app/js/**/*.js',
+			dest: 'dist/'
+		}]
 	}
+}
+```
 
 An honest attempt, but it generates the following structure:
 
-	my-project
+```bash
+my-project
+	app/
+		js/
+			app.js
+			data.js
+			lib/
+				jquery.js
+				backbone.js
+			modules/
+				api.js
+				auth.js
+	dist/
 		app/
 			js/
 				app.js
@@ -153,60 +179,54 @@ An honest attempt, but it generates the following structure:
 				modules/
 					api.js
 					auth.js
-		dist/
-			app/
-				js/
-					app.js
-					data.js
-					lib/
-						jquery.js
-						backbone.js
-					modules/
-						api.js
-						auth.js
-		Gruntfile.js
-		package.json
+	Gruntfile.js
+	package.json
+```
 
 Close, but no cigar. We wanted the `js` folder included directly under `dist`.
 
 What we need to do is take the `app` part out of the `src` property and put it in the `cwd` property:
 
-	copy: {
-		all: {
-			files: [{
-				expand: true,
-				cwd: 'app/',
-				src: 'js/**/*.js',
-				dest: 'dist/'
-			}]
-		}
+```javascript
+copy: {
+	all: {
+		files: [{
+			expand: true,
+			cwd: 'app/',
+			src: 'js/**/*.js',
+			dest: 'dist/'
+		}]
 	}
+}
+```
 
 Which gives us the expected result:
 
-	my-project
-		app/
-			js/
-				app.js
-				data.js
-				lib/
-					jquery.js
-					backbone.js
-				modules/
-					api.js
-					auth.js
-		dist/
-			js/
-				app.js
-				data.js
-				lib/
-					jquery.js
-					backbone.js
-				modules/
-					api.js
-					auth.js
-		Gruntfile.js
-		package.json
+```bash
+my-project
+	app/
+		js/
+			app.js
+			data.js
+			lib/
+				jquery.js
+				backbone.js
+			modules/
+				api.js
+				auth.js
+	dist/
+		js/
+			app.js
+			data.js
+			lib/
+				jquery.js
+				backbone.js
+			modules/
+				api.js
+				auth.js
+	Gruntfile.js
+	package.json
+```
 
 Freeze Frame High-Five!&trade;
 

@@ -10,7 +10,7 @@
 		<article>
 			<header>
 				<h1>Build an app for deployment</h1>
-				<p>Last updated on Oct 8th, 2013</p>
+				<p>Last updated on Oct 9th, 2013</p>
 			</header>
 			<p>By now, you should be comfortable with working with one task at a time. It&#39;s time to really make Grunt shine by integrating the variety of tasks involved in preparing a web application for deployment, such as precompiling, minifying, concatenating and moving files around.</p>
 <h3><a name="what-we-re-trying-to-accomplish"class="anchor" href="#what-we-re-trying-to-accomplish"><span class="header-link"></span></a>What we&#39;re trying to accomplish</h3>
@@ -27,11 +27,11 @@
 </ul>
 <p>Now, don&#39;t get too intimidated! If you think about it each task has a very specific purpose in the workflow, and you&#39;ll see how easy is to choreograph them into one fluent, beautiful task.</p>
 <h3><a name="let-s-install-everything"class="anchor" href="#let-s-install-everything"><span class="header-link"></span></a>Let&#39;s install everything</h3>
-<pre><code><div class="highlight"><pre><span class="nx">npm</span> <span class="nx">install</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">contrib</span><span class="o">-</span><span class="nx">uglify</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">contrib</span><span class="o">-</span><span class="nx">concat</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">contrib</span><span class="o">-</span><span class="nx">cssmin</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">contrib</span><span class="o">-</span><span class="nx">htmlmin</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">contrib</span><span class="o">-</span><span class="nx">copy</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">usemin</span> <span class="o">--</span><span class="nx">save</span><span class="o">-</span><span class="nx">dev</span>
+<pre><code class="lang-bash"><div class="highlight"><pre>npm install grunt-contrib-uglify grunt-contrib-concat grunt-contrib-cssmin grunt-contrib-htmlmin grunt-contrib-copy grunt-usemin --save-dev
 </pre></div>
 </code></pre>
 <p>... in one fell swoop, even. Now let&#39;s add all of it to our Gruntfile:</p>
-<pre><code><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-uglify&#39;</span><span class="p">);</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-uglify&#39;</span><span class="p">);</span>
 <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-concat&#39;</span><span class="p">);</span>
 <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-cssmin&#39;</span><span class="p">);</span>
 <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-htmlmin&#39;</span><span class="p">);</span>
@@ -40,7 +40,7 @@
 </pre></div>
 </code></pre>
 <h3><a name="basic-configuration"class="anchor" href="#basic-configuration"><span class="header-link"></span></a>Basic configuration</h3>
-<pre><code><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
 
     <span class="c1">// Minimize tasks</span>
     <span class="nx">cssmin</span><span class="o">:</span> <span class="p">{</span>
@@ -87,7 +87,7 @@
 We do the same for HTML, except we&#39;re using a dynamic declaration of the files object since we want to have a separate HTML file in the <code>dist</code> folder for each HTML in our <code>app</code> folder.</p>
 <p>Then we configure the <code>copy</code> task to copy into the <code>dist</code> folder one by one any files not already covered by the other tasks &mdash; stuff like icons, images, fonts, etc.  </p>
 <p>We already notice we&#39;ve been using <code>app</code> and <code>dist</code> a lot, so let me take this moment to introduce a handy way to Not Repeat Yourself: enter <strong>Grunt templates</strong>. They are tiny dynamic snippets delimited by <code>&lt;%</code> and <code>%&gt;</code> that you can add to your strings. We&#39;re interested in templates of the form <code>&lt;%= object.property.path %&gt;</code> which expands to the corresponding value from Grunt&#39;s configuration object. Let&#39;s see it in action:</p>
-<pre><code><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
 
     <span class="nx">appConfig</span><span class="o">:</span> <span class="p">{</span>
         <span class="nx">appRoot</span><span class="o">:</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
@@ -137,7 +137,7 @@ We do the same for HTML, except we&#39;re using a dynamic declaration of the fil
 <p>We&#39;ve defined an <code>appConfig</code> property to hold our commonly-used paths. Now we can refer to the two paths as <code>&lt;%= appConfig.appRoot %&gt;</code> and <code>&lt;%= appConfig.distRoot %&gt;</code> in all our tasks.</p>
 <p><strong>Note:</strong> You can define any number of custom properties in your Grunt configuration (like we did above with <code>appConfig</code>), but make sure the names don&#39;t conflict with any task names and stay away from the <code>grunt</code> keyword, which is reserved to access the Grunt object in the templates.</p>
 <p>Another cool thing we can do is to get a timestamp for the current Grunt run and add that to the generated CSS/JS files to ensure they are unique.</p>
-<pre><code><div class="highlight"><pre><span class="p">{</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="p">{</span>
     <span class="nx">appConfig</span><span class="o">:</span> <span class="p">{</span>
         <span class="nx">appRoot</span><span class="o">:</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
         <span class="nx">distRoot</span><span class="o">:</span> <span class="s1">&#39;dist&#39;</span><span class="p">,</span>
@@ -147,7 +147,7 @@ We do the same for HTML, except we&#39;re using a dynamic declaration of the fil
 </pre></div>
 </code></pre>
 <p>And here&#39;s how we might use this to append the timestamp to our generated CSS file in <code>cssmin</code>:</p>
-<pre><code><div class="highlight"><pre><span class="nx">cssmin</span><span class="o">:</span> <span class="p">{</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">cssmin</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
         <span class="nx">files</span><span class="o">:</span> <span class="p">{</span>
             <span class="s1">&#39;&lt;%= appConfig.distRoot %&gt;/css/app.&lt;%= appConfig.timestamp %&gt;.css&#39;</span><span class="o">:</span> <span class="s1">&#39;&lt;%= appConfig.appRoot %&gt;/css/**/*.css&#39;</span>

@@ -23,59 +23,65 @@ Now, don't get too intimidated! If you think about it each task has a very speci
 
 ### Let's install everything
 
-	npm install grunt-contrib-uglify grunt-contrib-concat grunt-contrib-cssmin grunt-contrib-htmlmin grunt-contrib-copy grunt-usemin --save-dev
+```bash
+npm install grunt-contrib-uglify grunt-contrib-concat grunt-contrib-cssmin grunt-contrib-htmlmin grunt-contrib-copy grunt-usemin --save-dev
+```
 
 ... in one fell swoop, even. Now let's add all of it to our Gruntfile:
 
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
-	grunt.loadNpmTasks('grunt-contrib-htmlmin');
-	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks('grunt-usemin');
+```javascript
+grunt.loadNpmTasks('grunt-contrib-uglify');
+grunt.loadNpmTasks('grunt-contrib-concat');
+grunt.loadNpmTasks('grunt-contrib-cssmin');
+grunt.loadNpmTasks('grunt-contrib-htmlmin');
+grunt.loadNpmTasks('grunt-contrib-copy');
+grunt.loadNpmTasks('grunt-usemin');
+```
 
 ### Basic configuration
 
-	grunt.initConfig({
+```javascript
+grunt.initConfig({
 
-		// Minimize tasks
-		cssmin: {
-			all: {
-				files: {
-					'dist/css/app.css': 'app/css/**/*.css'
-				}
-			}
-		},
-
-		htmlmin: {
-			all: {
-				files: [{
-					expand: true,
-					cwd: 'app/',
-					src: '**/*.html',
-					dest: 'dist/'
-				}]
-			}
-		},
-
-		// Move other things around
-		copy: {
-			all: {
-				files: [{
-					expand: true,
-					cwd: 'app/',
-					dest: 'dist/',
-					src: [
-						'.htaccess',
-						'*.ico',
-						'images/**/*.{jpg,png,gif}',
-						'css/fonts/*'
-					]		
-				}]
+	// Minimize tasks
+	cssmin: {
+		all: {
+			files: {
+				'dist/css/app.css': 'app/css/**/*.css'
 			}
 		}
+	},
 
-	});
+	htmlmin: {
+		all: {
+			files: [{
+				expand: true,
+				cwd: 'app/',
+				src: '**/*.html',
+				dest: 'dist/'
+			}]
+		}
+	},
+
+	// Move other things around
+	copy: {
+		all: {
+			files: [{
+				expand: true,
+				cwd: 'app/',
+				dest: 'dist/',
+				src: [
+					'.htaccess',
+					'*.ico',
+					'images/**/*.{jpg,png,gif}',
+					'css/fonts/*'
+				]		
+			}]
+		}
+	}
+
+});
+```
 
 Let's take the code above apart, piece by piece.
 
@@ -86,51 +92,53 @@ Then we configure the `copy` task to copy into the `dist` folder one by one any 
 
 We already notice we've been using `app` and `dist` a lot, so let me take this moment to introduce a handy way to Not Repeat Yourself: enter **Grunt templates**. They are tiny dynamic snippets delimited by `<%` and `%>` that you can add to your strings. We're interested in templates of the form `<%= object.property.path %>` which expands to the corresponding value from Grunt's configuration object. Let's see it in action:
 
-	grunt.initConfig({
+```javascript
+grunt.initConfig({
 
-		appConfig: {
-			appRoot: 'app',
-			distRoot: 'dist'
-		},
+	appConfig: {
+		appRoot: 'app',
+		distRoot: 'dist'
+	},
 
-		// Minimize tasks
-		cssmin: {
-			all: {
-				files: {
-					'<%= appConfig.distRoot %>/css/app.css': '<%= appConfig.appRoot %>/css/**/*.css'
-				}
-			}
-		},
-
-		htmlmin: {
-			all: {
-				files: [{
-					expand: true,
-					cwd: '<%= appConfig.appRoot %>/',
-					src: '**/*.html',
-					dest: '<%= appConfig.distRoot %>'
-				}]
-			}
-		},
-
-		// Move other things around
-		copy: {
-			all: {
-				files: [{
-					expand: true,
-					cwd: '<%= appConfig.appRoot %>/',
-					dest: '<%= appConfig.distRoot %>',
-					src: [
-						'.htaccess',
-						'*.ico',
-						'images/**/*.{jpg,png,gif}',
-						'css/fonts/*'
-					]		
-				}]
+	// Minimize tasks
+	cssmin: {
+		all: {
+			files: {
+				'<%= appConfig.distRoot %>/css/app.css': '<%= appConfig.appRoot %>/css/**/*.css'
 			}
 		}
+	},
 
-	});
+	htmlmin: {
+		all: {
+			files: [{
+				expand: true,
+				cwd: '<%= appConfig.appRoot %>/',
+				src: '**/*.html',
+				dest: '<%= appConfig.distRoot %>'
+			}]
+		}
+	},
+
+	// Move other things around
+	copy: {
+		all: {
+			files: [{
+				expand: true,
+				cwd: '<%= appConfig.appRoot %>/',
+				dest: '<%= appConfig.distRoot %>',
+				src: [
+					'.htaccess',
+					'*.ico',
+					'images/**/*.{jpg,png,gif}',
+					'css/fonts/*'
+				]		
+			}]
+		}
+	}
+
+});
+```
 
 We've defined an `appConfig` property to hold our commonly-used paths. Now we can refer to the two paths as `<%= appConfig.appRoot %>` and `<%= appConfig.distRoot %>` in all our tasks.
 
@@ -138,22 +146,26 @@ We've defined an `appConfig` property to hold our commonly-used paths. Now we ca
 
 Another cool thing we can do is to get a timestamp for the current Grunt run and add that to the generated CSS/JS files to ensure they are unique.
 
-	{
-		appConfig: {
-			appRoot: 'app',
-			distRoot: 'dist',
-			timestamp: Date.now()
-		}
+```javascript
+{
+	appConfig: {
+		appRoot: 'app',
+		distRoot: 'dist',
+		timestamp: Date.now()
 	}
+}
+```
 
 And here's how we might use this to append the timestamp to our generated CSS file in `cssmin`:
 
-	cssmin: {
-		all: {
-			files: {
-				'<%= appConfig.distRoot %>/css/app.<%= appConfig.timestamp %>.css': '<%= appConfig.appRoot %>/css/**/*.css'
-			}
+```javascript
+cssmin: {
+	all: {
+		files: {
+			'<%= appConfig.distRoot %>/css/app.<%= appConfig.timestamp %>.css': '<%= appConfig.appRoot %>/css/**/*.css'
 		}
 	}
+}
+```
 
 ### Take five

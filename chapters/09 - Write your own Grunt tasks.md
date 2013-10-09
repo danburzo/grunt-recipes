@@ -37,51 +37,57 @@ Let's try this out!
 
 Assume we have a project structure like this one:
 
-	app/
-		src1.js
-		src2.js
-	Gruntfile.js
-	package.json
+```bash
+app/
+	src1.js
+	src2.js
+Gruntfile.js
+package.json
+```
 
 We write the following Grunt code:
 
-	grunt.initConfig({
-		logfiles: {
-			filesObject: {
-				files: {
-					'dist/file1.js': ['app/src*.js']
-				}
-			},
-			filesArray: {
-				files: [{
-					src: ['app/src*.js'],
-					dest: 'dist/file1.js'
-				}]
+```javascript
+grunt.initConfig({
+	logfiles: {
+		filesObject: {
+			files: {
+				'dist/file1.js': ['app/src*.js']
 			}
+		},
+		filesArray: {
+			files: [{
+				src: ['app/src*.js'],
+				dest: 'dist/file1.js'
+			}]
 		}
-	});
+	}
+});
 
-	grunt.registerMultiTask(
-		'logfiles', 
-		'Log the source-destination mappings in a Grunt multitask', 
-		function() {
-			this.files.forEach(function(file) {
-				grunt.log.writeln('File ' + file.dest + ' has the sources ' + file.src);
-			});	
-		}
-	);
+grunt.registerMultiTask(
+	'logfiles', 
+	'Log the source-destination mappings in a Grunt multitask', 
+	function() {
+		this.files.forEach(function(file) {
+			grunt.log.writeln('File ' + file.dest + ' has the sources ' + file.src);
+		});	
+	}
+);
+```
 
 Firstly, we created two targets corresponding to two different ways of defining files for our tasks. Secondly, we defined our multitask as a simple loop through the `this.files` array.
 
 Now let's check what each of them outputs:
 
-	grunt logfiles:filesObject
-	> Running "logfiles:filesObject" (logfiles) task
-	> File dist/file1.js has the sources app/src1.js, app/src2.js
+```bash
+grunt logfiles:filesObject
+> Running "logfiles:filesObject" (logfiles) task
+> File dist/file1.js has the sources app/src1.js, app/src2.js
 
-	grunt logfiles:filesArray
-	> Running "logfiles:filesArray" (logfiles) task
-	> File dist/file1.js has the sources app/src1.js, app/src2.js
+grunt logfiles:filesArray
+> Running "logfiles:filesArray" (logfiles) task
+> File dist/file1.js has the sources app/src1.js, app/src2.js
+```
 
 Identical &mdash; one less thing for us to worry about!
 
@@ -89,16 +95,18 @@ Identical &mdash; one less thing for us to worry about!
 	
 A good practice in all tasks is to filter out the source files that don't actually exist in the project:
 
-	this.files.forEach(function(file) {
-		var sources = file.src.filter(function(path) {
-			if (!grunt.file.exists(path)) {
-				grunt.log.warn('Source file ' + path + ' not found.');
-				return false;
-			} else {
-				return true;
-			}
-		});
-	});	
+```javascript
+this.files.forEach(function(file) {
+	var sources = file.src.filter(function(path) {
+		if (!grunt.file.exists(path)) {
+			grunt.log.warn('Source file ' + path + ' not found.');
+			return false;
+		} else {
+			return true;
+		}
+	});
+});	
+```
 
 Now the `sources` variable contains only the subset of files that are valid.
 

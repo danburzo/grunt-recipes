@@ -74,7 +74,9 @@ Go to http://nodejs.org/download/ and grab the installer for your operating syst
 
 We'll use NPM to install Grunt CLI (Command-Line Interpreter) from the console:
 
-	npm install -g grunt-cli
+```bash
+npm install -g grunt-cli
+```
 
 **Note:** The `-g` flag stands for *global*, which makes Grunt CLI available from any folder on your machine.
 
@@ -84,8 +86,10 @@ That's it! You're ready to add Grunt magic to your projects.
 
 Let's create a new project:
 
-	mkdir my-project
-	cd my-project
+```bash
+mkdir my-project
+cd my-project
+```
 
 There are two main files you need to create in the root directory of your project:
 
@@ -94,43 +98,53 @@ There are two main files you need to create in the root directory of your projec
 
 Your project's file structure should look like this:
 
-	my-project/
-		Gruntfile.js
-		package.json
+```bash
+my-project/
+	Gruntfile.js
+	package.json
+```
 
 ##### package.json
 
 Let's create a very basic version of this file:
 
-	{
-	  "name": "my-project", // the name of our project, hyphen-separated
-	  "version": "0.0.0" // project version (in semantic format)
-	}
+```javascript
+{
+  "name": "my-project", // the name of our project, hyphen-separated
+  "version": "0.0.0" // project version (in semantic format)
+}
+```
 
 Now, let's install Grunt in our current project. But wait, didn't we do that already? Well, what we did install in the first part of the chapter was Grunt CLI, which is just a small utility that runs the local version of `grunt` for you. So, we still need to add Grunt locally (hence the lack of the `-g` flag):
 
-	npm install grunt --save-dev
+```bash
+npm install grunt --save-dev
+```
 
 The `--save-dev` flag instructs NPM to update `package.json` to include `grunt` as a dependency for the project. Our file will now look like this:
 
-	{
-	  "name": "my-project",
-	  "version": "0.0.0",
+```javascript
+{
+  "name": "my-project",
+  "version": "0.0.0",
 
-	  // the list of project dependencies
-	  "devDependencies": {
-	  	"grunt": "~0.4.1"
-	  }
-	}
+  // the list of project dependencies
+  "devDependencies": {
+  	"grunt": "~0.4.1"
+  }
+}
+```
 
 In addition, you'll notice a `node_modules` directory added to your project. This is where all local NPM modules are installed &mdash; like we just did with `grunt` &mdash; and can be safely added to `.gitignore`.
 
 Your project's file structure now looks like this:
 
-	my-project/
-		node_modules/
-		Gruntfile.js
-		package.json
+```bash
+my-project/
+	node_modules/
+	Gruntfile.js
+	package.json
+```
 
 *Did you know?* Running `npm install` in any project directory that has a `package.json` will install all its necessary dependencies with their appropriate versions, as listed in the `devDependencies` property.
 
@@ -138,24 +152,30 @@ Your project's file structure now looks like this:
 ##### Gruntfile.js
 
 Next, let's create a Gruntfile next to our `package.json`. The basic format for the file is this:
-	
-	module.exports = function(grunt) {
-	  // We'll do grunt stuff here soon!
-	};
+
+```javascript	
+module.exports = function(grunt) {
+  // We'll do grunt stuff here soon!
+};
+```
 
 For example, let's write a task that just prints out `Hello World!` into the console:
 
-	module.exports = function(grunt) {
-	  grunt.registerTask('default', function() {
-	  	grunt.log.write('Hello World!');
-	  });
-	};
+```javascript
+module.exports = function(grunt) {
+  grunt.registerTask('default', function() {
+  	grunt.log.write('Hello World!');
+  });
+};
+```
 
 And now to run it:
 	
-	grunt
-	> Running "default" task
-	> Hello World!
+```bash
+grunt
+> Running "default" task
+> Hello World!
+```
 
 #### Take five
 

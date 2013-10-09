@@ -6,7 +6,9 @@ Each chapter in this book comes with code samples that you can run to get a bett
 
 To install the necessary dependencies for each project, open up a console and navigate to the project folder. Then simply run:
 
-	npm install
+```bash
+npm install
+```
 
 NPM (Node Package Manager) will install Grunt and the other plugins needed to run the Gruntfile.
 

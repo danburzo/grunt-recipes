@@ -10,7 +10,7 @@
 		<article>
 			<header>
 				<h1>Write your own Grunt tasks</h1>
-				<p>Last updated on Oct 8th, 2013</p>
+				<p>Last updated on Oct 9th, 2013</p>
 			</header>
 			<h3><a name="a-primer-on-custom-tasks"class="anchor" href="#a-primer-on-custom-tasks"><span class="header-link"></span></a>A primer on custom tasks</h3>
 <h4><a name="aliasing-existing-tasks"class="anchor" href="#aliasing-existing-tasks"><span class="header-link"></span></a>Aliasing existing tasks</h4>
@@ -40,15 +40,15 @@
 </ul>
 <p>Let&#39;s try this out!</p>
 <p>Assume we have a project structure like this one:</p>
-<pre><code><div class="highlight"><pre><span class="nx">app</span><span class="o">/</span>
-    <span class="nx">src1</span><span class="p">.</span><span class="nx">js</span>
-    <span class="nx">src2</span><span class="p">.</span><span class="nx">js</span>
-<span class="nx">Gruntfile</span><span class="p">.</span><span class="nx">js</span>
-<span class="kr">package</span><span class="p">.</span><span class="nx">json</span>
+<pre><code class="lang-bash"><div class="highlight"><pre>app/
+    src1.js
+    src2.js
+Gruntfile.js
+package.json
 </pre></div>
 </code></pre>
 <p>We write the following Grunt code:</p>
-<pre><code><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
     <span class="nx">logfiles</span><span class="o">:</span> <span class="p">{</span>
         <span class="nx">filesObject</span><span class="o">:</span> <span class="p">{</span>
             <span class="nx">files</span><span class="o">:</span> <span class="p">{</span>
@@ -77,19 +77,19 @@
 </code></pre>
 <p>Firstly, we created two targets corresponding to two different ways of defining files for our tasks. Secondly, we defined our multitask as a simple loop through the <code>this.files</code> array.</p>
 <p>Now let&#39;s check what each of them outputs:</p>
-<pre><code><div class="highlight"><pre><span class="nx">grunt</span> <span class="nx">logfiles</span><span class="o">:</span><span class="nx">filesObject</span>
-<span class="o">&gt;</span> <span class="nx">Running</span> <span class="s2">&quot;logfiles:filesObject&quot;</span> <span class="p">(</span><span class="nx">logfiles</span><span class="p">)</span> <span class="nx">task</span>
-<span class="o">&gt;</span> <span class="nx">File</span> <span class="nx">dist</span><span class="o">/</span><span class="nx">file1</span><span class="p">.</span><span class="nx">js</span> <span class="nx">has</span> <span class="nx">the</span> <span class="nx">sources</span> <span class="nx">app</span><span class="o">/</span><span class="nx">src1</span><span class="p">.</span><span class="nx">js</span><span class="p">,</span> <span class="nx">app</span><span class="o">/</span><span class="nx">src2</span><span class="p">.</span><span class="nx">js</span>
+<pre><code class="lang-bash"><div class="highlight"><pre>grunt logfiles:filesObject
+&gt; Running <span class="s2">&quot;logfiles:filesObject&quot;</span> <span class="o">(</span>logfiles<span class="o">)</span> task
+&gt; File dist/file1.js has the sources app/src1.js, app/src2.js
 
-<span class="nx">grunt</span> <span class="nx">logfiles</span><span class="o">:</span><span class="nx">filesArray</span>
-<span class="o">&gt;</span> <span class="nx">Running</span> <span class="s2">&quot;logfiles:filesArray&quot;</span> <span class="p">(</span><span class="nx">logfiles</span><span class="p">)</span> <span class="nx">task</span>
-<span class="o">&gt;</span> <span class="nx">File</span> <span class="nx">dist</span><span class="o">/</span><span class="nx">file1</span><span class="p">.</span><span class="nx">js</span> <span class="nx">has</span> <span class="nx">the</span> <span class="nx">sources</span> <span class="nx">app</span><span class="o">/</span><span class="nx">src1</span><span class="p">.</span><span class="nx">js</span><span class="p">,</span> <span class="nx">app</span><span class="o">/</span><span class="nx">src2</span><span class="p">.</span><span class="nx">js</span>
+grunt logfiles:filesArray
+&gt; Running <span class="s2">&quot;logfiles:filesArray&quot;</span> <span class="o">(</span>logfiles<span class="o">)</span> task
+&gt; File dist/file1.js has the sources app/src1.js, app/src2.js
 </pre></div>
 </code></pre>
 <p>Identical &mdash; one less thing for us to worry about!</p>
 <h4><a name="excluding-sources-that-don-t-exist"class="anchor" href="#excluding-sources-that-don-t-exist"><span class="header-link"></span></a>Excluding sources that don&#39;t exist</h4>
 <p>A good practice in all tasks is to filter out the source files that don&#39;t actually exist in the project:</p>
-<pre><code><div class="highlight"><pre><span class="k">this</span><span class="p">.</span><span class="nx">files</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="k">this</span><span class="p">.</span><span class="nx">files</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">sources</span> <span class="o">=</span> <span class="nx">file</span><span class="p">.</span><span class="nx">src</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">grunt</span><span class="p">.</span><span class="nx">file</span><span class="p">.</span><span class="nx">exists</span><span class="p">(</span><span class="nx">path</span><span class="p">))</span> <span class="p">{</span>
             <span class="nx">grunt</span><span class="p">.</span><span class="nx">log</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s1">&#39;Source file &#39;</span> <span class="o">+</span> <span class="nx">path</span> <span class="o">+</span> <span class="s1">&#39; not found.&#39;</span><span class="p">);</span>
@@ -98,7 +98,7 @@
             <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
         <span class="p">}</span>
     <span class="p">});</span>
-<span class="p">});</span>    
+<span class="p">});</span>
 </pre></div>
 </code></pre>
 <p>Now the <code>sources</code> variable contains only the subset of files that are valid.</p>

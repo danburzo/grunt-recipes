@@ -10,7 +10,7 @@
 		<article>
 			<header>
 				<h1>Getting Started</h1>
-				<p>Last updated on Oct 8th, 2013</p>
+				<p>Last updated on Oct 9th, 2013</p>
 			</header>
 			<h3><a name="meet-grunt"class="anchor" href="#meet-grunt"><span class="header-link"></span></a>Meet Grunt</h3>
 <p>Grunt was created by Ben Alman a.k.a. <a href="http://twitter.com/cowboy">@cowboy</a> to automate his front-end development workflow. You know, all the little repetitive tasks like unit testing, minifying your JavaScript and CSS, compiling your Sass stylesheets or CoffeeScripts, linting and what-not. With Grunt, they become a breeze: configure them once and let Grunt run them for you; in this sense, Grunt is a <em>task runner</em> for the boring but oh-so-necessary parts of the web developer&#39;s life. It&#39;s <a href="https://github.com/gruntjs/">open source</a> and at the heart of a wonderful ecosystem of thousands of plugins. As such, any tool you&#39;ve ever used in your workflow is likely to have a Grunt counterpart. And if it doesn&#39;t, it&#39;s easy to roll out your own plugin and share it with the community. Organizations like Twitter, Adobe, jQuery (and <a href="http://gruntjs.com/who-uses-grunt">many others</a>) use it and so should you, because it&#39;s A Great Thing&trade;.</p>
@@ -55,15 +55,15 @@
 <p><em>Note:</em> Working with Grunt means interacting with a shell, which Mac and Linux users are lucky enough to have readily available. As for Windows, let&#39;s just say I&#39;d eat a live snail before I use the Command Prompt. Instead, I suggest you install Git for Windows &mdash; available at <a href="http://git-scm.com/downloads">http://git-scm.com/downloads</a> &mdash; that comes with a real shell and, seriously, who doesn&#39;t need Git on their machine anyways?</p>
 <h4><a name="install-grunt"class="anchor" href="#install-grunt"><span class="header-link"></span></a>Install Grunt</h4>
 <p>We&#39;ll use NPM to install Grunt CLI (Command-Line Interpreter) from the console:</p>
-<pre><code><div class="highlight"><pre><span class="nx">npm</span> <span class="nx">install</span> <span class="o">-</span><span class="nx">g</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">cli</span>
+<pre><code class="lang-bash"><div class="highlight"><pre>npm install -g grunt-cli
 </pre></div>
 </code></pre>
 <p><strong>Note:</strong> The <code>-g</code> flag stands for <em>global</em>, which makes Grunt CLI available from any folder on your machine.</p>
 <p>That&#39;s it! You&#39;re ready to add Grunt magic to your projects.</p>
 <h4><a name="set-up-your-first-grunt-project"class="anchor" href="#set-up-your-first-grunt-project"><span class="header-link"></span></a>Set up your first Grunt project</h4>
 <p>Let&#39;s create a new project:</p>
-<pre><code><div class="highlight"><pre><span class="nx">mkdir</span> <span class="nx">my</span><span class="o">-</span><span class="nx">project</span>
-<span class="nx">cd</span> <span class="nx">my</span><span class="o">-</span><span class="nx">project</span>
+<pre><code class="lang-bash"><div class="highlight"><pre>mkdir my-project
+<span class="nb">cd </span>my-project
 </pre></div>
 </code></pre>
 <p>There are two main files you need to create in the root directory of your project:</p>
@@ -72,25 +72,25 @@
 <li><code>Gruntfile.js</code>: this file is used to load and configure your grunt tasks.</li>
 </ul>
 <p>Your project&#39;s file structure should look like this:</p>
-<pre><code><div class="highlight"><pre><span class="nx">my</span><span class="o">-</span><span class="nx">project</span><span class="o">/</span>
-    <span class="nx">Gruntfile</span><span class="p">.</span><span class="nx">js</span>
-    <span class="kr">package</span><span class="p">.</span><span class="nx">json</span>
+<pre><code class="lang-bash"><div class="highlight"><pre>my-project/
+    Gruntfile.js
+    package.json
 </pre></div>
 </code></pre>
 <h5><a name="package-json"class="anchor" href="#package-json"><span class="header-link"></span></a>package.json</h5>
 <p>Let&#39;s create a very basic version of this file:</p>
-<pre><code><div class="highlight"><pre><span class="p">{</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="p">{</span>
   <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;my-project&quot;</span><span class="p">,</span> <span class="c1">// the name of our project, hyphen-separated</span>
   <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;0.0.0&quot;</span> <span class="c1">// project version (in semantic format)</span>
 <span class="p">}</span>
 </pre></div>
 </code></pre>
 <p>Now, let&#39;s install Grunt in our current project. But wait, didn&#39;t we do that already? Well, what we did install in the first part of the chapter was Grunt CLI, which is just a small utility that runs the local version of <code>grunt</code> for you. So, we still need to add Grunt locally (hence the lack of the <code>-g</code> flag):</p>
-<pre><code><div class="highlight"><pre><span class="nx">npm</span> <span class="nx">install</span> <span class="nx">grunt</span> <span class="o">--</span><span class="nx">save</span><span class="o">-</span><span class="nx">dev</span>
+<pre><code class="lang-bash"><div class="highlight"><pre>npm install grunt --save-dev
 </pre></div>
 </code></pre>
 <p>The <code>--save-dev</code> flag instructs NPM to update <code>package.json</code> to include <code>grunt</code> as a dependency for the project. Our file will now look like this:</p>
-<pre><code><div class="highlight"><pre><span class="p">{</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="p">{</span>
   <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;my-project&quot;</span><span class="p">,</span>
   <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;0.0.0&quot;</span><span class="p">,</span>
 
@@ -103,22 +103,22 @@
 </code></pre>
 <p>In addition, you&#39;ll notice a <code>node_modules</code> directory added to your project. This is where all local NPM modules are installed &mdash; like we just did with <code>grunt</code> &mdash; and can be safely added to <code>.gitignore</code>.</p>
 <p>Your project&#39;s file structure now looks like this:</p>
-<pre><code><div class="highlight"><pre><span class="nx">my</span><span class="o">-</span><span class="nx">project</span><span class="o">/</span>
-    <span class="nx">node_modules</span><span class="o">/</span>
-    <span class="nx">Gruntfile</span><span class="p">.</span><span class="nx">js</span>
-    <span class="kr">package</span><span class="p">.</span><span class="nx">json</span>
+<pre><code class="lang-bash"><div class="highlight"><pre>my-project/
+    node_modules/
+    Gruntfile.js
+    package.json
 </pre></div>
 </code></pre>
 <p><em>Did you know?</em> Running <code>npm install</code> in any project directory that has a <code>package.json</code> will install all its necessary dependencies with their appropriate versions, as listed in the <code>devDependencies</code> property.</p>
 <h5><a name="gruntfile-js"class="anchor" href="#gruntfile-js"><span class="header-link"></span></a>Gruntfile.js</h5>
 <p>Next, let&#39;s create a Gruntfile next to our <code>package.json</code>. The basic format for the file is this:</p>
-<pre><code><div class="highlight"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// We&#39;ll do grunt stuff here soon!</span>
 <span class="p">};</span>
 </pre></div>
 </code></pre>
 <p>For example, let&#39;s write a task that just prints out <code>Hello World!</code> into the console:</p>
-<pre><code><div class="highlight"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
       <span class="nx">grunt</span><span class="p">.</span><span class="nx">log</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">&#39;Hello World!&#39;</span><span class="p">);</span>
   <span class="p">});</span>
@@ -126,9 +126,9 @@
 </pre></div>
 </code></pre>
 <p>And now to run it:</p>
-<pre><code><div class="highlight"><pre><span class="nx">grunt</span>
-<span class="o">&gt;</span> <span class="nx">Running</span> <span class="s2">&quot;default&quot;</span> <span class="nx">task</span>
-<span class="o">&gt;</span> <span class="nx">Hello</span> <span class="nx">World</span><span class="o">!</span>
+<pre><code class="lang-bash"><div class="highlight"><pre>grunt
+&gt; Running <span class="s2">&quot;default&quot;</span> task
+&gt; Hello World!
 </pre></div>
 </code></pre>
 <h4><a name="take-five"class="anchor" href="#take-five"><span class="header-link"></span></a>Take five</h4>

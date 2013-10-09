@@ -10,32 +10,32 @@
 		<article>
 			<header>
 				<h1>Pre-compile your Handlebars templates</h1>
-				<p>Last updated on Oct 8th, 2013</p>
+				<p>Last updated on Oct 9th, 2013</p>
 			</header>
 			<p><strong>Plugins used:</strong> <a href="https://npmjs.org/package/grunt-contrib-handlebars"><code>grunt-contrib-handlebars</code></a>.</p>
 <p><a href="http://handlebarsjs.com/">Handlebars</a> is a popular template library which helps you build HTML fragments populated with data from an object. A template looks something like:</p>
-<pre><code><div class="highlight"><pre><span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="o">&gt;</span>
-  <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="p">{{</span><span class="nx">title</span><span class="p">}}</span><span class="o">&lt;</span><span class="err">/h1&gt;</span>
-  <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Published</span><span class="o">:</span> <span class="p">{{</span><span class="nx">date</span><span class="p">}}</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
-<span class="o">&lt;</span><span class="err">/div&gt;</span>
+<pre><code class="lang-html"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;post&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h1&gt;</span>{{title}}<span class="nt">&lt;/h1&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Published: {{date}}<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
 </pre></div>
 </code></pre>
 <p>The portions between <code>{{</code> and <code>}}</code> are dynamic and are populated from the object you feed to the template. If you are not familiar with it, its homepage describes the library in more depth.</p>
 <p>There are two basic ways to include Handlebars templates in your web application:</p>
 <ol>
 <li><p>Inline them as strings in JavaScript: </p>
-<pre><code><div class="highlight"><pre> <span class="kd">var</span> <span class="nx">template</span> <span class="o">=</span> <span class="s2">&quot;&lt;div class=&#39;post&#39;&gt;&lt;h1&gt;{{title}}&lt;/h1&gt;&lt;p&gt;Published: {{date}}&lt;/p&gt;&lt;/div&gt;&quot;</span><span class="p">;</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre> <span class="kd">var</span> <span class="nx">template</span> <span class="o">=</span> <span class="s2">&quot;&lt;div class=&#39;post&#39;&gt;&lt;h1&gt;{{title}}&lt;/h1&gt;&lt;p&gt;Published: {{date}}&lt;/p&gt;&lt;/div&gt;&quot;</span><span class="p">;</span>
 </pre></div>
 </code></pre>
 <p> This is bad because we&#39;re mixing JavaScript and HTML, and it&#39;s not too readable either.</p>
 </li>
 <li><p>Include them in the HTML inside <code>&lt;script&gt;</code> tags:</p>
-<pre><code><div class="highlight"><pre> <span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s1">&#39;text/x-handlebars&#39;</span> <span class="nx">id</span><span class="o">=</span><span class="s1">&#39;post-template&#39;</span><span class="o">&gt;</span>
+<pre><code class="lang-html"><div class="highlight"><pre> <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&#39;text/x-handlebars&#39;</span> <span class="na">id=</span><span class="s">&#39;post-template&#39;</span><span class="nt">&gt;</span>
      <span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="o">&gt;</span>
        <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="p">{{</span><span class="nx">title</span><span class="p">}}</span><span class="o">&lt;</span><span class="err">/h1&gt;</span>
        <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Published</span><span class="o">:</span> <span class="p">{{</span><span class="nx">date</span><span class="p">}}</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
      <span class="o">&lt;</span><span class="err">/div&gt;</span>
- <span class="o">&lt;</span><span class="err">/script&gt;</span>
+ <span class="nt">&lt;/script&gt;</span>
 </pre></div>
 </code></pre>
 <p> This is somewhat better, but includes the extra step of querying the DOM for the script element and reading its content as a string (<code>element.innerHTML</code>). In addition, the HTML file containing all these templates can get quite large and unmaintainable.</p>
@@ -56,28 +56,28 @@
 </ul>
 <p>Sold? Right, let&#39;s get on with it.</p>
 <h3><a name="install-the-handlebars-task"class="anchor" href="#install-the-handlebars-task"><span class="header-link"></span></a>Install the <code>handlebars</code> task</h3>
-<pre><code><div class="highlight"><pre><span class="nx">npm</span> <span class="nx">install</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">contrib</span><span class="o">-</span><span class="nx">handlebars</span> <span class="o">--</span><span class="nx">save</span><span class="o">-</span><span class="nx">dev</span>
+<pre><code class="lang-bash"><div class="highlight"><pre>npm install grunt-contrib-handlebars --save-dev
 </pre></div>
 </code></pre>
 <p>and then add it to your Gruntfile:</p>
-<pre><code><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-handlebars&#39;</span><span class="p">);</span>
+<pre><code class="lang-bash"><div class="highlight"><pre>grunt.loadNpmTasks<span class="o">(</span><span class="s1">&#39;grunt-contrib-handlebars&#39;</span><span class="o">)</span><span class="p">;</span>
 </pre></div>
 </code></pre>
 <h3><a name="configure-the-handlebars-task"class="anchor" href="#configure-the-handlebars-task"><span class="header-link"></span></a>Configure the <code>handlebars</code> task</h3>
 <p>In its most basic form, we only need to define the <em>source</em> and <em>destination</em> files. Assuming the following file structure:</p>
-<pre><code><div class="highlight"><pre><span class="nx">my</span><span class="o">-</span><span class="nx">project</span><span class="o">/</span>
-    <span class="nx">templates</span><span class="o">/</span>
-        <span class="nx">posts</span><span class="o">/</span>
-            <span class="nx">list</span><span class="p">.</span><span class="nx">hbs</span>
-            <span class="nx">detail</span><span class="p">.</span><span class="nx">hbs</span>
-        <span class="nx">home</span><span class="p">.</span><span class="nx">hbs</span>
-    <span class="nx">js</span><span class="o">/</span>
-    <span class="nx">Gruntfile</span><span class="p">.</span><span class="nx">js</span>
-    <span class="kr">package</span><span class="p">.</span><span class="nx">json</span>
+<pre><code class="lang-bash"><div class="highlight"><pre>my-project/
+    templates/
+        posts/
+            list.hbs
+            detail.hbs
+        home.hbs
+    js/
+    Gruntfile.js
+    package.json
 </pre></div>
 </code></pre>
 <p>We can write:</p>
-<pre><code><div class="highlight"><pre><span class="nx">handlebars</span><span class="o">:</span> <span class="p">{</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">handlebars</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
         <span class="nx">files</span><span class="o">:</span> <span class="p">{</span>
             <span class="s2">&quot;js/templates.js&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;templates/**/*.hbs&quot;</span><span class="p">]</span>
@@ -87,15 +87,15 @@
 </pre></div>
 </code></pre>
 <p>Let&#39;s run this to see what happens:</p>
-<pre><code><div class="highlight"><pre><span class="nx">grunt</span> <span class="nx">handlebars</span>
+<pre><code class="lang-bash"><div class="highlight"><pre>grunt handlebars
 </pre></div>
 </code></pre>
 <p>Grunt will take all files with a <code>.hbs</code> extension from the <code>templates</code> folder and all its sub-folders and merge them into a single file called <code>templates.js</code>. You can now include it in your HTML:</p>
-<pre><code><div class="highlight"><pre><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s1">&#39;text/javascript&#39;</span> <span class="nx">src</span><span class="o">=</span><span class="s1">&#39;js/templates.js&#39;</span><span class="o">&gt;&lt;</span><span class="err">/script&gt;</span>
+<pre><code class="lang-html"><div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&#39;text/javascript&#39;</span> <span class="na">src=</span><span class="s">&#39;js/templates.js&#39;</span><span class="nt">&gt;&lt;/script&gt;</span>
 </pre></div>
 </code></pre>
 <p>Inspecting <code>JST</code> in Developer Tools, we&#39;ll see it&#39;s an object whose keys are the names of the templates and whose values are the Handlebars templating functions for each:</p>
-<pre><code><div class="highlight"><pre><span class="o">&gt;</span> <span class="nx">JST</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="o">&gt;</span> <span class="nx">JST</span>
 <span class="nb">Object</span>
     <span class="nx">templates</span><span class="o">/</span><span class="nx">home</span><span class="p">.</span><span class="nx">hbs</span>          <span class="kd">function</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{...}</span>
     <span class="nx">templates</span><span class="o">/</span><span class="nx">posts</span><span class="o">/</span><span class="nx">list</span><span class="p">.</span><span class="nx">hbs</span>    <span class="kd">function</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{...}</span>
@@ -103,7 +103,7 @@
 </pre></div>
 </code></pre>
 <p>In your JavaScript code, we use the templates as follows:</p>
-<pre><code><div class="highlight"><pre><span class="kd">var</span> <span class="nx">post</span> <span class="o">=</span> <span class="p">{</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">post</span> <span class="o">=</span> <span class="p">{</span>
     <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;My First Post&#39;</span><span class="p">,</span>
     <span class="nx">date</span><span class="o">:</span> <span class="s1">&#39;10/10/2013&#39;</span>
 <span class="p">};</span>
@@ -113,7 +113,7 @@
 </code></pre>
 <h3><a name="customize-the-names"class="anchor" href="#customize-the-names"><span class="header-link"></span></a>Customize the names</h3>
 <p>In real life, you&#39;ll probably want to add the templates under your application&#39;s namespace &mdash; something like <code>MyApp.Templates</code> &mdash; instead of <code>JST</code>. This is done using the <code>namespace</code> option:</p>
-<pre><code><div class="highlight"><pre><span class="nx">handlebars</span><span class="o">:</span> <span class="p">{</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">handlebars</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
         <span class="nx">namespace</span><span class="o">:</span> <span class="s1">&#39;MyApp.Templates&#39;</span>
     <span class="p">},</span>
@@ -126,7 +126,7 @@
 </pre></div>
 </code></pre>
 <p>Let&#39;s also get rid of the cruft in our template names &mdash; doesn&#39;t <code>posts/detail</code> look better than <code>templates/posts/detail.hbs</code>? We can accomplish this by using the <code>processName</code> option, which accepts a function with one argument (the file path) and returns the string to use as the template name:</p>
-<pre><code><div class="highlight"><pre><span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">namespace</span><span class="o">:</span> <span class="s1">&#39;MyApp.Templates&#39;</span><span class="p">,</span>
     <span class="nx">processName</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filePath</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="nx">filePath</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^templates\//</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\.hbs$/</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
@@ -135,7 +135,7 @@
 </pre></div>
 </code></pre>
 <p>So, by removing the <code>templates/</code> prefix and the <code>.hbs</code> suffix from the file paths, we gen nice clean template names:</p>
-<pre><code><div class="highlight"><pre><span class="o">&gt;</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">Templates</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="o">&gt;</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">Templates</span>
     <span class="nx">home</span>            <span class="kd">function</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{...}</span>
     <span class="nx">posts</span><span class="o">/</span><span class="nx">list</span>      <span class="kd">function</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{...}</span>
     <span class="nx">posts</span><span class="o">/</span><span class="nx">detail</span>    <span class="kd">function</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{...}</span>
@@ -143,22 +143,22 @@
 </code></pre>
 <h3><a name="what-about-partials-"class="anchor" href="#what-about-partials-"><span class="header-link"></span></a>What about partials?</h3>
 <p>In templating languages, <em>partials</em> are templates that can be reused in other templates. In Handlebars, you use the <code>{{&gt; partial }}</code> helper to include partials. Let&#39;s take an example:</p>
-<pre><code><div class="highlight"><pre><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s1">&#39;text/x-handlebars&#39;</span> <span class="nx">id</span><span class="o">=</span><span class="s1">&#39;post-list-template&#39;</span><span class="o">&gt;</span>
+<pre><code class="lang-html"><div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&#39;text/x-handlebars&#39;</span> <span class="na">id=</span><span class="s">&#39;post-list-template&#39;</span><span class="nt">&gt;</span>
     <span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="p">{{</span> <span class="nx">title</span> <span class="p">}}</span><span class="o">&lt;</span><span class="err">/h2&gt;</span>
     <span class="o">&lt;</span><span class="nx">ul</span><span class="o">&gt;</span>
         <span class="p">{{</span><span class="err">#</span><span class="nx">each</span> <span class="nx">posts</span><span class="p">}}</span>
             <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;</span><span class="p">{{</span><span class="o">&gt;</span> <span class="nx">post</span><span class="o">-</span><span class="nx">item</span><span class="p">}}</span><span class="o">&lt;</span><span class="err">/li&gt;</span>
         <span class="p">{{</span><span class="err">/each}}</span>
     <span class="o">&lt;</span><span class="err">/ul&gt;</span>
-<span class="o">&lt;</span><span class="err">/script&gt;</span>
+<span class="nt">&lt;/script&gt;</span>
 
-<span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s1">&#39;text/x-handlebars&#39;</span> <span class="nx">id</span><span class="o">=</span><span class="s1">&#39;post-item-template&#39;</span><span class="o">&gt;</span>
+<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&#39;text/x-handlebars&#39;</span> <span class="na">id=</span><span class="s">&#39;post-item-template&#39;</span><span class="nt">&gt;</span>
     <span class="o">&lt;</span><span class="nx">span</span> <span class="kr">class</span><span class="o">=</span><span class="s1">&#39;post&#39;</span><span class="o">&gt;</span><span class="p">{{</span> <span class="nx">title</span> <span class="p">}}</span> <span class="o">-</span> <span class="p">{{</span> <span class="nx">date</span> <span class="p">}}</span><span class="o">&lt;</span><span class="err">/span&gt;</span>
-<span class="o">&lt;</span><span class="err">/script&gt;</span>
+<span class="nt">&lt;/script&gt;</span>
 </pre></div>
 </code></pre>
 <p>We have two templates, one for the list of posts, and one for an individual item in the list. The former is a normal template, while the latter is used as a partial. To make everything happen, you&#39;d write in your JavaScript code:</p>
-<pre><code><div class="highlight"><pre><span class="kd">var</span> <span class="nx">listString</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;post-list-template&#39;</span><span class="p">).</span><span class="nx">innerHTML</span><span class="p">;</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">listString</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;post-list-template&#39;</span><span class="p">).</span><span class="nx">innerHTML</span><span class="p">;</span>
 <span class="kd">var</span> <span class="nx">itemString</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;post-item-template&#39;</span><span class="p">).</span><span class="nx">innerHTML</span><span class="p">;</span>
 
 <span class="nx">Handlebars</span><span class="p">.</span><span class="nx">registerPartial</span><span class="p">(</span><span class="s1">&#39;post-item&#39;</span><span class="p">,</span> <span class="nx">itemString</span><span class="p">);</span>
@@ -174,30 +174,30 @@
 </pre></div>
 </code></pre>
 <p>Which outputs the expected markup:</p>
-<pre><code><div class="highlight"><pre><span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="nx">All</span> <span class="nx">posts</span><span class="o">&lt;</span><span class="err">/h2&gt;</span>
-<span class="o">&lt;</span><span class="nx">ul</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">span</span> <span class="kr">class</span><span class="o">=</span><span class="s1">&#39;post&#39;</span><span class="o">&gt;</span><span class="nx">First</span> <span class="nx">post</span> <span class="o">-</span> <span class="mi">10</span><span class="o">/</span><span class="mi">10</span><span class="o">/</span><span class="mi">2013</span><span class="o">&lt;</span><span class="err">/li&gt;</span>
-    <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">span</span> <span class="kr">class</span><span class="o">=</span><span class="s1">&#39;post&#39;</span><span class="o">&gt;</span><span class="nx">Second</span> <span class="nx">post</span> <span class="o">-</span> <span class="mi">10</span><span class="o">/</span><span class="mi">10</span><span class="o">/</span><span class="mi">2013</span><span class="o">&lt;</span><span class="err">/li&gt;</span>
-<span class="o">&lt;</span><span class="err">/ul&gt;</span>
+<pre><code class="lang-html"><div class="highlight"><pre><span class="nt">&lt;h2&gt;</span>All posts<span class="nt">&lt;/h2&gt;</span>
+<span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;span</span> <span class="na">class=</span><span class="s">&#39;post&#39;</span><span class="nt">&gt;</span>First post - 10/10/2013<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;span</span> <span class="na">class=</span><span class="s">&#39;post&#39;</span><span class="nt">&gt;</span>Second post - 10/10/2013<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
 </pre></div>
 </code></pre>
 <p><strong>Note:</strong> It&#39;s important to register the partial <em>before</em> compiling any template that includes it, otherwise it will throw an error.</p>
 <p>Let&#39;s see how the <code>handlebars</code> task works with partials. First, let&#39;s create a <code>_list-item.hbs</code> in our <code>templates</code> folder:</p>
-<pre><code><div class="highlight"><pre><span class="nx">my</span><span class="o">-</span><span class="nx">project</span><span class="o">/</span>
-    <span class="nx">templates</span><span class="o">/</span>
-        <span class="nx">posts</span><span class="o">/</span>
-            <span class="nx">_list</span><span class="o">-</span><span class="nx">item</span><span class="p">.</span><span class="nx">hbs</span>
-            <span class="nx">list</span><span class="p">.</span><span class="nx">hbs</span>
-            <span class="nx">detail</span><span class="p">.</span><span class="nx">hbs</span>
-        <span class="nx">home</span><span class="p">.</span><span class="nx">hbs</span>
-    <span class="nx">js</span><span class="o">/</span>
-    <span class="nx">Gruntfile</span><span class="p">.</span><span class="nx">js</span>
-    <span class="kr">package</span><span class="p">.</span><span class="nx">json</span>
+<pre><code class="lang-bash"><div class="highlight"><pre>my-project/
+    templates/
+        posts/
+            _list-item.hbs
+            list.hbs
+            detail.hbs
+        home.hbs
+    js/
+    Gruntfile.js
+    package.json
 </pre></div>
 </code></pre>
 <p>If we run <code>grunt handlebars</code> again, we&#39;ll see that our <code>MyApp.Templates</code> does not include our newly created template. That&#39;s because the <code>handlebars</code> task assumes all files that start with <code>_</code> are partials and registers them using <code>Handlebars.registerPartial()</code> &mdash; internally, they&#39;re kept in the <code>Handlebars.partials</code> array.</p>
 <p>Now we can just write:</p>
-<pre><code><div class="highlight"><pre><span class="kd">var</span> <span class="nx">template</span> <span class="o">=</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">Templates</span><span class="p">[</span><span class="s1">&#39;posts/list&#39;</span><span class="p">];</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">template</span> <span class="o">=</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">Templates</span><span class="p">[</span><span class="s1">&#39;posts/list&#39;</span><span class="p">];</span>
 <span class="nx">template</span><span class="p">({</span>
     <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;All posts&#39;</span><span class="p">,</span>
     <span class="nx">posts</span><span class="o">:</span> <span class="p">[</span>

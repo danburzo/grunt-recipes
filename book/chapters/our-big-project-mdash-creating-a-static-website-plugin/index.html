@@ -10,33 +10,33 @@
 		<article>
 			<header>
 				<h1>Our Big Project &mdash; creating a static website plugin</h1>
-				<p>Last updated on Oct 8th, 2013</p>
+				<p>Last updated on Oct 9th, 2013</p>
 			</header>
 			<p>Let&#39;s put everything we know together to create a static website generator that takes pages in markdown format and assembles them into a fully-functional blog.</p>
 <h3><a name="what-we-re-trying-to-do"class="anchor" href="#what-we-re-trying-to-do"><span class="header-link"></span></a>What we&#39;re trying to do</h3>
 <p>Let&#39;s look at the structure we want for the project:</p>
-<pre><code><div class="highlight"><pre><span class="nx">my</span><span class="o">-</span><span class="nx">blog</span>
-    <span class="nx">init</span><span class="o">/</span>
-        <span class="nx">sample</span><span class="p">.</span><span class="nx">post</span>
-    <span class="nx">content</span><span class="o">/</span>
-        <span class="nx">hello_world</span><span class="p">.</span><span class="nx">post</span>
-        <span class="nx">second_post</span><span class="p">.</span><span class="nx">post</span>
-    <span class="nx">templates</span><span class="o">/</span>
-        <span class="nx">partials</span><span class="o">/</span>
-            <span class="nx">header</span><span class="p">.</span><span class="nx">tmpl</span>
-            <span class="nx">footer</span><span class="p">.</span><span class="nx">tmpl</span>
-        <span class="nx">archive</span><span class="p">.</span><span class="nx">tmpl</span>
-        <span class="nx">category</span><span class="p">.</span><span class="nx">tmpl</span>
-        <span class="nx">index</span><span class="p">.</span><span class="nx">tmpl</span>
-        <span class="nx">post</span><span class="p">.</span><span class="nx">tmpl</span>
-    <span class="nx">styles</span><span class="o">/</span>
-        <span class="nx">blog</span><span class="p">.</span><span class="nx">css</span>
-    <span class="nx">scripts</span><span class="o">/</span>
-        <span class="nx">blog</span><span class="p">.</span><span class="nx">js</span>
-    <span class="nx">blog</span><span class="o">/</span>
-        <span class="o">&lt;</span><span class="nx">our</span> <span class="nx">blog</span> <span class="nx">gets</span> <span class="nx">generated</span> <span class="nx">here</span><span class="o">&gt;</span>
-    <span class="nx">Gruntfile</span><span class="p">.</span><span class="nx">js</span>
-    <span class="kr">package</span><span class="p">.</span><span class="nx">json</span>
+<pre><code class="lang-bash"><div class="highlight"><pre>my-blog
+    init/
+        sample.post
+    content/
+        hello_world.post
+        second_post.post
+    templates/
+        partials/
+            header.tmpl
+            footer.tmpl
+        archive.tmpl
+        category.tmpl
+        index.tmpl
+        post.tmpl
+    styles/
+        blog.css
+    scripts/
+        blog.js
+    blog/
+        &lt;our blog gets generated here&gt;
+    Gruntfile.js
+    package.json
 </pre></div>
 </code></pre>
 <p>We will need to take the information for each post from the <code>.post</code> file and build a corresponding <code>.html</code> file by assembling it from templates:</p>
@@ -46,16 +46,16 @@
 </ul>
 <h4><a name="the-structure-of-posts"class="anchor" href="#the-structure-of-posts"><span class="header-link"></span></a>The structure of posts</h4>
 <p>We want to be able to include some meta-data along with the content of our posts, so a post should look like:</p>
-<pre><code><div class="highlight"><pre><span class="p">[</span><span class="nx">METADATA</span><span class="p">]</span>
+<pre><code class="lang-yaml"><div class="highlight"><pre><span class="p-Indicator">[</span><span class="nv">METADATA</span><span class="p-Indicator">]</span>
 
-<span class="nx">title</span><span class="o">:</span> <span class="nx">My</span> <span class="nx">Post</span>
-<span class="nx">slug</span><span class="o">:</span> <span class="nx">my</span><span class="o">-</span><span class="nx">post</span>
-<span class="nx">date</span><span class="o">:</span> <span class="nx">September</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">2013</span>
-<span class="nx">category</span><span class="o">:</span> <span class="nx">General</span>
+<span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">My Post</span>
+<span class="l-Scalar-Plain">slug</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">my-post</span>
+<span class="l-Scalar-Plain">date</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">September 13, 2013</span>
+<span class="l-Scalar-Plain">category</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">General</span>
 
-<span class="p">[</span><span class="nx">CONTENT</span><span class="p">]</span>
+<span class="p-Indicator">[</span><span class="nv">CONTENT</span><span class="p-Indicator">]</span>
 
-<span class="o">&lt;</span><span class="nx">markdown</span> <span class="nx">content</span> <span class="nx">goes</span> <span class="nx">here</span><span class="o">&gt;</span>
+<span class="l-Scalar-Plain">&lt;markdown content goes here&gt;</span>
 </pre></div>
 </code></pre>
 <p>Let&#39;s think about the kind of metadata is useful:</p>
@@ -66,7 +66,7 @@
 <li><code>category</code> of the post.</li>
 </ul>
 <p>We&#39;ve also created a <code>init</code> folder containing <code>sample.post</code> so we don&#39;t have to start each page from scratch. We&#39;ll create a separate Grunt task that creates new posts for us:</p>
-<pre><code><div class="highlight"><pre><span class="nx">grunt</span> <span class="k">new</span> <span class="s2">&quot;Post title&quot;</span>
+<pre><code class="lang-bash"><div class="highlight"><pre>grunt new <span class="s2">&quot;Post title&quot;</span>
 </pre></div>
 </code></pre>
 <h3><a name="let-s-gather-our-tools"class="anchor" href="#let-s-gather-our-tools"><span class="header-link"></span></a>Let&#39;s gather our tools</h3>
@@ -77,7 +77,7 @@
 <li><code>grunt-markdown</code> to convert the Markdown content of our posts to HTML.</li>
 </ul>
 <h3><a name="building-the-gruntfile"class="anchor" href="#building-the-gruntfile"><span class="header-link"></span></a>Building the Gruntfile</h3>
-<pre><code><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
     <span class="nx">copy</span><span class="o">:</span> <span class="p">{</span>
         <span class="nx">sample</span><span class="o">:</span> <span class="p">{</span>
             <span class="nx">files</span><span class="o">:</span> <span class="p">[{</span>

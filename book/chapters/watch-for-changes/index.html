@@ -10,16 +10,16 @@
 		<article>
 			<header>
 				<h1>Watch for changes</h1>
-				<p>Last updated on Oct 8th, 2013</p>
+				<p>Last updated on Oct 9th, 2013</p>
 			</header>
 			<p><strong>Plugins used:</strong> <a href="https://npmjs.org/package/grunt-contrib-watch"><code>grunt-contrib-watch</code></a>.</p>
 <p>In the previous recipes, we saw how we can compile our Sass files into CSS files and merge your Handlebars templates into a single JST file. It is somewhat magical, but to run <code>grunt sass handlebars</code> after every change is far from being productive. Let&#39;s take this up a notch and make our files re-compile automatically every time we make a change to them. For this we will use the <code>watch</code> task provided by <code>grunt-contrib-watch</code>. </p>
 <p>As usual, let&#39;s install it in our project:</p>
-<pre><code><div class="highlight"><pre><span class="nx">npm</span> <span class="nx">install</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">contrib</span><span class="o">-</span><span class="nx">watch</span>
+<pre><code class="lang-bash"><div class="highlight"><pre>npm install grunt-contrib-watch
 </pre></div>
 </code></pre>
 <p>and load the tasks in our Gruntfile, after our <code>sass</code> and <code>handlebars</code> tasks:</p>
-<pre><code><div class="highlight"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
         <span class="nx">sass</span><span class="o">:</span> <span class="p">{</span>
             <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
@@ -53,7 +53,7 @@
 <li>the task(s) to run when the files change.</li>
 </ol>
 <p>So let&#39;s go ahead and do that:</p>
-<pre><code><div class="highlight"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
         <span class="nx">sass</span><span class="o">:</span> <span class="p">{</span>
             <span class="nx">all</span><span class="o">:</span> <span class="p">{</span>
@@ -95,16 +95,16 @@
 <p>We&#39;ve created <em>two targets</em> for our task, one for watching the Sass files and one for watching the Handlebars templates. In both instances, we&#39;ve used <em>wildcards</em> to define patterns to match all desired files. The <code>scss/**/*.scss</code> pattern is similar to <code>scss/*.scss</code> (i.e. match all files with the <code>.scss</code> extension within the <code>scss</code> folder) with the exception that the former looks into subfolders as well &mdash; you can read all about it in the <em>Files in-depth</em> chapter. </p>
 <p>When any of the targeted files change, the associated task is executed.</p>
 <p>Let&#39;s check it out in action:</p>
-<pre><code><div class="highlight"><pre><span class="nx">grunt</span> <span class="nx">watch</span>
+<pre><code class="lang-bash"><div class="highlight"><pre>grunt watch
 </pre></div>
 </code></pre>
 <p>Because <code>watch</code> is a <em>multitask</em>, what we&#39;re actually saying with the above command is:</p>
-<pre><code><div class="highlight"><pre><span class="nx">grunt</span> <span class="nx">watch</span><span class="o">:</span><span class="nx">sass</span> <span class="nx">watch</span><span class="o">:</span><span class="nx">handlebars</span>
+<pre><code class="lang-bash"><div class="highlight"><pre>grunt watch:sass watch:handlebars
 </pre></div>
 </code></pre>
 <p>Now go ahead and change one of your Sass files, and notice that the <code>sass</code> task is run. At the same time, if a Handlebars template changes, the <code>handlebars</code> task is run.</p>
 <p><strong>Note:</strong> In our example, we&#39;re running a single task with each change, but in effect the <code>tasks</code> option can take an array of tasks to be run in sequence. You can even include specific targets for each task, e.g.:</p>
-<pre><code><div class="highlight"><pre><span class="nx">watch</span><span class="o">:</span> <span class="p">{</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">watch</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">sass</span><span class="o">:</span> <span class="p">{</span>
         <span class="nx">files</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;scss/**/*.scss&#39;</span><span class="p">],</span>
         <span class="nx">tasks</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;sass:all&#39;</span><span class="p">,</span> <span class="s1">&#39;csslint:all&#39;</span><span class="p">]</span>
@@ -122,7 +122,7 @@
 <li>matching files that were <em>changed</em>. </li>
 </ul>
 <p>This behavior is controlled by the <code>events</code> option, which can have one or many of the values: <code>all</code> (the default), <code>changed</code>, <code>added</code> and <code>deleted</code>. Let&#39;s assume we want to run the <code>handlebars</code> task only when a template is added or deleted &mdash; an no, it doesn&#39;t make sense in a real-world scenario, but go with me:</p>
-<pre><code><div class="highlight"><pre><span class="nx">watch</span><span class="o">:</span> <span class="p">{</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">watch</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">handlebars</span><span class="o">:</span> <span class="p">{</span>
         <span class="nx">files</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;templates/**/*.hbs&#39;</span><span class="p">],</span>
         <span class="nx">tasks</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;handlebars&#39;</span><span class="p">],</span>
@@ -136,7 +136,7 @@
 <p>This will make the watch ignore changes in existing Handlebars templates and only react when we add or remove Handlebars templates.</p>
 <p>Alrighty then.</p>
 <p>There&#39;s one little quirk we need to address: the <code>watch</code> task will only pick up on changes that happen <em>after</em> we call <code>grunt task</code>. We&#39;d like to make sure our generated CSS and compiled templates are up-to-date when the watch starts. For this, we will use <code>atBegin: true</code> to run <em>all tasks</em> associated with the watch before the actual watching begins. Because we want this behavior for both Sass and Handlebars files, we will add this option on the task directly rather than on each target:</p>
-<pre><code><div class="highlight"><pre><span class="nx">watch</span><span class="o">:</span> <span class="p">{</span>
+<pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">watch</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
         <span class="nx">atBegin</span><span class="o">:</span> <span class="kc">true</span>
     <span class="p">},</span>

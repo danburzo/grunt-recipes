@@ -8,28 +8,30 @@ Let's put everything we know together to create a static website generator that 
 
 Let's look at the structure we want for the project:
 
-	my-blog
-		init/
-			sample.post
-		content/
-			hello_world.post
-			second_post.post
-		templates/
-			partials/
-				header.tmpl
-				footer.tmpl
-			archive.tmpl
-			category.tmpl
-			index.tmpl
-			post.tmpl
-		styles/
-			blog.css
-		scripts/
-			blog.js
-		blog/
-			<our blog gets generated here>
-		Gruntfile.js
-		package.json
+```bash
+my-blog
+	init/
+		sample.post
+	content/
+		hello_world.post
+		second_post.post
+	templates/
+		partials/
+			header.tmpl
+			footer.tmpl
+		archive.tmpl
+		category.tmpl
+		index.tmpl
+		post.tmpl
+	styles/
+		blog.css
+	scripts/
+		blog.js
+	blog/
+		<our blog gets generated here>
+	Gruntfile.js
+	package.json
+```
 
 We will need to take the information for each post from the `.post` file and build a corresponding `.html` file by assembling it from templates:
 
@@ -40,16 +42,18 @@ We will need to take the information for each post from the `.post` file and bui
 
 We want to be able to include some meta-data along with the content of our posts, so a post should look like:
 
-	[METADATA]
+```yaml
+[METADATA]
 
-	title: My Post
-	slug: my-post
-	date: September 13, 2013
-	category: General
+title: My Post
+slug: my-post
+date: September 13, 2013
+category: General
 
-	[CONTENT]
+[CONTENT]
 
-	<markdown content goes here>
+<markdown content goes here>
+```
 
 Let's think about the kind of metadata is useful:
 
@@ -60,8 +64,9 @@ Let's think about the kind of metadata is useful:
 
 We've also created a `init` folder containing `sample.post` so we don't have to start each page from scratch. We'll create a separate Grunt task that creates new posts for us:
 
-	grunt new "Post title"
-
+```bash
+grunt new "Post title"
+```
 
 ### Let's gather our tools
 
@@ -74,17 +79,18 @@ Off the top of our heads, we will most definitely need:
 
 ### Building the Gruntfile
 
-	grunt.initConfig({
-		copy: {
-			sample: {
-				files: [{
-					src: 'init/sample.post',
-					dest: 'posts/new_post.post'
-				}]
-			}
+```javascript
+grunt.initConfig({
+	copy: {
+		sample: {
+			files: [{
+				src: 'init/sample.post',
+				dest: 'posts/new_post.post'
+			}]
 		}
-	});
+	}
+});
 
-	grunt.registerTask('default', 'Build the blog', []);
-	grunt.registerTask('new', 'Create a new post', ['copy:sample'])
-
+grunt.registerTask('default', 'Build the blog', []);
+grunt.registerTask('new', 'Create a new post', ['copy:sample'])
+```

@@ -10,8 +10,10 @@ What you need is a web server installed locally. You might be tempted to use an 
 
 If you have Python installed, you can simply run this in your project folder instead:
 
-	python -m SimpleHTTPServer // for Python 2.x
-	python -m http.server // for Python 3.x
+```bash
+python -m SimpleHTTPServer // for Python 2.x
+python -m http.server // for Python 3.x
+```
 
 It will start a web server through which you can access your project at `http://localhost:8000`.
 
@@ -19,67 +21,79 @@ In this chapter, we'll learn how to configure the `connect` task to obtain a sim
 
 ### Install the `connect` task
 
-	npm install grunt-contrib-connect --save-dev
+```bash
+npm install grunt-contrib-connect --save-dev
+```
 
 and then load it into  your Gruntfile:
 	
-	grunt.loadNpmTasks('grunt-contrib-connect');
+```bash
+grunt.loadNpmTasks('grunt-contrib-connect');
+```
 
 ### Configure a persistent server
 
 To create a persistent server (one which does not stop after Grunt tasks have completed), we will use `keepalive: true`:
 
-	connect: {
-		server: {
-			options: {
-				keepalive: true
-			}
+```bash
+connect: {
+	server: {
+		options: {
+			keepalive: true
 		}
 	}
+}
+```
 
 We've created a single target called `server` for our `connect` task.
 
 ### Run your server
 
-	grunt connect:server
+```bash
+grunt connect:server
+```
 
-Now go to http://localhost:8000 and you should be able to browse your app, and see your `index.html` if you have one.
+Now go to `http://localhost:8000` and you should be able to browse your app, and see your `index.html` if you have one.
 
 ### More server configuration
 
 You can customize the host name, port and protocol for your server:
 
-	connect: {
-		server: {
-			options: {
-				keepalive: true,
-				protocol: 'https',
-				hostname: 'myapp',
-				port: '8080'
-			}
+```javascript
+connect: {
+	server: {
+		options: {
+			keepalive: true,
+			protocol: 'https',
+			hostname: 'myapp',
+			port: '8080'
 		}
 	}
+}
+```
 
-The code above makes the server available at https://myapp:8080. This is useful in the case you want to start several servers at once, with different base directories, as in the example below:
+The code above makes the server available at `https://myapp:8080`. This is useful in the case you want to start several servers at once, with different base directories, as in the example below:
 
-	connect: {
-		first: {
-			options: {
-				keepalive: true,
-				hostname: 'firstsite',
-				base: 'first-site'
-			}
-		},
-		second: {
-			options: {
-				keepalive: true,
-				hostname: 'secondsite',
-				base: 'second-site'
-			}
+```javascript
+connect: {
+	first: {
+		options: {
+			keepalive: true,
+			hostname: 'firstsite',
+			base: 'first-site'
+		}
+	},
+	second: {
+		options: {
+			keepalive: true,
+			hostname: 'secondsite',
+			base: 'second-site'
 		}
 	}
+}
+```
 
-This makes the directories `first-site` and `second-site` from your project available at http://firstite:8000 and http://secondsite:8000, respectively.
+This makes the directories `first-site` and `second-site` from your project available at `http://firstite:8000` and `http://secondsite:8000`, respectively.
 
 ### Routing everything back to index.html
 
@@ -89,45 +103,51 @@ Let's fix this by writing a custom _middleware_ for the `connect` task to redire
 
 For this we will be using the `connect-modrewrite` plugin &mdash; our first encounter with a plugin that's not specifically written for Grunt. But rest assured, it's basically the same thing. Let's install it in the same way as with any other plugin:
 
-	npm install connect-modrewrite --save-dev
+```bash
+npm install connect-modrewrite --save-dev
+```
 
 And then use it in our Gruntfile:
 
-	var rewrite = require('connect-modrewrite');
+```javascript
+var rewrite = require('connect-modrewrite');
+```
 
 Let's see how we can use it in our `connect` task:
 
-	var rewrite = require('connect-modrewrite');
+```javascript
+var rewrite = require('connect-modrewrite');
 
-	grunt.initConfig({
-		connect: {
-			server: {
-				keepalive: true,
-				hostname: 'localhost',
-				middleware: function(connect, options) {
+grunt.initConfig({
+	connect: {
+		server: {
+			keepalive: true,
+			hostname: 'localhost',
+			middleware: function(connect, options) {
 
-					var middleware = [];
-					
-					// original middleware behavior
-					var base = options.base;
-					if (!Array.isArray(base)) {
-						base = [base];
-					}
-					base.forEach(function(path) {
-						middleware.push(connect.static(path));
-					});
-
-					// mod-rewrite behavior
-					var rules = [
-						'!\\.html|\\.js|\\.css|\\.svg|\\.jp(e?)g|\\.png|\\.gif$ /index.html'
-					];
-					middleware.push(rewrite(rules));
-
-					return middleware;
+				var middleware = [];
+				
+				// original middleware behavior
+				var base = options.base;
+				if (!Array.isArray(base)) {
+					base = [base];
 				}
+				base.forEach(function(path) {
+					middleware.push(connect.static(path));
+				});
+
+				// mod-rewrite behavior
+				var rules = [
+					'!\\.html|\\.js|\\.css|\\.svg|\\.jp(e?)g|\\.png|\\.gif$ /index.html'
+				];
+				middleware.push(rewrite(rules));
+
+				return middleware;
 			}
 		}
-	});	
+	}
+});	
+```
 
 We've written a custom `middleware` function which returns an array of chained middleware. Because we're overwriting the original implementation altogether, we need to make sure to include it &mdash; it's the part with `connect.static`. We're then adding our rewrite middleware to the chain; it contains a single rule which states that all files except HTML, stylesheets, scripts and images should be redirected to `index.html`.
 
@@ -135,7 +155,9 @@ We've written a custom `middleware` function which returns an array of chained m
 
 To make our app available to other devices &mdash; like a phone or tablet connected to the same network as our development machine &mdash; we need to make one small adjustment:
 
-	hostname: '*'
+```javascript
+hostname: '*'
+```
 
 Now you can test your app on any device by going to `http://ip-address:8000`. 
 
