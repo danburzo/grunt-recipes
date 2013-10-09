@@ -1,5 +1,6 @@
 {
-  title: "Write your own Grunt tasks"
+  title: "Write your own Grunt tasks",
+  slug: "custom-tasks"
 }
 
 ### A primer on custom tasks

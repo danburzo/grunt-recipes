@@ -1,5 +1,6 @@
 {
-  title: "Appendix B: Using Grunt with other tools"
+  title: "Appendix B: Using Grunt with other tools",
+  slug: "tools"
 }
 
 ### Grunt in Sublime Text

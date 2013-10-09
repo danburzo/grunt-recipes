@@ -1,5 +1,6 @@
 {
-  title: "Our Big Project &mdash; creating a static website plugin"
+  title: "Our Big Project &mdash; creating a static website plugin",
+  slug: "our-big-project"
 }
 
 Let's put everything we know together to create a static website generator that takes pages in markdown format and assembles them into a fully-functional blog.

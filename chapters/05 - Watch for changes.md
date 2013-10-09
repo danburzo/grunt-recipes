@@ -1,5 +1,6 @@
 {
-  title: "Watch for changes"
+  title: "Watch for changes",
+  slug: "watch"
 }
 
 

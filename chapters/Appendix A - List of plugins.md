@@ -1,5 +1,6 @@
 {
-  title: "Appendix A: Some useful Grunt plugins"
+  title: "Appendix A: Some useful Grunt plugins",
+  slug: "appendix-plugins"
 }
 
 Here are some hand-picked plugins for your enjoyment. Most of the 'official' plugins (starting with `grunt-contrib`) are included. I've also included a few non-Grunt plugins (marked with `*`) because they play nice with the others.

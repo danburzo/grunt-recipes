@@ -1,5 +1,6 @@
 {
-  title: "Files, in-depth"
+  title: "Files, in-depth",
+  slug: "files"
 }
 
 Tasks can be:

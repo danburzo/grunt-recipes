@@ -1,5 +1,6 @@
 {
-  title: "Start a server"
+  title: "Start a server",
+  slug: "server"
 }
 
 **Using:** [`grunt-contrib-connect`](https://npmjs.org/package/grunt-contrib-connect)

@@ -1,5 +1,6 @@
 {
-  title: "Pre-compile your Handlebars templates"
+  title: "Pre-compile your Handlebars templates",
+  slug: "handlebars"
 }
 
 **Plugins used:** [`grunt-contrib-handlebars`](https://npmjs.org/package/grunt-contrib-handlebars).

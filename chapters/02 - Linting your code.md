@@ -1,5 +1,6 @@
 {
-  title: "Lint your JavaScript code"
+  title: "Lint your JavaScript code",
+  slug: "linting"
 }
 
 ## Lint your JavaScript code

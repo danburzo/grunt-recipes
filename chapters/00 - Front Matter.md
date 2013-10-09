@@ -1,5 +1,6 @@
 {
-  title: "Grunt Up & Running"
+  title: "Grunt Up & Running",
+  slug: "front"
 }
 
 A book by Dan Burzo ([@danburzo](http://twitter.com/danburzo))

@@ -1,5 +1,6 @@
 {
-  title: "Build an app for deployment"
+  title: "Build an app for deployment",
+  slug: "building"
 }
 
 By now, you should be comfortable with working with one task at a time. It's time to really make Grunt shine by integrating the variety of tasks involved in preparing a web application for deployment, such as precompiling, minifying, concatenating and moving files around.

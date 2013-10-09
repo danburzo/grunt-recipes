@@ -35,7 +35,7 @@ module.exports = function(grunt) {
 				src: 'chapters',
 				dest: 'book/chapters',
 				layout: 'grunt-chapter.ejs',
-				url: ':title/'
+				url: ':slug/'
 			}
 		}
 	});
