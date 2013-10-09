@@ -62,3 +62,7 @@ th, td {
 tr {
 	border-bottom: 1px solid #ddd;
 }
+
+.pagination { overflow: hidden; padding: 1em; background: #eee; margin-top: 3em; }
+.pagination-prev {float:left;}
+.pagination-next {float:right;}

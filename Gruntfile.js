@@ -24,7 +24,13 @@ module.exports = function(grunt) {
 		},
 
 		pages: {
-			options: {},
+			options: {
+				sortFunction: function(a, b) {
+					if (a.sourcePath > b.sourcePath) return 1;
+					if (b.sourcePath > a.sourcePath) return -1;
+					return 0; 
+				}
+			},
 			posts: {
 				src: 'chapters',
 				dest: 'book/chapters',

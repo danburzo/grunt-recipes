@@ -21,6 +21,15 @@ var prettyDate = function(date) {
 				<p>Last updated on <%= prettyDate(post.date) %></p>
 			</header>
 			<%- post.content %>
+
+			<div class='pagination'>
+			<% if (previous) { %>
+				<a href='../<%= previous.url %>' class='pagination-prev'>&larr; Previous: <%= previous.title %></a>
+			<% } %>
+			<% if (next) { %>
+				<a href='../<%= next.url %>' class='pagination-next'>Next: <%= next.title %> &rarr;</a>
+			<% } %>
+			</div>
 		</article>
 	</body>
 </html>
