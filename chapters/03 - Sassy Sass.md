@@ -10,7 +10,7 @@
 ### Install the Sass plugin
 
 ```bash
-npm install -g grunt-contrib-sass --save-dev
+npm install grunt-contrib-sass --save-dev
 ```
 
 and then, in our Gruntfile:
