@@ -24,7 +24,7 @@ module.exports = function(grunt) {
 };
 ```
 
-### Confige the JSHint task
+### Configure the JSHint task
 
 ```javascript
 module.exports = function(grunt) {
@@ -67,7 +67,7 @@ module.exports = function(grunt) {
 		jshint: {
 			options: {
 				reporterOutput: 'jshint.log'
-			}
+			},
 			all: ['scripts/*.js']
 		}
 	});
@@ -104,7 +104,7 @@ module.exports = function(grunt) {
 			options: {
 				jshintrc: '.jshintrc',
 				reporterOutput: 'jshint.log'
-			}
+			},
 			all: ['scripts/*.js']
 		}
 	});
