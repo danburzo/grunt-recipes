@@ -10,14 +10,12 @@
 		<article>
 			<header>
 				<h1>Build an app for deployment</h1>
-				<p>Last updated on Oct 9th, 2013</p>
+				<p>Last updated on Jan 20th, 2014</p>
 			</header>
 			<p>By now, you should be comfortable with working with one task at a time. It&#39;s time to really make Grunt shine by integrating the variety of tasks involved in preparing a web application for deployment, such as precompiling, minifying, concatenating and moving files around.</p>
-<h3><a name="what-we-re-trying-to-accomplish"class="anchor" href="#what-we-re-trying-to-accomplish"><span class="header-link"></span></a>What we&#39;re trying to accomplish</h3>
-<p>We want to take our main HTML file, identify all the stylesheets and scripts it references, optimize those (e.g. minification, concatenation) and then update the references from the HTML with the optimized version.</p>
+<h3><a name="what-we39re-trying-to-accomplish" class="anchor" href="#what-we39re-trying-to-accomplish"><span class="header-link"></span></a>What we&#39;re trying to accomplish</h3><p>We want to take our main HTML file, identify all the stylesheets and scripts it references, optimize those (e.g. minification, concatenation) and then update the references from the HTML with the optimized version.</p>
 <p>At the end of the task, we want to have a <code>dist</code> folder that contains the optimized version of our project, readily deployable to a production environment.</p>
-<h3><a name="tasks-we-ll-use-in-this-recipe"class="anchor" href="#tasks-we-ll-use-in-this-recipe"><span class="header-link"></span></a>Tasks we&#39;ll use in this recipe</h3>
-<ul>
+<h3><a name="tasks-we39ll-use-in-this-recipe" class="anchor" href="#tasks-we39ll-use-in-this-recipe"><span class="header-link"></span></a>Tasks we&#39;ll use in this recipe</h3><ul>
 <li><a href="https://npmjs.org/package/grunt-contrib-uglify"><code>grunt-contrib-uglify</code></a> to minify JavaScript;</li>
 <li><a href="https://npmjs.org/package/grunt-contrib-cssmin"><code>grunt-contrib-cssmin</code></a> to minify CSS;</li>
 <li><a href="https://npmjs.org/package/grunt-contrib-htmlmin"><code>grunt-contrib-htmlmin</code></a> to minify gruntde;</li>
@@ -26,9 +24,9 @@
 <li><a href="https://github.com/yeoman/grunt-usemin"><code>grunt-usemin</code></a> to replaces references to scripts and stylesheets in HTML files with their optimized versions.</li>
 </ul>
 <p>Now, don&#39;t get too intimidated! If you think about it each task has a very specific purpose in the workflow, and you&#39;ll see how easy is to choreograph them into one fluent, beautiful task.</p>
-<h3><a name="let-s-install-everything"class="anchor" href="#let-s-install-everything"><span class="header-link"></span></a>Let&#39;s install everything</h3>
-<pre><code class="lang-bash"><div class="highlight"><pre>npm install grunt-contrib-uglify grunt-contrib-concat grunt-contrib-cssmin grunt-contrib-htmlmin grunt-contrib-copy grunt-usemin --save-dev
+<h3><a name="let39s-install-everything" class="anchor" href="#let39s-install-everything"><span class="header-link"></span></a>Let&#39;s install everything</h3><pre><code class="lang-bash"><div class="highlight"><pre>npm install grunt-contrib-uglify grunt-contrib-concat grunt-contrib-cssmin grunt-contrib-htmlmin grunt-contrib-copy grunt-usemin --save-dev
 </pre></div>
+
 </code></pre>
 <p>... in one fell swoop, even. Now let&#39;s add all of it to our Gruntfile:</p>
 <pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-uglify&#39;</span><span class="p">);</span>
@@ -38,9 +36,9 @@
 <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-copy&#39;</span><span class="p">);</span>
 <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-usemin&#39;</span><span class="p">);</span>
 </pre></div>
+
 </code></pre>
-<h3><a name="basic-configuration"class="anchor" href="#basic-configuration"><span class="header-link"></span></a>Basic configuration</h3>
-<pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+<h3><a name="basic-configuration" class="anchor" href="#basic-configuration"><span class="header-link"></span></a>Basic configuration</h3><pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
 
     <span class="c1">// Minimize tasks</span>
     <span class="nx">cssmin</span><span class="o">:</span> <span class="p">{</span>
@@ -81,6 +79,7 @@
 
 <span class="p">});</span>
 </pre></div>
+
 </code></pre>
 <p>Let&#39;s take the code above apart, piece by piece.</p>
 <p>First, we configure the <code>cssmin</code> task to take all stylesheets from <code>app/css</code> and minimize and concatenate them in a single file in <code>dist/css</code> called <code>app.css</code>.
@@ -133,6 +132,7 @@ We do the same for HTML, except we&#39;re using a dynamic declaration of the fil
 
 <span class="p">});</span>
 </pre></div>
+
 </code></pre>
 <p>We&#39;ve defined an <code>appConfig</code> property to hold our commonly-used paths. Now we can refer to the two paths as <code>&lt;%= appConfig.appRoot %&gt;</code> and <code>&lt;%= appConfig.distRoot %&gt;</code> in all our tasks.</p>
 <p><strong>Note:</strong> You can define any number of custom properties in your Grunt configuration (like we did above with <code>appConfig</code>), but make sure the names don&#39;t conflict with any task names and stay away from the <code>grunt</code> keyword, which is reserved to access the Grunt object in the templates.</p>
@@ -145,6 +145,7 @@ We do the same for HTML, except we&#39;re using a dynamic declaration of the fil
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
+
 </code></pre>
 <p>And here&#39;s how we might use this to append the timestamp to our generated CSS file in <code>cssmin</code>:</p>
 <pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">cssmin</span><span class="o">:</span> <span class="p">{</span>
@@ -155,9 +156,9 @@ We do the same for HTML, except we&#39;re using a dynamic declaration of the fil
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
-</code></pre>
-<h3><a name="take-five"class="anchor" href="#take-five"><span class="header-link"></span></a>Take five</h3>
 
+</code></pre>
+<h3><a name="take-five" class="anchor" href="#take-five"><span class="header-link"></span></a>Take five</h3>
 
 			<div class='pagination'>
 			

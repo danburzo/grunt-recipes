@@ -10,13 +10,14 @@
 		<article>
 			<header>
 				<h1>Watch for changes</h1>
-				<p>Last updated on Oct 9th, 2013</p>
+				<p>Last updated on Jan 20th, 2014</p>
 			</header>
 			<p><strong>Plugins used:</strong> <a href="https://npmjs.org/package/grunt-contrib-watch"><code>grunt-contrib-watch</code></a>.</p>
 <p>In the previous recipes, we saw how we can compile our Sass files into CSS files and merge your Handlebars templates into a single JST file. It is somewhat magical, but to run <code>grunt sass handlebars</code> after every change is far from being productive. Let&#39;s take this up a notch and make our files re-compile automatically every time we make a change to them. For this we will use the <code>watch</code> task provided by <code>grunt-contrib-watch</code>. </p>
 <p>As usual, let&#39;s install it in our project:</p>
 <pre><code class="lang-bash"><div class="highlight"><pre>npm install grunt-contrib-watch
 </pre></div>
+
 </code></pre>
 <p>and load the tasks in our Gruntfile, after our <code>sass</code> and <code>handlebars</code> tasks:</p>
 <pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
@@ -45,9 +46,9 @@
     <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-watch&#39;</span><span class="p">);</span>
 <span class="p">};</span>
 </pre></div>
+
 </code></pre>
-<h3><a name="configuring-the-watch-task"class="anchor" href="#configuring-the-watch-task"><span class="header-link"></span></a>Configuring the <code>watch</code> task</h3>
-<p>There are really only two things we need to define:</p>
+<h3><a name="configuring-the-codewatchcode-task" class="anchor" href="#configuring-the-codewatchcode-task"><span class="header-link"></span></a>Configuring the <code>watch</code> task</h3><p>There are really only two things we need to define:</p>
 <ol>
 <li>the files we want to watch;</li>
 <li>the task(s) to run when the files change.</li>
@@ -91,16 +92,19 @@
     <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-watch&#39;</span><span class="p">);</span>
 <span class="p">};</span>
 </pre></div>
+
 </code></pre>
 <p>We&#39;ve created <em>two targets</em> for our task, one for watching the Sass files and one for watching the Handlebars templates. In both instances, we&#39;ve used <em>wildcards</em> to define patterns to match all desired files. The <code>scss/**/*.scss</code> pattern is similar to <code>scss/*.scss</code> (i.e. match all files with the <code>.scss</code> extension within the <code>scss</code> folder) with the exception that the former looks into subfolders as well &mdash; you can read all about it in the <em>Files in-depth</em> chapter. </p>
 <p>When any of the targeted files change, the associated task is executed.</p>
 <p>Let&#39;s check it out in action:</p>
 <pre><code class="lang-bash"><div class="highlight"><pre>grunt watch
 </pre></div>
+
 </code></pre>
 <p>Because <code>watch</code> is a <em>multitask</em>, what we&#39;re actually saying with the above command is:</p>
 <pre><code class="lang-bash"><div class="highlight"><pre>grunt watch:sass watch:handlebars
 </pre></div>
+
 </code></pre>
 <p>Now go ahead and change one of your Sass files, and notice that the <code>sass</code> task is run. At the same time, if a Handlebars template changes, the <code>handlebars</code> task is run.</p>
 <p><strong>Note:</strong> In our example, we&#39;re running a single task with each change, but in effect the <code>tasks</code> option can take an array of tasks to be run in sequence. You can even include specific targets for each task, e.g.:</p>
@@ -111,11 +115,10 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
+
 </code></pre>
-<h4><a name="a-note-about-persistent-tasks"class="anchor" href="#a-note-about-persistent-tasks"><span class="header-link"></span></a>A note about persistent tasks</h4>
-<p>Some tasks such as <code>watch</code> or <code>connect</code> (about which we&#39;ll learn in the next chapter) are persistent, in the sense that once you start them they run in the background as long as the console is open. To stop a persistent task without closing the console, use <code>Ctrl+C</code>.</p>
-<h3><a name="tweaking-the-watch-behavior"class="anchor" href="#tweaking-the-watch-behavior"><span class="header-link"></span></a>Tweaking the watch behavior</h3>
-<p>By default, <code>watch</code> looks for three kinds of changes: </p>
+<h4><a name="a-note-about-persistent-tasks" class="anchor" href="#a-note-about-persistent-tasks"><span class="header-link"></span></a>A note about persistent tasks</h4><p>Some tasks such as <code>watch</code> or <code>connect</code> (about which we&#39;ll learn in the next chapter) are persistent, in the sense that once you start them they run in the background as long as the console is open. To stop a persistent task without closing the console, use <code>Ctrl+C</code>.</p>
+<h3><a name="tweaking-the-watch-behavior" class="anchor" href="#tweaking-the-watch-behavior"><span class="header-link"></span></a>Tweaking the watch behavior</h3><p>By default, <code>watch</code> looks for three kinds of changes: </p>
 <ul>
 <li>files that were <em>added</em> to the project and match the pattern;</li>
 <li>matching files files that were <em>deleted</em>;</li>
@@ -132,6 +135,7 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
+
 </code></pre>
 <p>This will make the watch ignore changes in existing Handlebars templates and only react when we add or remove Handlebars templates.</p>
 <p>Alrighty then.</p>
@@ -150,9 +154,9 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
+
 </code></pre>
-<h3><a name="take-five"class="anchor" href="#take-five"><span class="header-link"></span></a>Take five</h3>
-<p>In this recipe, we&#39;ve:</p>
+<h3><a name="take-five" class="anchor" href="#take-five"><span class="header-link"></span></a>Take five</h3><p>In this recipe, we&#39;ve:</p>
 <ul>
 <li>learned how to use <code>watch</code> to trigger other tasks automatically when you make changes to your files;</li>
 <li>configured the types of events the watch responds to;</li>

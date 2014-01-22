@@ -10,29 +10,26 @@
 		<article>
 			<header>
 				<h1>Write your own Grunt tasks</h1>
-				<p>Last updated on Oct 9th, 2013</p>
+				<p>Last updated on Jan 20th, 2014</p>
 			</header>
-			<h3><a name="a-primer-on-custom-tasks"class="anchor" href="#a-primer-on-custom-tasks"><span class="header-link"></span></a>A primer on custom tasks</h3>
-<h4><a name="aliasing-existing-tasks"class="anchor" href="#aliasing-existing-tasks"><span class="header-link"></span></a>Aliasing existing tasks</h4>
-<p>Task aliasing is useful for when you want to run multiple tasks in sequence without having to invoke Grunt specifically for each one. The way to do this is:</p>
+			<h3><a name="a-primer-on-custom-tasks" class="anchor" href="#a-primer-on-custom-tasks"><span class="header-link"></span></a>A primer on custom tasks</h3><h4><a name="aliasing-existing-tasks" class="anchor" href="#aliasing-existing-tasks"><span class="header-link"></span></a>Aliasing existing tasks</h4><p>Task aliasing is useful for when you want to run multiple tasks in sequence without having to invoke Grunt specifically for each one. The way to do this is:</p>
 <pre><code><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;mytask&#39;</span><span class="p">,</span> <span class="s1">&#39;Optional task description&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;jshint&#39;</span><span class="p">,</span> <span class="s1">&#39;qunit&#39;</span><span class="p">,</span> <span class="s1">&#39;concat&#39;</span><span class="p">]);</span>
 </pre></div>
-</code></pre>
-<p>This way you can simply run</p>
+
+</code></pre><p>This way you can simply run</p>
 <pre><code><div class="highlight"><pre><span class="nx">grunt</span> <span class="nx">mytask</span>
 </pre></div>
-</code></pre>
-<p>...and it will trigger the succession of <code>jshint</code>, <code>qunit</code> and <code>concat</code>.</p>
+
+</code></pre><p>...and it will trigger the succession of <code>jshint</code>, <code>qunit</code> and <code>concat</code>.</p>
 <p>We usually want to define a <code>default</code> task that will run when we simply type <code>grunt</code> in the command line:</p>
 <pre><code><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;watch&#39;</span><span class="p">]);</span>
 </pre></div>
-</code></pre>
-<p>In addition, the list of tasks can come with specific targets:</p>
+
+</code></pre><p>In addition, the list of tasks can come with specific targets:</p>
 <pre><code><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;watch:stylesheets&#39;</span><span class="p">]);</span>
 </pre></div>
-</code></pre>
-<h3><a name="working-with-files"class="anchor" href="#working-with-files"><span class="header-link"></span></a>Working with files</h3>
-<p>Chances are your app will want to operate on files. You can learn about the different ways users can define files in the <em>Files In-Depth</em> chapter, and there certainly are a bunch of them! Fortunately, Grunt does the heavy-lifting for us and normalizes all formats into the <em>Files Array</em> format, expanding all the patterns it finds along the way. </p>
+
+</code></pre><h3><a name="working-with-files" class="anchor" href="#working-with-files"><span class="header-link"></span></a>Working with files</h3><p>Chances are your app will want to operate on files. You can learn about the different ways users can define files in the <em>Files In-Depth</em> chapter, and there certainly are a bunch of them! Fortunately, Grunt does the heavy-lifting for us and normalizes all formats into the <em>Files Array</em> format, expanding all the patterns it finds along the way. </p>
 <p>So really all we have to do is grab the array from <code>this.files</code> containing objects which have two main properties:</p>
 <ul>
 <li>the <code>dest</code> property holds the path to the destination;</li>
@@ -46,6 +43,7 @@
 Gruntfile.js
 package.json
 </pre></div>
+
 </code></pre>
 <p>We write the following Grunt code:</p>
 <pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
@@ -74,6 +72,7 @@ package.json
     <span class="p">}</span>
 <span class="p">);</span>
 </pre></div>
+
 </code></pre>
 <p>Firstly, we created two targets corresponding to two different ways of defining files for our tasks. Secondly, we defined our multitask as a simple loop through the <code>this.files</code> array.</p>
 <p>Now let&#39;s check what each of them outputs:</p>
@@ -85,10 +84,10 @@ grunt logfiles:filesArray
 &gt; Running <span class="s2">&quot;logfiles:filesArray&quot;</span> <span class="o">(</span>logfiles<span class="o">)</span> task
 &gt; File dist/file1.js has the sources app/src1.js, app/src2.js
 </pre></div>
+
 </code></pre>
 <p>Identical &mdash; one less thing for us to worry about!</p>
-<h4><a name="excluding-sources-that-don-t-exist"class="anchor" href="#excluding-sources-that-don-t-exist"><span class="header-link"></span></a>Excluding sources that don&#39;t exist</h4>
-<p>A good practice in all tasks is to filter out the source files that don&#39;t actually exist in the project:</p>
+<h4><a name="excluding-sources-that-don39t-exist" class="anchor" href="#excluding-sources-that-don39t-exist"><span class="header-link"></span></a>Excluding sources that don&#39;t exist</h4><p>A good practice in all tasks is to filter out the source files that don&#39;t actually exist in the project:</p>
 <pre><code class="lang-javascript"><div class="highlight"><pre><span class="k">this</span><span class="p">.</span><span class="nx">files</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">sources</span> <span class="o">=</span> <span class="nx">file</span><span class="p">.</span><span class="nx">src</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">grunt</span><span class="p">.</span><span class="nx">file</span><span class="p">.</span><span class="nx">exists</span><span class="p">(</span><span class="nx">path</span><span class="p">))</span> <span class="p">{</span>
@@ -100,6 +99,7 @@ grunt logfiles:filesArray
     <span class="p">});</span>
 <span class="p">});</span>
 </pre></div>
+
 </code></pre>
 <p>Now the <code>sources</code> variable contains only the subset of files that are valid.</p>
 

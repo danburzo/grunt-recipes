@@ -10,7 +10,7 @@
 		<article>
 			<header>
 				<h1>Files, in-depth</h1>
-				<p>Last updated on Oct 9th, 2013</p>
+				<p>Last updated on Jan 20th, 2014</p>
 			</header>
 			<p>Tasks can be:</p>
 <ul>
@@ -19,10 +19,8 @@
 <li>one-to-one tasks or many-to-one tasks.</li>
 </ul>
 <p>Multi-tasks work by taking source files and mapping them to destination files. For each destination, you can define one or more source files. Let&#39;s look at the ways to define files:</p>
-<h3><a name="compact-mode"class="anchor" href="#compact-mode"><span class="header-link"></span></a>Compact mode</h3>
-<p>todo.</p>
-<h3><a name="files-object-format"class="anchor" href="#files-object-format"><span class="header-link"></span></a>Files object format</h3>
-<p>In the Files Object Format, you specify a <code>files</code> object that has:</p>
+<h3><a name="compact-mode" class="anchor" href="#compact-mode"><span class="header-link"></span></a>Compact mode</h3><p>todo.</p>
+<h3><a name="files-object-format" class="anchor" href="#files-object-format"><span class="header-link"></span></a>Files object format</h3><p>In the Files Object Format, you specify a <code>files</code> object that has:</p>
 <ul>
 <li>the destination file as key</li>
 <li>a string or array of strings to define the source file(s) for the destination</li>
@@ -33,10 +31,10 @@
     <span class="s1">&#39;dist/combined.js&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;app/file1.js&#39;</span><span class="p">,</span> <span class="s1">&#39;app/file2.js&#39;</span><span class="p">,</span> <span class="s1">&#39;app/file3.js&#39;</span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
+
 </code></pre>
 <p>The first line defines one source for the destination file, while the second defines multiple source files for the destination.</p>
-<h3><a name="files-array-format"class="anchor" href="#files-array-format"><span class="header-link"></span></a>Files Array Format</h3>
-<p>The Files Array Format is the canonical form of defining source/destination pairs. Grunt converts all the other formats to the Files Array Format before sending them to the task. It&#39;s very similar to the Files Object format, except we explicitly define the <code>src</code> and <code>dest</code> properties:</p>
+<h3><a name="files-array-format" class="anchor" href="#files-array-format"><span class="header-link"></span></a>Files Array Format</h3><p>The Files Array Format is the canonical form of defining source/destination pairs. Grunt converts all the other formats to the Files Array Format before sending them to the task. It&#39;s very similar to the Files Object format, except we explicitly define the <code>src</code> and <code>dest</code> properties:</p>
 <pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">files</span><span class="o">:</span> <span class="p">[{</span>
     <span class="nx">src</span><span class="o">:</span> <span class="s1">&#39;app/file1.js&#39;</span><span class="p">,</span>
     <span class="nx">dest</span><span class="o">:</span> <span class="s1">&#39;dist/file1.js&#39;</span>
@@ -45,6 +43,7 @@
     <span class="nx">dest</span><span class="o">:</span> <span class="s1">&#39;dist/combined.js&#39;</span>
 <span class="p">}]</span>
 </pre></div>
+
 </code></pre>
 <p>It has the advantage of allowing us to specify additional properties, such as:</p>
 <ul>
@@ -52,16 +51,14 @@
 <li><code>filter</code>, which allows us to match files or folders specifically (e.g. filter: &#39;isFile&#39; will filter out folders)/</li>
 </ul>
 <p>... and a couple of others.</p>
-<h3><a name="patterns"class="anchor" href="#patterns"><span class="header-link"></span></a>Patterns</h3>
-<ul>
+<h3><a name="patterns" class="anchor" href="#patterns"><span class="header-link"></span></a>Patterns</h3><ul>
 <li><code>?</code> matches a single character, excluding <code>/</code>;</li>
 <li><code>*</code> matches any number of characters, <em>excluding</em> <code>/</code>;</li>
 <li><code>**</code> matches any number of characters, <em>including</em> <code>/</code>;</li>
 <li>Use <code>{}</code> to define a comma-separated list of alternatives, such as <code>{backbone,jquery}.min.js</code>, which will match <code>backbone.min.js</code> and <code>jquery.min.js</code>;</li>
 <li>Use <code>!</code> to exclude a match.</li>
 </ul>
-<h4><a name="a-few-common-patterns"class="anchor" href="#a-few-common-patterns"><span class="header-link"></span></a>A few common patterns</h4>
-<p>Let&#39;s assume the following structure:</p>
+<h4><a name="a-few-common-patterns" class="anchor" href="#a-few-common-patterns"><span class="header-link"></span></a>A few common patterns</h4><p>Let&#39;s assume the following structure:</p>
 <pre><code class="lang-bash"><div class="highlight"><pre>app/
     app.js
     data.js
@@ -73,28 +70,30 @@
         api.js
         auth.js
 </pre></div>
+
 </code></pre>
 <p>The star pattern <code>*</code> is generally used to match all files in the folder:</p>
 <pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">src</span><span class="o">:</span> <span class="s1">&#39;app/*.js&#39;</span>
 <span class="c1">// matches app.js, data.js</span>
 </pre></div>
+
 </code></pre>
 <p>The double star pattern <code>**/*</code> is used to match all files in the folder and its subfolders:</p>
 <pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">src</span><span class="o">:</span> <span class="s1">&#39;app/**/*.js&#39;</span>
 <span class="c1">// matches app.js, data.js, jquery.js, backbone.js, underscore.js, api.js, auth.js</span>
 </pre></div>
+
 </code></pre>
 <p>You don&#39;t need to define complicated, all-encompassing patterns, because you can define the sources as arrays. They will all be processed and will result in <em>a set of files</em> (meaning each file will appear only once even if it&#39;s matched by multiple patterns).</p>
 <p>For example, let&#39;s say you want to select all JavaScript files in the <code>app</code> folder and its subfolders, <em>but not</em> the <code>lib</code> subfolder:</p>
 <pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">src</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;app/**/*.js&#39;</span><span class="p">,</span> <span class="s1">&#39;!app/lib/*.js&#39;</span><span class="p">]</span>
 <span class="c1">// matches app.js, data.js, api.js, auth.js</span>
 </pre></div>
+
 </code></pre>
 <p>This array of patterns will initially match all JavaScript files in <code>app</code> but then will exclude those from the <code>lib</code> subfolder. Easy! </p>
-<h4><a name="practice-your-patterns"class="anchor" href="#practice-your-patterns"><span class="header-link"></span></a>Practice your patterns</h4>
-<p>Todo.</p>
-<h3><a name="defining-the-files-object-dynamically"class="anchor" href="#defining-the-files-object-dynamically"><span class="header-link"></span></a>Defining the files object dynamically</h3>
-<p>We mentioned earlier that each object in the Files Array format can take additional properties. Some of these properties are useful in defining our file mappings dynamically.
+<h4><a name="practice-your-patterns" class="anchor" href="#practice-your-patterns"><span class="header-link"></span></a>Practice your patterns</h4><p>Todo.</p>
+<h3><a name="defining-the-files-object-dynamically" class="anchor" href="#defining-the-files-object-dynamically"><span class="header-link"></span></a>Defining the files object dynamically</h3><p>We mentioned earlier that each object in the Files Array format can take additional properties. Some of these properties are useful in defining our file mappings dynamically.
 Let&#39;s take a look:</p>
 <ul>
 <li><code>expand</code> is set to <code>true</code> so that we can use dynamic mappings;</li>
@@ -120,6 +119,7 @@ Let&#39;s take a look:</p>
     Gruntfile.js
     package.json
 </pre></div>
+
 </code></pre>
 <p>We will use <code>grunt-contrib-copy</code> to copy the content of the <code>js</code> folder into <code>dist</code>. A first attempt:</p>
 <pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">copy</span><span class="o">:</span> <span class="p">{</span>
@@ -132,6 +132,7 @@ Let&#39;s take a look:</p>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
+
 </code></pre>
 <p>An honest attempt, but it generates the following structure:</p>
 <pre><code class="lang-bash"><div class="highlight"><pre>my-project
@@ -159,6 +160,7 @@ Let&#39;s take a look:</p>
     Gruntfile.js
     package.json
 </pre></div>
+
 </code></pre>
 <p>Close, but no cigar. We wanted the <code>js</code> folder included directly under <code>dist</code>.</p>
 <p>What we need to do is take the <code>app</code> part out of the <code>src</code> property and put it in the <code>cwd</code> property:</p>
@@ -173,6 +175,7 @@ Let&#39;s take a look:</p>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
+
 </code></pre>
 <p>Which gives us the expected result:</p>
 <pre><code class="lang-bash"><div class="highlight"><pre>my-project
@@ -199,11 +202,11 @@ Let&#39;s take a look:</p>
     Gruntfile.js
     package.json
 </pre></div>
+
 </code></pre>
 <p>Freeze Frame High-Five!&trade;</p>
 <p>So where&#39;s the difference? Well, the <code>cwd</code> parameter &mdash; standing for the Common Working Directory, if you remember &mdash; dictates where the root of the whole structure we want to match is located, and the rest of the folder structure (from the <code>src</code> parameter) is mapped one-to-one in the path defined by <code>dest</code>.</p>
-<h3><a name="take-five"class="anchor" href="#take-five"><span class="header-link"></span></a>Take five</h3>
-
+<h3><a name="take-five" class="anchor" href="#take-five"><span class="header-link"></span></a>Take five</h3>
 
 			<div class='pagination'>
 			

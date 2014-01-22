@@ -10,17 +10,13 @@
 		<article>
 			<header>
 				<h1>Getting Started</h1>
-				<p>Last updated on Oct 9th, 2013</p>
+				<p>Last updated on Jan 20th, 2014</p>
 			</header>
-			<h3><a name="meet-grunt"class="anchor" href="#meet-grunt"><span class="header-link"></span></a>Meet Grunt</h3>
-<p>Grunt was created by Ben Alman a.k.a. <a href="http://twitter.com/cowboy">@cowboy</a> to automate his front-end development workflow. You know, all the little repetitive tasks like unit testing, minifying your JavaScript and CSS, compiling your Sass stylesheets or CoffeeScripts, linting and what-not. With Grunt, they become a breeze: configure them once and let Grunt run them for you; in this sense, Grunt is a <em>task runner</em> for the boring but oh-so-necessary parts of the web developer&#39;s life. It&#39;s <a href="https://github.com/gruntjs/">open source</a> and at the heart of a wonderful ecosystem of thousands of plugins. As such, any tool you&#39;ve ever used in your workflow is likely to have a Grunt counterpart. And if it doesn&#39;t, it&#39;s easy to roll out your own plugin and share it with the community. Organizations like Twitter, Adobe, jQuery (and <a href="http://gruntjs.com/who-uses-grunt">many others</a>) use it and so should you, because it&#39;s A Great Thing&trade;.</p>
-<h3><a name="front-end-workflow-"class="anchor" href="#front-end-workflow-"><span class="header-link"></span></a>Front-end workflow?</h3>
-<p>Here are some things we talk about when we talk about front-end workflow:</p>
-<h4><a name="optimizing-for-speed-concatenation-minification"class="anchor" href="#optimizing-for-speed-concatenation-minification"><span class="header-link"></span></a>Optimizing for speed: concatenation &amp; minification</h4>
-<p>One of the tenets of optimizing web applications is to do everything in our power to reduce (1) the amount of HTTP requests and (2) the payload for each HTTP request. In real life, this means bundling your scripts, stylesheets &mdash; and even images! &mdash; into as few files as possible, using whatever tools one can cobble together.</p>
+			<h3><a name="meet-grunt" class="anchor" href="#meet-grunt"><span class="header-link"></span></a>Meet Grunt</h3><p>Grunt was created by Ben Alman a.k.a. <a href="http://twitter.com/cowboy">@cowboy</a> to automate his front-end development workflow. You know, all the little repetitive tasks like unit testing, minifying your JavaScript and CSS, compiling your Sass stylesheets or CoffeeScripts, linting and what-not. With Grunt, they become a breeze: configure them once and let Grunt run them for you; in this sense, Grunt is a <em>task runner</em> for the boring but oh-so-necessary parts of the web developer&#39;s life. It&#39;s <a href="https://github.com/gruntjs/">open source</a> and at the heart of a wonderful ecosystem of thousands of plugins. As such, any tool you&#39;ve ever used in your workflow is likely to have a Grunt counterpart. And if it doesn&#39;t, it&#39;s easy to roll out your own plugin and share it with the community. Organizations like Twitter, Adobe, jQuery (and <a href="http://gruntjs.com/who-uses-grunt">many others</a>) use it and so should you, because it&#39;s A Great Thing&trade;.</p>
+<h3><a name="front-end-workflow" class="anchor" href="#front-end-workflow"><span class="header-link"></span></a>Front-end workflow?</h3><p>Here are some things we talk about when we talk about front-end workflow:</p>
+<h4><a name="optimizing-for-speed-concatenation-amp-minification" class="anchor" href="#optimizing-for-speed-concatenation-amp-minification"><span class="header-link"></span></a>Optimizing for speed: concatenation &amp; minification</h4><p>One of the tenets of optimizing web applications is to do everything in our power to reduce (1) the amount of HTTP requests and (2) the payload for each HTTP request. In real life, this means bundling your scripts, stylesheets &mdash; and even images! &mdash; into as few files as possible, using whatever tools one can cobble together.</p>
 <p>We&#39;ll use Grunt to make our web application production-ready.</p>
-<h4><a name="keeping-things-modular"class="anchor" href="#keeping-things-modular"><span class="header-link"></span></a>Keeping things modular</h4>
-<p>HTML lacks a way to compose your pages from modules. To have a website with multiple pages that share a common header and footer, which is to say any website ever, you&#39;re stuck with:</p>
+<h4><a name="keeping-things-modular" class="anchor" href="#keeping-things-modular"><span class="header-link"></span></a>Keeping things modular</h4><p>HTML lacks a way to compose your pages from modules. To have a website with multiple pages that share a common header and footer, which is to say any website ever, you&#39;re stuck with:</p>
 <ul>
 <li>repeating the same markup in each page of your site, making sure to update all pages when you want to make even the smallest change (highly impractical);</li>
 <li>using frames to load multiple HTML files on a single page &mdash; one for the header, one for the footer, one for the main content (usability nightmare); </li>
@@ -28,43 +24,37 @@
 <li>loading the modules through AJAX calls (needs JavaScript to work, poor search engine ranking);</li>
 </ul>
 <p>We&#39;ll learn how to use Grunt to write and compose HTML modules in a straightforward way.</p>
-<h4><a name="making-css-javascript-fun-again"class="anchor" href="#making-css-javascript-fun-again"><span class="header-link"></span></a>Making CSS &amp; JavaScript fun again</h4>
-<p>CSS and JavaScript are wonderful things with less-than-wonderful parts. CSS is crippled by repetition since it lacks variables and inheritance. JavaScript uses prototype inheritance, which seems un unnerve people used to classical inheritance.</p>
+<h4><a name="making-css-amp-javascript-fun-again" class="anchor" href="#making-css-amp-javascript-fun-again"><span class="header-link"></span></a>Making CSS &amp; JavaScript fun again</h4><p>CSS and JavaScript are wonderful things with less-than-wonderful parts. CSS is crippled by repetition since it lacks variables and inheritance. JavaScript uses prototype inheritance, which seems un unnerve people used to classical inheritance.</p>
 <p>Sass, LESS and a host of other languages superset CSS with features like variables, mixins, nesting and functions, which makes the code more concise, readable and maintainable. Through dedicated tools, these can be compiled into normal CSS and used in web pages.</p>
 <p>Similarly, CoffeeScript and TypeScript aim to soothe the pains of JavaScript developers by providing traditional classes and inheritance along other features and syntactic goodies.</p>
 <p>We&#39;ll see how Grunt can pre-process these files automatically, so you don&#39;t even have to think about it.</p>
-<h4><a name="keeping-bugs-at-bay"class="anchor" href="#keeping-bugs-at-bay"><span class="header-link"></span></a>Keeping bugs at bay</h4>
-<p>Lint is the fluff that accumulates on your clothes or in your bellybutton, but it&#39;s also the name of a class of tools that look at your code and flag potentially flawed constructs. They&#39;re formally known as <em>static code analysis tools</em>.</p>
+<h4><a name="keeping-bugs-at-bay" class="anchor" href="#keeping-bugs-at-bay"><span class="header-link"></span></a>Keeping bugs at bay</h4><p>Lint is the fluff that accumulates on your clothes or in your bellybutton, but it&#39;s also the name of a class of tools that look at your code and flag potentially flawed constructs. They&#39;re formally known as <em>static code analysis tools</em>.</p>
 <p>We have lint checkers for JavaScript that remind you that <code>==</code> is not the same thing as <code>===</code> or that declaring functions inside a for-loop is generally a bad idea. They also point out style inconsistencies, such as using tabs <em>and</em> spaces for indentation (make up your mind, will you?).</p>
 <p>And then there&#39;s unit testing, that thing you should be doing &mdash; in fact, I&#39;m going to assume you are &mdash; that keeps us safe from breaking things when we refactor code.</p>
 <p>We&#39;ll find that Grunt is the perfect tool to automate code checking &amp; testing.</p>
-<h4><a name="better-documentation"class="anchor" href="#better-documentation"><span class="header-link"></span></a>Better documentation</h4>
-<p>They say every person has a book in them. Grunt can help your meticulously crafted comments really shine by making them into clean, readable documentation.</p>
-<h3><a name="resources"class="anchor" href="#resources"><span class="header-link"></span></a>Resources</h3>
-<p>Here are a few places we&#39;re going to visit quite often, so make sure you have them handy:</p>
+<h4><a name="better-documentation" class="anchor" href="#better-documentation"><span class="header-link"></span></a>Better documentation</h4><p>They say every person has a book in them. Grunt can help your meticulously crafted comments really shine by making them into clean, readable documentation.</p>
+<h3><a name="resources" class="anchor" href="#resources"><span class="header-link"></span></a>Resources</h3><p>Here are a few places we&#39;re going to visit quite often, so make sure you have them handy:</p>
 <ul>
 <li><a href="http://gruntjs.com">http://gruntjs.com</a>, Grunt&#39;s official page, with guides and the API reference;</li>
 <li><a href="http://gruntjs.com/plugins">http://gruntjs.com/plugins</a>, the list of all available Grunt plugins &mdash; the ones that start with <code>grunt-contrib-</code> are maintained by the Grunt team, while the others are created by people like you and me. You can find a list of good plugins in this book&#39;s <em>Appendix</em>;</li>
 <li><a href="https://twitter.com/gruntjs">@gruntjs</a> for updates on the topic;</li>
 <li>the IRC channel <code>#grunt</code> on <code>irc.freenode.net</code> is where the team members hang out.</li>
 </ul>
-<h3><a name="get-grunt-up-running"class="anchor" href="#get-grunt-up-running"><span class="header-link"></span></a>Get Grunt Up &amp; Running</h3>
-<p>Grunt is written in JavaScript, so you&#39;ll need a Node.js environment and the Node Package Manager that comes with it. </p>
-<h4><a name="install-node"class="anchor" href="#install-node"><span class="header-link"></span></a>Install Node</h4>
-<p>Go to <a href="http://nodejs.org/download/">http://nodejs.org/download/</a> and grab the installer for your operating system. It will install Node and NPM.</p>
+<h3><a name="get-grunt-up-amp-running" class="anchor" href="#get-grunt-up-amp-running"><span class="header-link"></span></a>Get Grunt Up &amp; Running</h3><p>Grunt is written in JavaScript, so you&#39;ll need a Node.js environment and the Node Package Manager that comes with it. </p>
+<h4><a name="install-node" class="anchor" href="#install-node"><span class="header-link"></span></a>Install Node</h4><p>Go to <a href="http://nodejs.org/download/">http://nodejs.org/download/</a> and grab the installer for your operating system. It will install Node and NPM.</p>
 <p><em>Note:</em> Working with Grunt means interacting with a shell, which Mac and Linux users are lucky enough to have readily available. As for Windows, let&#39;s just say I&#39;d eat a live snail before I use the Command Prompt. Instead, I suggest you install Git for Windows &mdash; available at <a href="http://git-scm.com/downloads">http://git-scm.com/downloads</a> &mdash; that comes with a real shell and, seriously, who doesn&#39;t need Git on their machine anyways?</p>
-<h4><a name="install-grunt"class="anchor" href="#install-grunt"><span class="header-link"></span></a>Install Grunt</h4>
-<p>We&#39;ll use NPM to install Grunt CLI (Command-Line Interpreter) from the console:</p>
+<h4><a name="install-grunt" class="anchor" href="#install-grunt"><span class="header-link"></span></a>Install Grunt</h4><p>We&#39;ll use NPM to install Grunt CLI (Command-Line Interpreter) from the console:</p>
 <pre><code class="lang-bash"><div class="highlight"><pre>npm install -g grunt-cli
 </pre></div>
+
 </code></pre>
 <p><strong>Note:</strong> The <code>-g</code> flag stands for <em>global</em>, which makes Grunt CLI available from any folder on your machine.</p>
 <p>That&#39;s it! You&#39;re ready to add Grunt magic to your projects.</p>
-<h4><a name="set-up-your-first-grunt-project"class="anchor" href="#set-up-your-first-grunt-project"><span class="header-link"></span></a>Set up your first Grunt project</h4>
-<p>Let&#39;s create a new project:</p>
+<h4><a name="set-up-your-first-grunt-project" class="anchor" href="#set-up-your-first-grunt-project"><span class="header-link"></span></a>Set up your first Grunt project</h4><p>Let&#39;s create a new project:</p>
 <pre><code class="lang-bash"><div class="highlight"><pre>mkdir my-project
 <span class="nb">cd </span>my-project
 </pre></div>
+
 </code></pre>
 <p>There are two main files you need to create in the root directory of your project:</p>
 <ul>
@@ -76,18 +66,20 @@
     Gruntfile.js
     package.json
 </pre></div>
+
 </code></pre>
-<h5><a name="package-json"class="anchor" href="#package-json"><span class="header-link"></span></a>package.json</h5>
-<p>Let&#39;s create a very basic version of this file:</p>
+<h5><a name="package-json" class="anchor" href="#package-json"><span class="header-link"></span></a>package.json</h5><p>Let&#39;s create a very basic version of this file:</p>
 <pre><code class="lang-javascript"><div class="highlight"><pre><span class="p">{</span>
   <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;my-project&quot;</span><span class="p">,</span> <span class="c1">// the name of our project, hyphen-separated</span>
   <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;0.0.0&quot;</span> <span class="c1">// project version (in semantic format)</span>
 <span class="p">}</span>
 </pre></div>
+
 </code></pre>
 <p>Now, let&#39;s install Grunt in our current project. But wait, didn&#39;t we do that already? Well, what we did install in the first part of the chapter was Grunt CLI, which is just a small utility that runs the local version of <code>grunt</code> for you. So, we still need to add Grunt locally (hence the lack of the <code>-g</code> flag):</p>
 <pre><code class="lang-bash"><div class="highlight"><pre>npm install grunt --save-dev
 </pre></div>
+
 </code></pre>
 <p>The <code>--save-dev</code> flag instructs NPM to update <code>package.json</code> to include <code>grunt</code> as a dependency for the project. Our file will now look like this:</p>
 <pre><code class="lang-javascript"><div class="highlight"><pre><span class="p">{</span>
@@ -100,6 +92,7 @@
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
+
 </code></pre>
 <p>In addition, you&#39;ll notice a <code>node_modules</code> directory added to your project. This is where all local NPM modules are installed &mdash; like we just did with <code>grunt</code> &mdash; and can be safely added to <code>.gitignore</code>.</p>
 <p>Your project&#39;s file structure now looks like this:</p>
@@ -108,14 +101,15 @@
     Gruntfile.js
     package.json
 </pre></div>
+
 </code></pre>
 <p><em>Did you know?</em> Running <code>npm install</code> in any project directory that has a <code>package.json</code> will install all its necessary dependencies with their appropriate versions, as listed in the <code>devDependencies</code> property.</p>
-<h5><a name="gruntfile-js"class="anchor" href="#gruntfile-js"><span class="header-link"></span></a>Gruntfile.js</h5>
-<p>Next, let&#39;s create a Gruntfile next to our <code>package.json</code>. The basic format for the file is this:</p>
+<h5><a name="gruntfile-js" class="anchor" href="#gruntfile-js"><span class="header-link"></span></a>Gruntfile.js</h5><p>Next, let&#39;s create a Gruntfile next to our <code>package.json</code>. The basic format for the file is this:</p>
 <pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// We&#39;ll do grunt stuff here soon!</span>
 <span class="p">};</span>
 </pre></div>
+
 </code></pre>
 <p>For example, let&#39;s write a task that just prints out <code>Hello World!</code> into the console:</p>
 <pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
@@ -124,15 +118,16 @@
   <span class="p">});</span>
 <span class="p">};</span>
 </pre></div>
+
 </code></pre>
 <p>And now to run it:</p>
 <pre><code class="lang-bash"><div class="highlight"><pre>grunt
 &gt; Running <span class="s2">&quot;default&quot;</span> task
 &gt; Hello World!
 </pre></div>
+
 </code></pre>
-<h4><a name="take-five"class="anchor" href="#take-five"><span class="header-link"></span></a>Take five</h4>
-<p>OK, let&#39;s recap what we&#39;ve just done:</p>
+<h4><a name="take-five" class="anchor" href="#take-five"><span class="header-link"></span></a>Take five</h4><p>OK, let&#39;s recap what we&#39;ve just done:</p>
 <ul>
 <li>We installed Node and Node Package Manager, which allows us to run Grunt and to quickly install all the necessary Grunt plugins;</li>
 <li>We installed Grunt CLI globally;</li>

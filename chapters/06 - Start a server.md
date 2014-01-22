@@ -127,8 +127,14 @@ grunt.initConfig({
 			middleware: function(connect, options) {
 
 				var middleware = [];
-				
-				// original middleware behavior
+
+				// 1. mod-rewrite behavior
+				var rules = [
+					'!\\.html|\\.js|\\.css|\\.svg|\\.jp(e?)g|\\.png|\\.gif$ /index.html'
+				];
+				middleware.push(rewrite(rules));
+
+				// 2. original middleware behavior
 				var base = options.base;
 				if (!Array.isArray(base)) {
 					base = [base];
@@ -136,12 +142,6 @@ grunt.initConfig({
 				base.forEach(function(path) {
 					middleware.push(connect.static(path));
 				});
-
-				// mod-rewrite behavior
-				var rules = [
-					'!\\.html|\\.js|\\.css|\\.svg|\\.jp(e?)g|\\.png|\\.gif$ /index.html'
-				];
-				middleware.push(rewrite(rules));
 
 				return middleware;
 			}

@@ -10,23 +10,21 @@
 		<article>
 			<header>
 				<h1>Lint your JavaScript code</h1>
-				<p>Last updated on Oct 9th, 2013</p>
+				<p>Last updated on Jan 20th, 2014</p>
 			</header>
-			<h2><a name="lint-your-javascript-code"class="anchor" href="#lint-your-javascript-code"><span class="header-link"></span></a>Lint your JavaScript code</h2>
-<p><strong>Plugins used:</strong> <a href="https://npmjs.org/package/grunt-contrib-jshint"><code>grunt-contrib-jshint</code></a>.</p>
+			<h2><a name="lint-your-javascript-code" class="anchor" href="#lint-your-javascript-code"><span class="header-link"></span></a>Lint your JavaScript code</h2><p><strong>Plugins used:</strong> <a href="https://npmjs.org/package/grunt-contrib-jshint"><code>grunt-contrib-jshint</code></a>.</p>
 <p>A JavaScript linter is a tool that looks for syntax errors, bad practices and style inconsistencies in your code.</p>
-<h3><a name="install-the-jshint-plugin"class="anchor" href="#install-the-jshint-plugin"><span class="header-link"></span></a>Install the JSHint plugin</h3>
-<pre><code class="lang-bash"><div class="highlight"><pre>npm install grunt-contrib-jshint --save-dev
+<h3><a name="install-the-jshint-plugin" class="anchor" href="#install-the-jshint-plugin"><span class="header-link"></span></a>Install the JSHint plugin</h3><pre><code class="lang-bash"><div class="highlight"><pre>npm install grunt-contrib-jshint --save-dev
 </pre></div>
+
 </code></pre>
-<h3><a name="load-jshint-tasks-into-our-gruntfile"class="anchor" href="#load-jshint-tasks-into-our-gruntfile"><span class="header-link"></span></a>Load JSHint tasks into our Gruntfile</h3>
-<pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
+<h3><a name="load-jshint-tasks-into-our-gruntfile" class="anchor" href="#load-jshint-tasks-into-our-gruntfile"><span class="header-link"></span></a>Load JSHint tasks into our Gruntfile</h3><pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-jshint&#39;</span><span class="p">);</span>
 <span class="p">};</span>
 </pre></div>
+
 </code></pre>
-<h3><a name="confige-the-jshint-task"class="anchor" href="#confige-the-jshint-task"><span class="header-link"></span></a>Confige the JSHint task</h3>
-<pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
+<h3><a name="configure-the-jshint-task" class="anchor" href="#configure-the-jshint-task"><span class="header-link"></span></a>Configure the JSHint task</h3><pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
         <span class="nx">jshint</span><span class="o">:</span> <span class="p">{</span>
             <span class="nx">all</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;scripts/*.js&#39;</span><span class="p">]</span>
@@ -35,17 +33,19 @@
     <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-jshint&#39;</span><span class="p">);</span>
 <span class="p">};</span>
 </pre></div>
+
 </code></pre>
 <p>We added a call to <code>initConfig</code> for the <code>jshint</code> task. In it, we defined a single <em>target</em> called <code>all</code>. We told JSHint to look at all files with a <code>.js</code> extension within the <code>scripts</code> folder.</p>
 <p><strong>Note:</strong> Grunt tasks can have multiple configurations, named <em>targets</em>. This allows us to use different sets of options for the same task, depending on what we need. A common scenario is having a target for <em>development</em> and one for <em>distribution</em>.</p>
-<h3><a name="run-the-jshint-task"class="anchor" href="#run-the-jshint-task"><span class="header-link"></span></a>Run the JSHint task</h3>
-<p>In your project directory, run:</p>
+<h3><a name="run-the-jshint-task" class="anchor" href="#run-the-jshint-task"><span class="header-link"></span></a>Run the JSHint task</h3><p>In your project directory, run:</p>
 <pre><code class="lang-bash"><div class="highlight"><pre>grunt jshint:all
 </pre></div>
+
 </code></pre>
 <p>...to run the JSHint task with the <code>all</code> target. Or simply:</p>
 <pre><code class="lang-bash"><div class="highlight"><pre>grunt jshint
 </pre></div>
+
 </code></pre>
 <p>This is because <code>grunt-contrib-jshint</code> (along with most other Grunt tasks) is a so-called <em>multitask</em>. </p>
 <p><strong>Note:</strong> Multitasks invoked without an explicit target will run for all targets. </p>
@@ -55,18 +55,18 @@
         <span class="nx">jshint</span><span class="o">:</span> <span class="p">{</span>
             <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
                 <span class="nx">reporterOutput</span><span class="o">:</span> <span class="s1">&#39;jshint.log&#39;</span>
-            <span class="p">}</span>
+            <span class="p">},</span>
             <span class="nx">all</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;scripts/*.js&#39;</span><span class="p">]</span>
         <span class="p">}</span>
     <span class="p">});</span>
     <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-jshint&#39;</span><span class="p">);</span>
 <span class="p">};</span>
 </pre></div>
+
 </code></pre>
 <p>That&#39;s much better. Now we have the list of errors in a handy file in our project called <code>jshint.log</code>. Brilliant.</p>
 <p>Here we&#39;ve set <code>options</code> globally for <em>all targets</em>, but each individual target can have its own <code>options</code> property. Target-level options will override the task-level options. </p>
-<h3><a name="more-jshint-options"class="anchor" href="#more-jshint-options"><span class="header-link"></span></a>More JSHint options</h3>
-<p>We&#39;ve just configured an output file to serve as an error log. Next, let&#39;s look at how to customize the kind of rules JSHint enforces. Armed with the <a href="http://www.jshint.com/docs/options/">full list of JSHint flags</a>, we can create a JSON file which we&#39;ll name <code>.jshintrc</code> into our root directory. It looks something like this:</p>
+<h3><a name="more-jshint-options" class="anchor" href="#more-jshint-options"><span class="header-link"></span></a>More JSHint options</h3><p>We&#39;ve just configured an output file to serve as an error log. Next, let&#39;s look at how to customize the kind of rules JSHint enforces. Armed with the <a href="http://www.jshint.com/docs/options/">full list of JSHint flags</a>, we can create a JSON file which we&#39;ll name <code>.jshintrc</code> into our root directory. It looks something like this:</p>
 <pre><code class="lang-javascript"><div class="highlight"><pre><span class="p">{</span>
   <span class="s2">&quot;curly&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
   <span class="s2">&quot;eqnull&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
@@ -77,6 +77,7 @@
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
+
 </code></pre>
 <p>Now, let&#39;s tell JSHint to look at this file for the rules to enforce:</p>
 <pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
@@ -85,16 +86,16 @@
             <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
                 <span class="nx">jshintrc</span><span class="o">:</span> <span class="s1">&#39;.jshintrc&#39;</span><span class="p">,</span>
                 <span class="nx">reporterOutput</span><span class="o">:</span> <span class="s1">&#39;jshint.log&#39;</span>
-            <span class="p">}</span>
+            <span class="p">},</span>
             <span class="nx">all</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;scripts/*.js&#39;</span><span class="p">]</span>
         <span class="p">}</span>
     <span class="p">});</span>
     <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-jshint&#39;</span><span class="p">);</span>
 <span class="p">};</span>
 </pre></div>
+
 </code></pre>
-<h3><a name="take-five"class="anchor" href="#take-five"><span class="header-link"></span></a>Take five</h3>
-<p>In this recipe, we&#39;ve:</p>
+<h3><a name="take-five" class="anchor" href="#take-five"><span class="header-link"></span></a>Take five</h3><p>In this recipe, we&#39;ve:</p>
 <ul>
 <li>installed, configured and ran our first <em>real</em> Grunt task;</li>
 <li>learned about targets and multitasks, both of which are wonderful things.</li>

@@ -23,11 +23,12 @@ var prettyDate = function(date) {
 			<%- post.content %>
 
 			<div class='pagination'>
-			<% if (previous) { %>
-				<a href='../<%= previous.url %>' class='pagination-prev'>&larr; Previous: <%= previous.title %></a>
+			<% 
+			if (post.currentIndex > 0) { %>
+				<a href='../<%= posts[post.currentIndex - 1].url %>' class='pagination-prev'>&larr; Previous: <%= posts[post.currentIndex - 1].title %></a>
 			<% } %>
-			<% if (next) { %>
-				<a href='../<%= next.url %>' class='pagination-next'>Next: <%= next.title %> &rarr;</a>
+			<% if (post.currentIndex < posts.length - 1) { %>
+				<a href='../<%= posts[post.currentIndex + 1].url %>' class='pagination-next'>Next: <%= posts[post.currentIndex + 1].title %> &rarr;</a>
 			<% } %>
 			</div>
 		</article>
