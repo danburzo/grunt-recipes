@@ -10,7 +10,7 @@
 		<article>
 			<header>
 				<h1>Sassy Sass</h1>
-				<p>Last updated on Jan 20th, 2014</p>
+				<p>Last updated on Apr 6th, 2014</p>
 			</header>
 			<p><strong>Plugins used:</strong> <a href="https://npmjs.org/package/grunt-contrib-sass"><code>grunt-contrib-sass</code></a>.</p>
 <p><strong>Note:</strong> To make <code>grunt-contrib-sass</code> work, you also need to have Ruby and Sass installed. To check if you have ruby installed, type <code>ruby -v</code> in the console. When you&#39;ve confirmed you have Ruby installed, run <code>gem install sass</code> to install Sass.</p>
@@ -40,7 +40,7 @@
 </pre></div>
 
 </code></pre>
-<p>If you&#39;ve read through the previous recipe, you&#39;ll recall that the <code>files</code> property accepted an array of comma-separated file paths. Turns out there are a host of ways to describe the files your tasks needs to operate on, but we&#39;ll talk about that later. For now, let&#39;s examine this form:</p>
+<p>If you went through the previous chapter, you&#39;ll recall the <code>files</code> property accepts an array of comma-separated file paths. Turns out there are a host of ways to describe the files your tasks needs to operate on, but we&#39;ll talk about that later. For now, let&#39;s examine this form:</p>
 <pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">files</span><span class="o">:</span> <span class="p">{</span>
     <span class="s1">&#39;css/main.css&#39;</span><span class="o">:</span> <span class="s1">&#39;scss/main.scss&#39;</span><span class="p">,</span>
     <span class="s1">&#39;css/homepage.css&#39;</span><span class="o">:</span> <span class="s1">&#39;scss/homepage.scss&#39;</span>
@@ -54,7 +54,7 @@
 </pre></div>
 
 </code></pre>
-<h3><a name="" class="anchor" href="#"><span class="header-link"></span></a> </h3><p>This means that for each new Sass file that you add to your project, you&#39;ll need to edit your Gruntfile to include a new source/destination pair in your <code>sass</code> task. Not too sexy. </p>
+<h3><a name="a-better-way-to-define-sourcedestination-pairs" class="anchor" href="#a-better-way-to-define-sourcedestination-pairs"><span class="header-link"></span></a>A better way to define source/destination pairs</h3><p>This means that for each new Sass file that you add to your project, you&#39;ll need to edit your Gruntfile to include a new source/destination pair in your <code>sass</code> task. Not too sexy. </p>
 <p>Let&#39;s fix that by <em>building the files object dynamically</em>:</p>
 <pre><code class="lang-javascript"><div class="highlight"><pre><span class="nx">files</span><span class="o">:</span> <span class="p">[{</span>
     <span class="nx">expand</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>

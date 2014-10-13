@@ -5,9 +5,9 @@
 
 **Using:** [`grunt-contrib-connect`](https://npmjs.org/package/grunt-contrib-connect)
 
-When working on a project on your machine, you test your stuff by pointing your browser to `file://path/to/your/project/index.html`. This alone is inelegant. But more importantly, _AJAX features won't work_ since they use the HTTP protocol, not the file protocol. 
+When working on a project on your machine you need a web server installed locally to test AJAX features or web fonts from services such as Typekit. 
 
-What you need is a web server installed locally. You might be tempted to use an AMP stack &mdash; a fancy way of calling a bundle of Apache, MySQL and PHP &mdash; but it's a hassle to link your projects to its `www` folder (I'm lazy) and most of the time you'll use 1% of its features anyway. Plus, let's be honest, it feels a little retro. 
+You might be tempted to use an AMP stack &mdash; a fancy way of calling a bundle of Apache, MySQL and PHP &mdash; but it's a hassle to link your projects to its `www` folder (I'm lazy) and most of the time you'll use 1% of its features anyway. Plus, let's be honest, it feels a little retro. 
 
 If you have Python installed, you can simply run this in your project folder instead:
 
@@ -102,7 +102,7 @@ If you're writing a Single-Page Web Application that uses the [HTML5 History API
 
 Let's fix this by writing a custom _middleware_ for the `connect` task to redirect paths that don't correspond to physical files back to `index.html`.
 
-For this we will be using the `connect-modrewrite` plugin &mdash; our first encounter with a plugin that's not specifically written for Grunt. But rest assured, it's basically the same thing. Let's install it in the same way as with any other plugin:
+For this we will be using the `connect-modrewrite` plugin. It's not specifically written for Grunt, but we use it in the same way. Let's install it:
 
 ```bash
 npm install connect-modrewrite --save-dev
@@ -124,33 +124,24 @@ grunt.initConfig({
 		server: {
 			keepalive: true,
 			hostname: 'localhost',
-			middleware: function(connect, options) {
+			middleware: function(connect, options, middlewares) {
 
-				var middleware = [];
-
-				// 1. mod-rewrite behavior
+				// the rules that shape our mod-rewrite behavior
 				var rules = [
 					'!\\.html|\\.js|\\.css|\\.svg|\\.jp(e?)g|\\.png|\\.gif$ /index.html'
 				];
-				middleware.push(rewrite(rules));
 
-				// 2. original middleware behavior
-				var base = options.base;
-				if (!Array.isArray(base)) {
-					base = [base];
-				}
-				base.forEach(function(path) {
-					middleware.push(connect.static(path));
-				});
+				// add rewrite as first item in the chain of middlewares
+				middlewares.unshift(rewrite(rules));
 
-				return middleware;
+				return middlewares;
 			}
 		}
 	}
 });	
 ```
 
-We've written a custom `middleware` function which returns an array of chained middleware. Because we're overwriting the original implementation altogether, we need to make sure to include it &mdash; it's the part with `connect.static`. We're then adding our rewrite middleware to the chain; it contains a single rule which states that all files except HTML, stylesheets, scripts and images should be redirected to `index.html`.
+We've written a custom `middleware` function which returns an array of chained middleware. We're inserting our rewrite middleware at the beginning of an existing chain which includes by default a static file server and which is sent to our function as the third argument. Our rewrite middleware contains a single rule which states that all files except HTML, stylesheets, scripts and images should be redirected to `index.html`.
 
 ### Testing on other devices
 

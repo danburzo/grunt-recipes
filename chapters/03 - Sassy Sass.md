@@ -39,7 +39,7 @@ module.exports = function(grunt) {
 };
 ```
 
-If you've read through the previous recipe, you'll recall that the `files` property accepted an array of comma-separated file paths. Turns out there are a host of ways to describe the files your tasks needs to operate on, but we'll talk about that later. For now, let's examine this form:
+If you went through the previous chapter, you'll recall the `files` property accepts an array of comma-separated file paths. Turns out there are a host of ways to describe the files your tasks needs to operate on, but we'll talk about that later. For now, let's examine this form:
 
 ```javascript
 files: {
@@ -58,7 +58,7 @@ Let's run our task to see how it works:
 grunt sass
 ```
 
-### 
+### A better way to define source/destination pairs
 
 This means that for each new Sass file that you add to your project, you'll need to edit your Gruntfile to include a new source/destination pair in your `sass` task. Not too sexy. 
 
